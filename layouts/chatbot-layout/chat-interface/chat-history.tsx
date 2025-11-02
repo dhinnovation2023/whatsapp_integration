@@ -1,7 +1,9 @@
 import React from 'react'
 
+type ChatRole = "client" | "team";
+
 export interface ChatHistoryMessageInterface {
-    role: "client" | "team",
+    role: ChatRole,
     message: string,
     date: string,
 }
@@ -36,3 +38,4 @@ const ChatHistory = ({
 }
 
 export default ChatHistory
+export { type ChatRole }
