@@ -43,7 +43,8 @@ export async function POST(req: NextRequest) {
             }
 
             const bot = createBot(PHONE_NUMBER_ID, WHATSAPP_ACCESS_TOKEN);
-            bot.sendText(from, "Test message from vishnu");
+            await bot.sendText(from, "Test message from vishnu");
+            console.log("message sended...")
         }
 
         // Always 200 to acknowledge receipt (prevents retries)
