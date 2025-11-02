@@ -32,9 +32,9 @@ export async function POST(req: NextRequest) {
         for (const m of messages) {
             const from = m.from;
             // const type = m.type;
+            console.log("Incoming message:", m);
 
             // save to database
-
             const PHONE_NUMBER_ID = process.env.WHATSAPP_PHONE_NUMBER_ID;
             const WHATSAPP_ACCESS_TOKEN = process.env.WHATSAPP_ACCESS_TOKEN;
 
