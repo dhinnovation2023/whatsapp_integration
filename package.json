@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@awadoc/whatsapp-cloud-api": "^1.1.0",
     "@remixicon/react": "^4.7.0",
+    "axios": "^1.13.1",
     "next": "16.0.1",
     "react": "19.2.0",
     "react-dom": "19.2.0"
