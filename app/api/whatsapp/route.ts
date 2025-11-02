@@ -32,12 +32,15 @@ export async function GET(req: NextRequest) {
     const mode = searchParams.get("hub.mode");
     const token = searchParams.get("hub.verify_token");
     const challenge = searchParams.get("hub.challenge");
-    console.log(process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN)
+    console.log("Mode: ", mode);
+    console.log("token: ", token);
 
     if (mode === "subscribe" && token === process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN) {
         // Meta expects the raw challenge string in 200 response
         return new NextResponse(challenge, { status: 200 });
     }
+
+
     return new NextResponse("Forbidden", { status: 403 });
 }
 
