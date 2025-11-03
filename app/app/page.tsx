@@ -1,5 +1,6 @@
 'use client';
 
+import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
 import ChatBotLayout from '@/layouts/chatbot-layout'
 import { ChatHistoryMessageInterface } from '@/layouts/chatbot-layout/chat-interface/chat-history';
@@ -20,6 +21,13 @@ const AppPage = () => {
     <DashboardLayout
       pageTitle='Chat Inbox'
     >
+      {
+        error && (
+          <ErrorTemplate
+            error={error}
+          />
+        )
+      }
       <ChatBotLayout
         sending={sending}
         onSubmit={async (value) => {

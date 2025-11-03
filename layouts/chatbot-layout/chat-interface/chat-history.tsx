@@ -56,7 +56,7 @@ const ChatHistory = ({
                 setError(message);
             }
         })()
-    }, [searchparams])
+    }, [searchparams, setChatHistory])
 
     useEffect(() => {
 
@@ -90,7 +90,7 @@ const ChatHistory = ({
 
         return () => evtSource.close();
 
-    }, [searchparams])
+    }, [searchparams, setChatHistory])
 
     // Scroll to bottom
     useEffect(() => {
