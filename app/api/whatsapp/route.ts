@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
                 await saveFileToFirebase({
                     fileId: m.image.id,
                     mime_type: m.image.mime_type,
+                    phone: from,
                 })
             }
 
@@ -75,10 +76,9 @@ export async function POST(req: NextRequest) {
                 await saveFileToFirebase({
                     fileId: m.document.id,
                     mime_type: m.document.mime_type,
+                    phone: from,
                 })
             }
-
-            
         }
 
         return NextResponse.json({ received: true });

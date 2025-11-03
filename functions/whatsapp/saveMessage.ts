@@ -6,9 +6,13 @@ import MessagesModel from "@/models/messages";
 export interface NewMessageDataInterface {
     role: ChatRole,
     phone: string,
-    message?: string,
     timestamp: string,
     newMessage: boolean,
+    message?: string,
+    attachments?: {
+        path: string,
+        mime_type: string,
+    },
 }
 
 export async function saveMessageToDB({ data }: {
@@ -18,6 +22,8 @@ export async function saveMessageToDB({ data }: {
         try {
 
             await dbConnect();
+
+            console.log("Data from save message:", data);
 
             const newMessage = new MessagesModel({
                 ...data,

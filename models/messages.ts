@@ -29,6 +29,10 @@ const messageSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
     },
+    attachments: {
+        path: { type: String },
+        mime_type: { type: String },
+    },
 })
 
 const MessagesModel = mongoose.models.Messages || mongoose.model("Messages", messageSchema)
