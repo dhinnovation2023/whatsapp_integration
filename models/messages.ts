@@ -1,4 +1,13 @@
+import { ChatRole } from "@/layouts/chatbot-layout/chat-interface/chat-history";
 import mongoose from "mongoose";
+
+export interface MessagesModelInterface {
+    role: ChatRole,
+    number: string,
+    message?: string,
+    timestamp: string,
+    isNew: boolean,
+}
 
 const messageSchema = new mongoose.Schema({
     role: {
@@ -14,6 +23,10 @@ const messageSchema = new mongoose.Schema({
     },
     timestamp: {
         type: String,
+        required: true,
+    },
+    isNew: {
+        type: Boolean,
         required: true,
     },
 })

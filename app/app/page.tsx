@@ -2,32 +2,19 @@
 
 import ChatBotLayout from '@/layouts/chatbot-layout'
 import DashboardLayout from '@/layouts/dashboard'
+import { useState } from 'react';
 
 const AppPage = () => {
+
+  const [] = useState<boolean>();
+  const [] = useState<string>();
+  const [] = useState<boolean>();
+
   return (
     <DashboardLayout
       pageTitle='Chat Inbox'
     >
         <ChatBotLayout
-          chatContacts={
-            [
-              {
-                name: "Vishnu",
-                isNew: false,
-                lastMessage: "Hello",
-              },
-              {
-                name: "Abhilash",
-                isNew: true,
-                lastMessage: "Hello",
-              },
-              {
-                name: "Soumya",
-                isNew: true,
-                lastMessage: "Hello",
-              }
-            ]
-          }
           onSubmit={() => {}}
         />
     </DashboardLayout>

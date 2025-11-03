@@ -56,6 +56,7 @@ export async function POST(req: NextRequest) {
                         role: "client",
                         timestamp: timestamp,
                         message: m.text.body,
+                        isNew: true,
                     }
                 })
             }

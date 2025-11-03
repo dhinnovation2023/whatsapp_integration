@@ -8,6 +8,7 @@ export interface NewMessageDataInterface {
     number: string,
     message?: string,
     timestamp: string,
+    isNew: boolean,
 }
 
 export async function saveMessageToDB({ data }: {

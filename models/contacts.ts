@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+export interface ContactsModelInterface {
+    name: string,
+    phone: string,
+} 
+
 const contactsSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -12,5 +17,5 @@ const contactsSchema = new mongoose.Schema({
     },
 }, { timestamps: true })
 
-const ContactsModel = mongoose.models.ContactModels || mongoose.model("Contacts", contactsSchema);
+const ContactsModel = mongoose.models.Contacts || mongoose.model("Contacts", contactsSchema);
 export default ContactsModel;
