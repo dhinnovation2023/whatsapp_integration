@@ -2,6 +2,7 @@ import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
 import { MessagesModelInterface } from '@/models/messages';
 import axios from 'axios';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 
@@ -9,8 +10,12 @@ type ChatRole = "client" | "team";
 
 export interface ChatHistoryMessageInterface {
     role: ChatRole,
-    message?: string,
     date: string,
+    message?: string,
+    attachments?: {
+        path: string,
+        mime_type: string,
+    }
 }
 
 const ChatHistory = ({
@@ -42,8 +47,9 @@ const ChatHistory = ({
                 for (const message of response.data) {
                     const data: ChatHistoryMessageInterface = {
                         date: "11-11-2023",
-                        message: message.message,
                         role: message.role,
+                        message: message.message ? message.message : undefined,
+                        attachments: message.attachments,
                     }
 
                     history.push(data);
@@ -74,11 +80,14 @@ const ChatHistory = ({
             const data = JSON.parse(e.data) as {
                 fullDocument: MessagesModelInterface,
             };
+
+            console.log(data);
             setChatHistory(prev => (
                 [...prev, {
                     date: "11-11-2023",
                     role: data.fullDocument.role,
-                    message: data.fullDocument.message,
+                    message: data.fullDocument.message ?data.fullDocument.message : undefined,
+                    attachments: data.fullDocument.attachments || undefined,
                 }]
             ))
         };
@@ -125,7 +134,25 @@ const ChatHistory = ({
                         className='text-foreground/60 text-xs'
                     >{chat.role === "team" ? "Abhilash" : "Client"}</p>
 
-                    <p>{chat.message}</p>
+                    {
+                        chat.message && (
+                            <p>{chat.message}</p>
+                        )
+                    }
+
+                    {
+                        chat.attachments && chat.attachments.mime_type.includes('image/') ? (
+                            <div>
+                                <Image
+                                    alt='Chat attachment'
+                                    src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
+                                    className='max-w-[150px] w-full rounded-2xl'
+                                    width={500}
+                                    height={1000}
+                                />
+                            </div>
+                        ) : <p>{chat.attachments?.path}</p>
+                    }
 
                     <p
                         className='text-xs text-foreground/60 text-right'

@@ -7,6 +7,10 @@ export interface MessagesModelInterface {
     message?: string,
     timestamp: string,
     isNew: boolean,
+    attachments: {
+        path: string,
+        mime_type: string,
+    }
 }
 
 const messageSchema = new mongoose.Schema({

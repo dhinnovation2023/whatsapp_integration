@@ -44,7 +44,7 @@ const ChatSidebar = () => {
     if (error) {
         return (
             <div
-                className='min-w-[400px] shrink-0 flex flex-col p-4'
+                className='min-w-[300px] shrink-0 flex flex-col p-4'
             >
                 <ErrorTemplate
                     error={error}
@@ -55,7 +55,7 @@ const ChatSidebar = () => {
 
     return (
         <div
-            className='min-w-[400px] shrink-0 flex flex-col'
+            className='min-w-[300px] shrink-0 flex flex-col'
         >
             <div
                 className='w-full p-3 border-b border-stroke-light/50'
