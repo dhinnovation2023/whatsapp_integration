@@ -15,6 +15,9 @@ const contactsSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    assigned: {
+        type: [String],
+    }
 }, { timestamps: true })
 
 const ContactsModel = mongoose.models.Contacts || mongoose.model("Contacts", contactsSchema);
