@@ -1,5 +1,6 @@
 import InputTextarea from './input-textarea'
 import ChatHistory from './chat-history'
+import { Suspense } from 'react'
 
 const ChatInterface = ({
   onSubmit,
@@ -14,7 +15,9 @@ const ChatInterface = ({
       <div
         className='h-full flex items-end'
       >
-        <ChatHistory/>
+        <Suspense>
+          <ChatHistory />
+        </Suspense>
       </div>
       <InputTextarea
         onSubmit={onSubmit}
