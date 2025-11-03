@@ -57,6 +57,7 @@ const ChatHistory = () => {
         const phone = searchparams.get('phone');
 
         if (!phone) {
+            // eslint-disable-next-line
             setError("Phone is required");
             return;
         }

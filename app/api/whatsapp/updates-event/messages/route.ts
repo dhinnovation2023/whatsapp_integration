@@ -1,6 +1,5 @@
 // app/api/stream/route.ts
 import { NextRequest } from 'next/server';
-import mongoose from 'mongoose';
 import { dbConnect } from '@/config/dbConfig';
 import MessagesModel from '@/models/messages';
 
