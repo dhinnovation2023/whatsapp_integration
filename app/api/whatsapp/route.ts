@@ -33,6 +33,8 @@ export async function POST(req: NextRequest) {
             const from = m.from;
             const timestamp = m.timestamp;
 
+            console.log(m);
+
             // save to database
 
             await dbConnect();
