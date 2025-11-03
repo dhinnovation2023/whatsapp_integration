@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/config/dbConfig";
 import ContactsModel from "@/models/contacts";
 import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
+import { saveFileToFirebase } from "@/functions/whatsapp/saveFileToFirebase";
 
 export const dynamic = "force-dynamic";
 
@@ -62,6 +63,22 @@ export async function POST(req: NextRequest) {
                     }
                 })
             }
+
+            if (m.type === "image") {
+                saveFileToFirebase({
+                    fileId: m.image.id,
+                    mime_type: m.image.mime_type,
+                })
+            }
+
+            if (m.type === "document") {
+                saveFileToFirebase({
+                    fileId: m.document.id,
+                    mime_type: m.document.mime_type,
+                })
+            }
+
+            
         }
 
         return NextResponse.json({ received: true });
