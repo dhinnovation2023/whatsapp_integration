@@ -34,7 +34,9 @@ const ChatHistory = ({
     useEffect(() => {
         (async () => {
 
+            setError(null)            
             const phone = searchparams.get('phone');
+
             if (!phone) {
                 setError("Phone number is required!");
                 return;
