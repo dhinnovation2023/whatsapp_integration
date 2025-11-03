@@ -1,8 +1,7 @@
-import { createBot } from "@awadoc/whatsapp-cloud-api";
 import { handleCatchBlock } from "../common";
 import axios from "axios";
 
-export async function saveFileToFirebase({ fileId, mime_type }: {
+export async function saveFileToFirebase({ fileId }: {
     fileId: string,
     mime_type: string,
 }) {
