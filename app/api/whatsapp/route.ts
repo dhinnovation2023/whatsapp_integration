@@ -33,8 +33,6 @@ export async function POST(req: NextRequest) {
             const from = m.from;
             const timestamp = m.timestamp;
 
-            console.log(m);
-
             // save to database
 
             await dbConnect();
@@ -51,14 +49,16 @@ export async function POST(req: NextRequest) {
                 await newContact.save();
             }
 
-            await saveMessageToDB({
-                data: {
-                    number: from,
-                    role: "client",
-                    timestamp: timestamp || "test time",
-                    message: "Test message",
-                }
-            })
+            if (m.type === "text") {
+                await saveMessageToDB({
+                    data: {
+                        number: from,
+                        role: "client",
+                        timestamp: timestamp,
+                        message: m.text.body,
+                    }
+                })
+            }
         }
 
         return NextResponse.json({ received: true });

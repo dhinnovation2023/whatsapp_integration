@@ -23,8 +23,6 @@ export async function saveMessageToDB({ data }: {
             })
 
             await newMessage.save();
-            console.log("Message saved...");
-
             return resolve();
 
         } catch (err) {
