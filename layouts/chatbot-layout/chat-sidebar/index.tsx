@@ -117,7 +117,7 @@ const ChatSidebar = () => {
                                         >{chat.name}</h3>
                                         <p
                                             className='text-xs'
-                                        >Manager</p>
+                                        >Whatsapp chat</p>
                                     </div>
 
                                     {/* {

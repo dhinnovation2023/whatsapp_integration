@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/config/dbConfig";
 import ContactsModel from "@/models/contacts";
 import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
-import { saveFileToFirebase } from "@/functions/whatsapp/saveFileToFirebase";
+import { saveWhatsappFileToFirebase } from "@/functions/whatsapp/saveFileToFirebase";
 
 export const dynamic = "force-dynamic";
 
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
             }
 
             if (m.type === "image") {
-                await saveFileToFirebase({
+                await saveWhatsappFileToFirebase({
                     fileId: m.image.id,
                     mime_type: m.image.mime_type,
                     phone: from,
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
             }
 
             if (m.type === "document") {
-                await saveFileToFirebase({
+                await saveWhatsappFileToFirebase({
                     fileId: m.document.id,
                     mime_type: m.document.mime_type,
                     phone: from,

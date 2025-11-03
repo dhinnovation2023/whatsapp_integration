@@ -4,7 +4,7 @@ import axios from "axios";
 import { v4 as uuid } from "uuid";
 import { saveMessageToDB } from "./saveMessage";
 
-export async function saveFileToFirebase({
+export async function saveWhatsappFileToFirebase({
     fileId,
     mime_type,
     phone,
@@ -70,6 +70,21 @@ export async function saveFileToFirebase({
 
             return resolve();
 
+        } catch (err) {
+            const message = handleCatchBlock(err);
+            return reject(message);
+        }
+    })
+}
+
+export async function saveLocalFileToFirebase ({}: {
+    image: File,
+    phone: string,
+    mime_type: string,
+}) {
+    return new Promise((resolve, reject) => {
+        try {
+            
         } catch (err) {
             const message = handleCatchBlock(err);
             return reject(message);
