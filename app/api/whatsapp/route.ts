@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/config/dbConfig";
 import ContactsModel from "@/models/contacts";
+import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +31,9 @@ export async function POST(req: NextRequest) {
 
         for (const m of messages) {
             const from = m.from;
+            const timestamp = m.timestamp;
+
+            console.log(m);
 
             // save to database
 
@@ -46,6 +50,15 @@ export async function POST(req: NextRequest) {
 
                 await newContact.save();
             }
+
+            await saveMessageToDB({
+                data: {
+                    number: from,
+                    role: "client",
+                    timestamp: timestamp || "test time",
+                    message: "Test message",
+                }
+            })
         }
 
         return NextResponse.json({ received: true });
