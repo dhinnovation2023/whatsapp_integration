@@ -5,9 +5,24 @@ import MessagesModel from '@/models/messages';
 export async function GET(req: NextRequest) {
     await dbConnect();
 
+    const { searchParams } = new URL(req.url);
+    const phone = searchParams.get("phone");
+
+    if (!phone) {
+        throw new Error("Phone number is required!");
+    }
+
     const stream = new ReadableStream({
         start(controller) {
-            const changeStream = MessagesModel.watch();
+            const changeStream = MessagesModel.watch(
+                [
+                    {
+                        $match: {
+                            "fullDocument.phone": phone,
+                        }
+                    }
+                ]
+            );
 
             changeStream.on('change', (change) => {
                 controller.enqueue(`data: ${JSON.stringify(change)}\n\n`);
