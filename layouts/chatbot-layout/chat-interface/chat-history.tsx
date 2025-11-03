@@ -9,7 +9,7 @@ type ChatRole = "client" | "team";
 
 export interface ChatHistoryMessageInterface {
     role: ChatRole,
-    message: string,
+    message?: string,
     date: string,
 }
 
@@ -17,7 +17,7 @@ const ChatHistory = () => {
 
     const searchparams = useSearchParams();
 
-    const [chatHistory] = useState<ChatHistoryMessageInterface[]>([]);
+    const [chatHistory, setChatHistory] = useState<ChatHistoryMessageInterface[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -31,12 +31,58 @@ const ChatHistory = () => {
 
             try {
                 const response = await axios.post<MessagesModelInterface[]>('/api/whatsapp/fetch-message', { phone });
-                console.log(response.data)
+                const history: ChatHistoryMessageInterface[] = [];
+
+                for (const message of response.data) {
+                    const data: ChatHistoryMessageInterface = {
+                        date: "11-11-2023",
+                        message: message.message,
+                        role: message.role,
+                    }
+
+                    history.push(data);
+                }
+
+                setChatHistory(history)
+
             } catch (err) {
                 const message = handleCatchBlock(err);
                 setError(message);
             }
         })()
+    }, [searchparams])
+
+    useEffect(() => {
+
+        const phone = searchparams.get('phone');
+
+        if (!phone) {
+            setError("Phone is required");
+            return;
+        }
+
+        const evtSource = new EventSource(`/api/whatsapp/updates-event/messages?phone=${phone}`);
+
+        evtSource.onmessage = (e) => {
+            const data = JSON.parse(e.data) as {
+                fullDocument: MessagesModelInterface,
+            };
+            setChatHistory(prev => (
+                [...prev, {
+                    date: "11-11-2023",
+                    role: data.fullDocument.role,
+                    message: data.fullDocument.message,
+                }]
+            ))
+        };
+
+        evtSource.onerror = (err) => {
+            console.error('SSE error:', err);
+            evtSource.close();
+        };
+
+        return () => evtSource.close();
+
     }, [searchparams])
 
     if (error) {
@@ -51,7 +97,7 @@ const ChatHistory = () => {
 
     return (
         <div
-            className='flex flex-col w-full gap-3'
+            className='flex flex-col w-full gap-3 min-h-max'
         >
             {chatHistory.map((chat, index) => (
                 <div

@@ -13,7 +13,7 @@ const ChatInterface = ({
       className='w-full bg-background-2/50 p-5 flex flex-col justify-end space-y-5'
     >
       <div
-        className='h-full flex items-end'
+        className='h-full overflow-auto'
       >
         <Suspense>
           <ChatHistory />
