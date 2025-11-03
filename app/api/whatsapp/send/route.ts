@@ -1,23 +1,37 @@
 import { handleCatchBlock } from "@/functions/common";
-import { NextResponse } from "next/server";
+import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
+import { sendTextToWhatsapp } from "@/functions/whatsapp/sendToWhatsapp";
+import { NextRequest, NextResponse } from "next/server";
 
 export interface SendWhatsappMessage {
     phone_number: string,
     message: string,
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
 
     try {
 
-        const PHONE_NUMBER_ID = process.env.META_WHATSAPP_PHONE_NUMBER_ID;
-        const ACCESS_TOKEN = process.env.META_WHATSAPP_ACCESS_TOKEN;
-
-        if (!PHONE_NUMBER_ID || !ACCESS_TOKEN) {
-            throw new Error("PHONE_NUMBER_ID or ACCESS_TOKEN is missing in .env");
+        const data = await request.json() as {
+            phone: string,
+            text: string,
         }
 
-        // const bot = createBot(PHONE_NUMBER_ID, ACCESS_TOKEN);
+        console.log(data);
+
+        await sendTextToWhatsapp(data);
+
+        await saveMessageToDB({
+            data: {
+                phone: data.phone,
+                role: "team",
+                timestamp: "11-11-2023",
+                message: data.text,
+                newMessage: false,
+            }
+        })
+
+        return NextResponse.json(true)
 
     } catch (err) {
         const message = handleCatchBlock(err);

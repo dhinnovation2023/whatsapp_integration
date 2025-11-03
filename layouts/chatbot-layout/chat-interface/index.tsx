@@ -1,11 +1,17 @@
 import InputTextarea from './input-textarea'
-import ChatHistory from './chat-history'
-import { Suspense } from 'react'
+import ChatHistory, { ChatHistoryMessageInterface } from './chat-history'
+import { Dispatch, SetStateAction, Suspense } from 'react'
 
 const ChatInterface = ({
   onSubmit,
+  chatHistory,
+  setChatHistory,
+  sending,
 }: {
   onSubmit: (value: string) => void,
+  chatHistory: ChatHistoryMessageInterface[],
+  setChatHistory: Dispatch<SetStateAction<ChatHistoryMessageInterface[]>>,
+  sending: boolean,
 }) => {
 
   return (
@@ -13,14 +19,18 @@ const ChatInterface = ({
       className='w-full bg-background-2/50 p-5 flex flex-col justify-end space-y-5'
     >
       <div
-        className='h-full overflow-auto'
+        className='h-full overflow-auto px-2.5'
       >
         <Suspense>
-          <ChatHistory />
+          <ChatHistory 
+            chatHistory={chatHistory}
+            setChatHistory={setChatHistory}
+          />
         </Suspense>
       </div>
       <InputTextarea
         onSubmit={onSubmit}
+        sending={sending}
       />
     </div>
   )

@@ -3,7 +3,7 @@ import { handleCatchBlock } from '@/functions/common';
 import { MessagesModelInterface } from '@/models/messages';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 
 type ChatRole = "client" | "team";
 
@@ -13,12 +13,18 @@ export interface ChatHistoryMessageInterface {
     date: string,
 }
 
-const ChatHistory = () => {
+const ChatHistory = ({
+    chatHistory,
+    setChatHistory,
+}: {
+    chatHistory: ChatHistoryMessageInterface[],
+    setChatHistory: Dispatch<SetStateAction<ChatHistoryMessageInterface[]>>,
+}) => {
 
     const searchparams = useSearchParams();
-
-    const [chatHistory, setChatHistory] = useState<ChatHistoryMessageInterface[]>([]);
     const [error, setError] = useState<string | null>(null);
+
+    const lastMessageRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         (async () => {
@@ -86,6 +92,15 @@ const ChatHistory = () => {
 
     }, [searchparams])
 
+    // Scroll to bottom
+    useEffect(() => {
+        if (lastMessageRef.current) {
+            lastMessageRef.current.scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+    }, [chatHistory])
+
     if (error) {
         return (
             <div>
@@ -100,10 +115,11 @@ const ChatHistory = () => {
         <div
             className='flex flex-col w-full gap-3 min-h-max'
         >
-            {chatHistory.map((chat, index) => (
+            {chatHistory.map((chat, index, chats) => (
                 <div
                     key={index}
                     className={'min-w-[40%] w-max space-y-2 bg-background py-3 px-5 rounded-xl' + ` ${chat.role === "client" ? "self-start" : " self-end"}`}
+                    ref={(chats.length - 1) === index ? lastMessageRef : undefined}
                 >
                     <p
                         className='text-foreground/60 text-xs'

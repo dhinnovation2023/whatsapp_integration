@@ -1,10 +1,14 @@
 'use client';
 
-import { RiSendPlaneLine } from '@remixicon/react'
+import { RiLoader4Line, RiSendPlaneLine } from '@remixicon/react'
 import { useState } from 'react'
 
-const InputTextarea = ({}: {
+const InputTextarea = ({
+    onSubmit,
+    sending,
+}: {
     onSubmit: (value: string) => void,
+    sending: boolean,
 }) => {
 
     const [value, setValue] = useState<string>('');
@@ -19,13 +23,32 @@ const InputTextarea = ({}: {
                 className='w-full pl-[17px] outline-none'
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
+                onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                        onSubmit(value);
+                        setValue("");
+                    }
+                }}
             />
             <button
-                className='shrink-0 rounded-md bg-theme-primary text-white min-w-[50px] h-[50px] flex items-center justify-center'
+                className='shrink-0 rounded-md bg-theme-primary text-white min-w-[50px] h-[50px] flex items-center justify-center cursor-pointer'
+                onClick={() => {
+                    onSubmit(value);
+                    setValue("")
+                }}
             >
-                <RiSendPlaneLine
-                    size={20}
-                />
+                {
+                    sending ? (
+                        <RiLoader4Line
+                            size={20}
+                            className='animate-spin'
+                        />
+                    ) : (
+                        <RiSendPlaneLine
+                            size={20}
+                        />
+                    )
+                }
             </button>
         </div>
     )
