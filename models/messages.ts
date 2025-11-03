@@ -14,7 +14,7 @@ const messageSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    number: {
+    phone: {
         type: String,
         required: true,
     },
@@ -25,7 +25,7 @@ const messageSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    isNew: {
+    newMessage: {
         type: Boolean,
         required: true,
     },

@@ -5,10 +5,10 @@ import MessagesModel from "@/models/messages";
 
 export interface NewMessageDataInterface {
     role: ChatRole,
-    number: string,
+    phone: string,
     message?: string,
     timestamp: string,
-    isNew: boolean,
+    newMessage: boolean,
 }
 
 export async function saveMessageToDB({ data }: {

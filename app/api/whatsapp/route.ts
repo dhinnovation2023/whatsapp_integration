@@ -52,11 +52,11 @@ export async function POST(req: NextRequest) {
             if (m.type === "text") {
                 await saveMessageToDB({
                     data: {
-                        number: from,
+                        phone: from,
                         role: "client",
                         timestamp: timestamp,
                         message: m.text.body,
-                        isNew: true,
+                        newMessage: true,
                     }
                 })
             }
