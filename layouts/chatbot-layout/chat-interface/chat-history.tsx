@@ -1,8 +1,10 @@
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
 import { MessagesModelInterface } from '@/models/messages';
+import { RiDownloadLine } from '@remixicon/react';
 import axios from 'axios';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 
@@ -34,7 +36,7 @@ const ChatHistory = ({
     useEffect(() => {
         (async () => {
 
-            setError(null)            
+            setError(null)
             const phone = searchparams.get('phone');
 
             if (!phone) {
@@ -88,7 +90,7 @@ const ChatHistory = ({
                 [...prev, {
                     date: "11-11-2023",
                     role: data.fullDocument.role,
-                    message: data.fullDocument.message ?data.fullDocument.message : undefined,
+                    message: data.fullDocument.message ? data.fullDocument.message : undefined,
                     attachments: data.fullDocument.attachments || undefined,
                 }]
             ))
@@ -153,7 +155,21 @@ const ChatHistory = ({
                                     height={1000}
                                 />
                             </div>
-                        ) : <p>{chat.attachments?.path}</p>
+                        ) : chat.attachments ? (
+                            <div>
+                                <a
+                                    className='flex max-w-max items-center gap-2 py-2 px-4 bg-neutral-900 rounded-2xl text-white text-xs cursor-pointer'
+                                    href={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
+                                    rel="noopener noreferrer"
+                                    target='_blank'
+                                >
+                                    <RiDownloadLine
+                                        size={15}
+                                    />
+                                    <p>Open {chat.attachments?.mime_type}</p>
+                                </a>
+                            </div>
+                        ) : null
                     }
 
                     <p

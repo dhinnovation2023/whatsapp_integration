@@ -16,8 +16,6 @@ export async function GET(request: NextRequest, { params }: {
     const contentType = metadata.contentType || "application/octet-stream";
 
     const [buffer] = await file.download();
-
-    console.log("Buffer", buffer)
     const uint8Array = new Uint8Array(buffer);
 
     return new NextResponse(uint8Array, {
