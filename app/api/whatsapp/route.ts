@@ -65,14 +65,14 @@ export async function POST(req: NextRequest) {
             }
 
             if (m.type === "image") {
-                saveFileToFirebase({
+                await saveFileToFirebase({
                     fileId: m.image.id,
                     mime_type: m.image.mime_type,
                 })
             }
 
             if (m.type === "document") {
-                saveFileToFirebase({
+                await saveFileToFirebase({
                     fileId: m.document.id,
                     mime_type: m.document.mime_type,
                 })
