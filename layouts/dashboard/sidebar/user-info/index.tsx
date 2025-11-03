@@ -1,7 +1,23 @@
-import { RiUser6Line } from '@remixicon/react'
-import React from 'react'
+'use client';
+
+import { getClientSession } from '@/functions/auth/getClientSession';
+import { RiArrowRightSLine, RiUser6Line } from '@remixicon/react'
+import { Session } from 'next-auth';
+import { signOut } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 const UserInfo = () => {
+
+    const [userSession, setUserSession] = useState<Session | null>(null);
+
+    useEffect(() => {
+        (async () => {
+            const session = await getClientSession();
+            setUserSession(session);
+            console.log(session)
+        })()
+    }, [])
+
     return (
         <div
             className='border-b border-stroke-light pb-4'
@@ -21,10 +37,18 @@ const UserInfo = () => {
                 >
                     <h3
                         className='text-sm font-semibold'
-                    >Abhilash</h3>
-                    <p
-                        className='text-xs'
-                    >Manager</p>
+                    >{userSession?.user?.name}</h3>
+                    <button
+                        className='flex items-center gap-1 text-xs cursor-pointer'
+                        onClick={async () => {
+                            await signOut();
+                        }}
+                    >
+                        <p>Logout</p>
+                        <RiArrowRightSLine
+                            size={10}
+                        />
+                    </button>
                 </div>
             </div>
         </div>
