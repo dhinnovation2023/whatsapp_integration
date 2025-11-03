@@ -1,6 +1,5 @@
 import { NextRequest } from 'next/server';
 import { dbConnect } from '@/config/dbConfig';
-import MessagesModel from '@/models/messages';
 import ContactsModel from '@/models/contacts';
 
 export async function GET(req: NextRequest) {
