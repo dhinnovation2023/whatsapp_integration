@@ -46,7 +46,7 @@ export async function saveFileToFirebase({
 
             const file = bucket.file(pathname);
 
-            file.save(
+            await file.save(
                 buffer,
                 {
                     metadata: {
@@ -55,14 +55,14 @@ export async function saveFileToFirebase({
                 }
             )
 
-            saveMessageToDB({
+            await saveMessageToDB({
                 data: {
                     newMessage: true,
                     phone,
                     role: "client",
                     timestamp: "gjdgkjhfg",
                     attachments: {
-                        path: filename,
+                        path: pathname,
                         mime_type,
                     },
                 }
