@@ -17,3 +17,16 @@ export async function generateHashFromValue(value: string) {
         }
     })
 }
+
+export async function compareHashValue (value: string, hash: string) {
+    return new Promise<boolean>(async (resolve, reject) => {
+        try {
+
+            const isMatching = await bcrypt.compare(value, hash);
+            return resolve(isMatching)
+
+        } catch (err) {
+            return reject(err);
+        }
+    })
+}

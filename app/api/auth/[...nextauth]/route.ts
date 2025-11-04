@@ -1,3 +1,4 @@
+import { verifyUser } from "@/functions/auth/verifyUser";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -9,7 +10,11 @@ const handler = NextAuth({
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" },
             },
-            authorize: (credentials) => {
+            authorize: async (credentials) => {
+
+                if (!credentials) {
+                    return null;
+                }
                 
                 const ADMIN_EMAIL = process.env.SUPER_ADMIN_EMAIL;
                 const ADMIN_PASSWORD = process.env.SUPER_ADMIN_PASSWORD;
@@ -29,7 +34,20 @@ const handler = NextAuth({
                     }
                 }
 
-                return null;
+                try {
+
+                    const user = await verifyUser(credentials);
+
+                    return ({
+                        id: user.userId,
+                        email: user.email,
+                        name: user.name,
+                    })
+
+                } catch (err) {
+                    console.log(err);
+                    return null;
+                }
             }
         })
     ],
