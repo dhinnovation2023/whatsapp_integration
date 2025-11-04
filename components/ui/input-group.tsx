@@ -7,6 +7,7 @@ const InputGroup = (data: {
     onChange: (event: ChangeEvent<HTMLInputElement>) => void,
     name: string,
     type: InputHTMLAttributes<HTMLInputElement>["type"],
+    required?: boolean,
 }) => {
     return (
         <div
@@ -15,7 +16,7 @@ const InputGroup = (data: {
             <label
                 htmlFor={data.name}
                 className='text-sm font-semibold'
-            >{data.label}</label>
+            >{data.label} {data.required && <span className='text-red-500'>*</span>}</label>
             <input
                 type={data.type}
                 placeholder={data.placeholder}

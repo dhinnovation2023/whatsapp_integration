@@ -4,7 +4,6 @@ import { MessagesModelInterface } from '@/models/messages';
 import { RiDownloadLine } from '@remixicon/react';
 import axios from 'axios';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 
