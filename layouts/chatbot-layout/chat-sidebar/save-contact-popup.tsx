@@ -2,6 +2,7 @@
 
 import InputGroup from '@/components/ui/input-group'
 import { handleCatchBlock } from '@/functions/common';
+import { UpdateContactNameRequestData } from '@/functions/whatsapp/updateContactName';
 import { TeamMembersModelInterface } from '@/models/team-member';
 import { RiCloseLargeLine } from '@remixicon/react';
 import axios from 'axios';
@@ -22,6 +23,7 @@ const SaveContactPopup = ({
 
     const [isLoading, setisLoading] = useState<boolean>(false);
     const [isAssignLoading, setIsAssignLoading] = useState<boolean>(false);
+    const [savingName, setSavingName] = useState<boolean>(false);
 
     async function handleAssignChange (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) {
         setIsAssignLoading(true);
@@ -42,6 +44,26 @@ const SaveContactPopup = ({
         }
 
         setIsAssignLoading(false);
+    }
+
+    async function updateContactName () {
+        setSavingName(true);
+        
+        try {
+
+            const requestData: UpdateContactNameRequestData = {
+                newName: name,
+                phone,
+            }
+
+            await axios.post("/api/whatsapp/update-name", requestData);
+
+        } catch (err) {
+            const message = handleCatchBlock(err);
+            window.alert(message);
+        }
+        
+        setSavingName(false)
     }
 
     useEffect(() => {
@@ -89,6 +111,10 @@ const SaveContactPopup = ({
                     </button>
                 </div>
 
+                <p
+                    className='bg-stroke-light/30 rounded-2xl border border-stroke-light mb-4 p-1.5 px-3'
+                ><span className='font-semibold'>Phone:</span> {phone}</p>
+
                 <form
                     className='space-y-3 pb-5 mb-5 border-b border-stroke-light'
                 >
@@ -106,9 +132,11 @@ const SaveContactPopup = ({
                     />
 
                     <button
-                        className='py-3 px-4 bg-theme-primary rounded-2xl text-white'
+                        className='py-3 px-4 bg-theme-primary rounded-2xl text-white cursor-pointer'
+                        disabled={savingName}
+                        onClick={updateContactName}
                     >
-                        Save Contact
+                        {savingName ? "Saving..." : "Save Contact"}
                     </button>
 
                 </form>
