@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 export interface ContactsModelInterface {
     name: string,
     phone: string,
+    assigned?: string,
 } 
 
 const contactsSchema = new mongoose.Schema({
@@ -16,7 +17,7 @@ const contactsSchema = new mongoose.Schema({
         unique: true,
     },
     assigned: {
-        type: [String],
+        type: String,
     }
 }, { timestamps: true })
 
