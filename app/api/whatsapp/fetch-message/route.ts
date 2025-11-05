@@ -1,5 +1,6 @@
 import { handleCatchBlock } from "@/functions/common";
 import { fetchMessageByPhone } from "@/functions/whatsapp/fetchMessages";
+import { makeContactRead } from "@/functions/whatsapp/makeContactRead";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -15,7 +16,8 @@ export async function POST(request: NextRequest) {
             throw new Error("Phone number is required!");
         }
 
-        const message = await fetchMessageByPhone({ phone })
+        const message = await fetchMessageByPhone({ phone });
+        await makeContactRead({ phone });
 
         return NextResponse.json(message)
 

@@ -4,6 +4,7 @@ export interface ContactsModelInterface {
     name: string,
     phone: string,
     assigned?: string,
+    unread?: number | null,
 } 
 
 const contactsSchema = new mongoose.Schema({

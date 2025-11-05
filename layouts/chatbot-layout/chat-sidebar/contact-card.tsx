@@ -26,8 +26,15 @@ const ContactCard = ({
                 }}
             >
                 <div
-                    className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : "bg-background-2"}`}
+                    className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : "bg-background-2"}`}
                 >
+                    {
+                        chat.unread &&
+                        <p
+                            className="absolute -left-1.5 -top-1.5 w-4 h-4 rounded-full bg-theme-primary shadow-xl text-xs flex items-center justify-center text-white font-semibold"
+                        >{chat.unread}</p>
+                    }
+
                     <RiUser6Line
                         size={15}
                     />
