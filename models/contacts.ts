@@ -18,6 +18,9 @@ const contactsSchema = new mongoose.Schema({
     },
     assigned: {
         type: String,
+    },
+    unread: {
+        type: Number,
     }
 }, { timestamps: true })
 

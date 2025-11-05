@@ -3,6 +3,7 @@ import { dbConnect } from "@/config/dbConfig";
 import ContactsModel from "@/models/contacts";
 import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
 import { saveWhatsappFileToFirebase } from "@/functions/whatsapp/saveFileToFirebase";
+import { makeContactUnread } from "@/functions/whatsapp/makeContactUnread";
 
 export const dynamic = "force-dynamic";
 
@@ -79,6 +80,8 @@ export async function POST(req: NextRequest) {
                     phone: from,
                 })
             }
+
+            await makeContactUnread({ phone: from });
         }
 
         return NextResponse.json({ received: true });
