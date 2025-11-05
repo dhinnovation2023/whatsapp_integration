@@ -9,7 +9,10 @@ export async function makeContactRead({ phone }: {
 
             await dbConnect();
             await ContactsModel.findOneAndUpdate(
-                { phone },
+                {
+                    phone,
+                    unread: { $ne: null }
+                },
                 {
                     unread: null,
                 }
