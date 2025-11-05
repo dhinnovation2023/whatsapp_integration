@@ -35,8 +35,6 @@ export async function POST(req: NextRequest) {
             const from = m.from;
             const timestamp = m.timestamp;
 
-            console.log(m);
-
             // save to database
 
             await dbConnect();
@@ -70,6 +68,7 @@ export async function POST(req: NextRequest) {
                     fileId: m.image.id,
                     mime_type: m.image.mime_type,
                     phone: from,
+                    timestamp,
                 })
             }
 
@@ -78,6 +77,7 @@ export async function POST(req: NextRequest) {
                     fileId: m.document.id,
                     mime_type: m.document.mime_type,
                     phone: from,
+                    timestamp,
                 })
             }
 

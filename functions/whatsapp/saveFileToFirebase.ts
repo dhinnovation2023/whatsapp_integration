@@ -61,10 +61,12 @@ export async function saveWhatsappFileToFirebase({
     fileId,
     mime_type,
     phone,
+    timestamp,
 }: {
     fileId: string,
     mime_type: string,
     phone: string,
+    timestamp: string,
 }) {
     return new Promise<void>(async (resolve, reject) => {
         try {
@@ -99,7 +101,7 @@ export async function saveWhatsappFileToFirebase({
                 chatRole: "client",
                 mime_type,
                 phone,
-                timestamp: "jfshghfsjig"
+                timestamp,
             })
 
             return resolve();
@@ -123,12 +125,14 @@ export async function saveLocalFileToFirebase(props: {
             const arrayBuffer = await props.file.arrayBuffer()
             const buffer = Buffer.from(arrayBuffer);
 
+            const timestamp = Date.now();
+
             const pathname = await SaveFileToDatabase({
                 buffer,
                 chatRole: props.chatRole,
                 mime_type: props.mime_type,
                 phone: props.phone,
-                timestamp: "hbfjhbsf",
+                timestamp: `${timestamp}`,
             })
 
             return resolve(pathname);

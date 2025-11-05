@@ -1,11 +1,11 @@
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
 import { MessagesModelInterface } from '@/models/messages';
-import { RiDownloadLine, RiWhatsappLine } from '@remixicon/react';
+import { RiWhatsappLine } from '@remixicon/react';
 import axios from 'axios';
-import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import SingleChatMessage from './single-chat-message';
 
 type ChatRole = "client" | "team";
 
@@ -52,7 +52,7 @@ const ChatHistory = ({
 
                 for (const message of response.data) {
                     const data: ChatHistoryMessageInterface = {
-                        date: "11-11-2023",
+                        date: message.timestamp,
                         role: message.role,
                         message: message.message ? message.message : undefined,
                         attachments: message.attachments,
@@ -85,10 +85,9 @@ const ChatHistory = ({
                 fullDocument: MessagesModelInterface,
             };
 
-            console.log(data);
             setChatHistory(prev => (
                 [...prev, {
-                    date: "11-11-2023",
+                    date: data.fullDocument.timestamp,
                     role: data.fullDocument.role,
                     message: data.fullDocument.message ? data.fullDocument.message : undefined,
                     attachments: data.fullDocument.attachments || undefined,
@@ -156,53 +155,11 @@ const ChatHistory = ({
             className='flex flex-col w-full gap-3 min-h-max'
         >
             {chatHistory.map((chat, index, chats) => (
-                <div
+                <SingleChatMessage
                     key={index}
-                    className={'min-w-[40%] w-max space-y-2 bg-background py-3 px-5 rounded-xl' + ` ${chat.role === "client" ? "self-start" : " self-end"}`}
-                    ref={(chats.length - 1) === index ? lastMessageRef : undefined}
-                >
-                    <p
-                        className='text-foreground/60 text-xs'
-                    >{chat.role === "team" ? "Abhilash" : "Client"}</p>
-
-                    {
-                        chat.message && (
-                            <p>{chat.message}</p>
-                        )
-                    }
-
-                    {
-                        chat.attachments && chat.attachments.mime_type.includes('image/') ? (
-                            <div>
-                                <Image
-                                    alt='Chat attachment'
-                                    src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
-                                    className='max-w-[150px] w-full rounded-2xl'
-                                    width={500}
-                                    height={1000}
-                                />
-                            </div>
-                        ) : chat.attachments ? (
-                            <div>
-                                <a
-                                    className='flex max-w-max items-center gap-2 py-2 px-4 bg-neutral-900 rounded-2xl text-white text-xs cursor-pointer'
-                                    href={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
-                                    rel="noopener noreferrer"
-                                    target='_blank'
-                                >
-                                    <RiDownloadLine
-                                        size={15}
-                                    />
-                                    <p>Open {chat.attachments?.mime_type}</p>
-                                </a>
-                            </div>
-                        ) : null
-                    }
-
-                    <p
-                        className='text-xs text-foreground/60 text-right'
-                    >{chat.date.split('-').join('/')}</p>
-                </div>
+                    chat={chat}
+                    lastMessageRef={(chats.length - 1) === index ? lastMessageRef : undefined}
+                />
             ))}
         </div>
     )

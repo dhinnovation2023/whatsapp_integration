@@ -19,11 +19,13 @@ export async function POST(request: NextRequest) {
 
         await sendTextToWhatsapp(data);
 
+        const timestamp = Date.now();
+
         await saveMessageToDB({
             data: {
                 phone: data.phone,
                 role: "team",
-                timestamp: "11-11-2023",
+                timestamp: `${timestamp}`,
                 message: data.text,
                 newMessage: false,
             }
