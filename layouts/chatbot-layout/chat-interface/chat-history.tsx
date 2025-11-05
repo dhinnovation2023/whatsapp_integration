@@ -29,6 +29,7 @@ const ChatHistory = ({
 
     const searchparams = useSearchParams();
     const [error, setError] = useState<string | null>(null);
+    const [notSelected, setNotSelected] = useState<boolean>(false);
 
     const lastMessageRef = useRef<HTMLDivElement>(null);
 
@@ -39,8 +40,10 @@ const ChatHistory = ({
             const phone = searchparams.get('phone');
 
             if (!phone) {
-                setError("Phone number is required!");
+                setNotSelected(true);
                 return;
+            } else {
+                setNotSelected(false);
             }
 
             try {
@@ -72,8 +75,6 @@ const ChatHistory = ({
         const phone = searchparams.get('phone');
 
         if (!phone) {
-            // eslint-disable-next-line
-            setError("Phone is required");
             return;
         }
 
@@ -119,6 +120,14 @@ const ChatHistory = ({
                 <ErrorTemplate
                     error={error}
                 />
+            </div>
+        )
+    }
+
+    if (notSelected) {
+        return (
+            <div>
+                Not Sleected
             </div>
         )
     }

@@ -8,7 +8,10 @@ const ChatInterface = ({
   setChatHistory,
   sending,
 }: {
-  onSubmit: (value: string) => void,
+  onSubmit: (
+    value: string,
+    file: File | null,
+  ) => void,
   chatHistory: ChatHistoryMessageInterface[],
   setChatHistory: Dispatch<SetStateAction<ChatHistoryMessageInterface[]>>,
   sending: boolean,

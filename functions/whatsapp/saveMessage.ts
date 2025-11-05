@@ -23,8 +23,6 @@ export async function saveMessageToDB({ data }: {
 
             await dbConnect();
 
-            console.log("Data from save message:", data);
-
             const newMessage = new MessagesModel({
                 ...data,
             })

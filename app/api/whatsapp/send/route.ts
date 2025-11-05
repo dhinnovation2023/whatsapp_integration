@@ -17,8 +17,6 @@ export async function POST(request: NextRequest) {
             text: string,
         }
 
-        console.log(data);
-
         await sendTextToWhatsapp(data);
 
         await saveMessageToDB({

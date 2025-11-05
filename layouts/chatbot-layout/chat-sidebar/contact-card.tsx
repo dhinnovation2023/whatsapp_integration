@@ -2,7 +2,7 @@
 
 import { ContactsModelInterface } from "@/models/contacts";
 import { RiListSettingsLine, RiUser6Line } from "@remixicon/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import SaveContactPopup from "./save-contact-popup";
 
@@ -12,16 +12,15 @@ const ContactCard = ({
     chat: ContactsModelInterface,
 }) => {
 
-    console.log(chat);
-
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const [showPopup, setShowPopup] = useState<null | "save-contact">(null);
 
     return (
         <>
             <button
-                className={'flex group items-center gap-3 w-full py-4 px-5 cursor-pointer hover:bg-stroke-light/10 border-b border-stroke-light/50'}
+                className={`flex group items-center gap-3 w-full py-4 px-5 cursor-pointer border-b border-stroke-light/50 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
                 onClick={() => {
                     router.push(`/app?phone=${chat.phone}`)
                 }}

@@ -7,7 +7,10 @@ const InputTextarea = ({
     onSubmit,
     sending,
 }: {
-    onSubmit: (value: string) => void,
+    onSubmit: (
+        value: string,
+        file: File | null,
+    ) => void,
     sending: boolean,
 }) => {
 
@@ -37,6 +40,9 @@ const InputTextarea = ({
                             className='shrink-0 cursor-pointer'
                             onClick={() => {
                                 setAttachment(null)
+                                if (fileInputElement.current) {
+                                    fileInputElement.current.files = null
+                                }
                             }}
                         >
                             <RiCloseLine
@@ -51,6 +57,7 @@ const InputTextarea = ({
                     className='shrink-0 cursor-pointer'
                     onClick={() => {
                         if (fileInputElement.current) {
+                            fileInputElement.current.files = null
                             fileInputElement.current.click();
                         }
                     }}
@@ -64,6 +71,7 @@ const InputTextarea = ({
                     hidden
                     ref={fileInputElement}
                     onChange={(event) => {
+                        console.log(event.target.files)
                         if (event.target.files?.[0]) {
                             setAttachment(event.target.files[0]);
                         }
@@ -78,16 +86,25 @@ const InputTextarea = ({
                 onChange={(event) => setValue(event.target.value)}
                 onKeyDown={(event) => {
                     if (event.key === "Enter") {
-                        onSubmit(value);
+                        onSubmit(value, attachment);
                         setValue("");
+                        setAttachment(null)
+                        if (fileInputElement.current) {
+                            fileInputElement.current.files = null;
+                        }
                     }
                 }}
+                disabled={sending || attachment ? true : false}
             />
             <button
                 className='shrink-0 rounded-2xl bg-theme-primary text-white min-w-[50px] h-[50px] flex items-center justify-center cursor-pointer'
                 onClick={() => {
-                    onSubmit(value);
+                    onSubmit(value, attachment);
                     setValue("")
+                    setAttachment(null)
+                    if (fileInputElement.current) {
+                        fileInputElement.current.files = null;
+                    }
                 }}
             >
                 {

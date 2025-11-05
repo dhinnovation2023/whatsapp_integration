@@ -30,8 +30,9 @@ const AppPage = () => {
             }
             <ChatBotLayout
                 sending={sending}
-                onSubmit={async (value) => {
+                onSubmit={async (value, attachment) => {
                     setSending(true);
+                    setError(null)
 
                     try {
 
@@ -41,14 +42,26 @@ const AppPage = () => {
                             throw new Error("Phone number not found");
                         }
 
-                        if (!value) {
+                        if (!value && !attachment) {
                             throw new Error("Please type somthing!")
                         }
 
-                        await axios.post('/api/whatsapp/send', {
-                            phone,
-                            text: value,
-                        })
+                        if (attachment) {
+                            const formData = new FormData();
+                            formData.append('file', attachment);
+                            formData.append('phone', phone);
+
+                            await axios.post('/api/whatsapp/send/file', formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            })
+                        } else {
+                            await axios.post('/api/whatsapp/send', {
+                                phone,
+                                text: value,
+                            })
+                        }
 
                     } catch (err) {
                         const message = handleCatchBlock(err);

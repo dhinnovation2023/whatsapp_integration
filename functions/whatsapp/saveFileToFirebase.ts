@@ -3,6 +3,59 @@ import { handleCatchBlock } from "../common";
 import axios from "axios";
 import { v4 as uuid } from "uuid";
 import { saveMessageToDB } from "./saveMessage";
+import { ChatRole } from "@/layouts/chatbot-layout/chat-interface/chat-history";
+
+async function SaveFileToDatabase({
+    buffer,
+    chatRole,
+    mime_type,
+    phone,
+    timestamp,
+}: {
+    buffer: Buffer,
+    mime_type: string,
+    phone: string,
+    chatRole: ChatRole,
+    timestamp: string,
+}) {
+    return new Promise<string>(async (resolve, reject) => {
+        try {
+
+            const filename = uuid();
+            const pathname = `whatsapp/${filename}`;
+
+            const file = bucket.file(pathname);
+
+            await file.save(
+                buffer,
+                {
+                    metadata: {
+                        contentType: mime_type,
+                    }
+                }
+            )
+
+            await saveMessageToDB({
+                data: {
+                    newMessage: true,
+                    phone,
+                    role: chatRole,
+                    timestamp,
+                    attachments: {
+                        path: pathname,
+                        mime_type,
+                    },
+                }
+            })
+
+            return resolve(pathname);
+
+        } catch (err) {
+            const message = handleCatchBlock(err);
+            return reject(message);
+        }
+    })
+}
 
 export async function saveWhatsappFileToFirebase({
     fileId,
@@ -41,31 +94,12 @@ export async function saveWhatsappFileToFirebase({
 
             const buffer = Buffer.from(fileRes.data);
 
-            const filename = uuid();
-            const pathname = `whatsapp/${filename}`;
-
-            const file = bucket.file(pathname);
-
-            await file.save(
+            await SaveFileToDatabase({
                 buffer,
-                {
-                    metadata: {
-                        contentType: mime_type,
-                    }
-                }
-            )
-
-            await saveMessageToDB({
-                data: {
-                    newMessage: true,
-                    phone,
-                    role: "client",
-                    timestamp: "gjdgkjhfg",
-                    attachments: {
-                        path: pathname,
-                        mime_type,
-                    },
-                }
+                chatRole: "client",
+                mime_type,
+                phone,
+                timestamp: "jfshghfsjig"
             })
 
             return resolve();
@@ -77,14 +111,28 @@ export async function saveWhatsappFileToFirebase({
     })
 }
 
-export async function saveLocalFileToFirebase ({}: {
-    image: File,
+export async function saveLocalFileToFirebase(props: {
+    file: File,
     phone: string,
     mime_type: string,
+    chatRole: ChatRole,
 }) {
-    return new Promise((resolve, reject) => {
+    return new Promise<string>(async (resolve, reject) => {
         try {
-            
+
+            const arrayBuffer = await props.file.arrayBuffer()
+            const buffer = Buffer.from(arrayBuffer);
+
+            const pathname = await SaveFileToDatabase({
+                buffer,
+                chatRole: props.chatRole,
+                mime_type: props.mime_type,
+                phone: props.phone,
+                timestamp: "hbfjhbsf",
+            })
+
+            return resolve(pathname);
+
         } catch (err) {
             const message = handleCatchBlock(err);
             return reject(message);
