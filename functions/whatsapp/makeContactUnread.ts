@@ -7,19 +7,17 @@ export async function makeContactUnread({ phone }: {
     return new Promise<void>(async (resolve, reject) => {
         try {
             await dbConnect();
-            const contact = await ContactsModel.findOneAndUpdate(
+            const contact = await ContactsModel.updateOne(
                 { phone },
-                {
-                    $set: {
-                        unread: {
-                            $add: [
-                                { $ifNull: ["$unread", 1] },
-                                1,
-                            ]
-                        }
-                    }
-                }
-            )
+                [
+                    {
+                        $set: {
+                            unread: { $add: [{ $ifNull: ["$unread", 0] }, 1] },
+                        },
+                    },
+                ]
+            );
+
 
             console.log("unread updated:", contact);
 
