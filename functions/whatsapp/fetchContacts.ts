@@ -33,7 +33,7 @@ export async function fetchAllContacts() {
                 findQuery["assigned"] = user.userId;
             }
 
-            const contacts = await ContactsModel.find(findQuery);
+            const contacts = await ContactsModel.find(findQuery, null, { sort: { updatedAt: -1 } });
             return resolve(contacts);
 
         } catch (err) {
