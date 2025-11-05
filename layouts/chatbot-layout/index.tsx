@@ -19,7 +19,7 @@ const ChatBotLayout = ({
 }) => {
     return (
         <div
-            className='flex items-stretch min-h-[80dvh] max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background rounded-2xl'
+            className='flex items-stretch min-h-[95dvh] max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background rounded-2xl'
         >
             <ChatSidebar />
             <ChatInterface

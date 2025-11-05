@@ -20,6 +20,7 @@ const AppPage = () => {
     return (
         <DashboardLayout
             pageTitle='Chat Inbox'
+            hidePageHeader
         >
             {
                 error && (

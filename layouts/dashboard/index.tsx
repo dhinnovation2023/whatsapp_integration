@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 import DashboardSidebar from './sidebar'
 import PageHeader from './header'
 import DefaultSection from '../default-section'
@@ -6,8 +6,10 @@ import DefaultSection from '../default-section'
 const DashboardLayout = ({
     children,
     pageTitle,
+    hidePageHeader,
 }: PropsWithChildren<{
     pageTitle: string,
+    hidePageHeader?: boolean,
 }>) => {
 
     return (
@@ -19,11 +21,15 @@ const DashboardLayout = ({
                 className='w-full'
             >
                 <div>
-                    <PageHeader
-                        pageTitle={pageTitle}
-                    />
+                    {
+                        !hidePageHeader && (
+                            <PageHeader
+                                pageTitle={pageTitle}
+                            />
+                        )
+                    }
                     <DefaultSection
-                        className='py-10'
+                        className='py-3'
                     >
                         <div
                             className='w-full'
