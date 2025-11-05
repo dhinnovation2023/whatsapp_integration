@@ -14,7 +14,6 @@ const UserInfo = () => {
         (async () => {
             const session = await getClientSession();
             setUserSession(session);
-            console.log(session)
         })()
     }, [])
 

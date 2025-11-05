@@ -1,30 +1,45 @@
 import { NextRequest } from 'next/server';
 import { dbConnect } from '@/config/dbConfig';
 import ContactsModel from '@/models/contacts';
+import { getServerSession } from 'next-auth';
+import TeamMemberModel, { TeamMembersModelInterface } from '@/models/team-member';
 
 export async function GET(req: NextRequest) {
     await dbConnect();
 
-    const { searchParams } = new URL(req.url);
-    const phone = searchParams.get("phone");
+    const userSession = await getServerSession();
+    const SUPER_ADMIN_EMAIL = process.env.SUPER_ADMIN_EMAIL;
 
-    if (!phone) {
-        throw new Error("Phone number is required!");
+    if (!userSession?.user) {
+        throw new Error("User is not loggedin");
+    }
+
+    if (!SUPER_ADMIN_EMAIL) {
+        throw new Error("please provide SUPER_ADMIN_EMAIL in .env");
+    }
+
+    const user = await TeamMemberModel.findOne({ email: userSession.user.email }) as TeamMembersModelInterface;
+
+    if (!user) {
+        throw new Error("User not found!");
+    }
+
+    const findQuery: {
+        // eslint-disable-next-line
+        [key: string]: any,
+    } = {};
+
+    const isSuperAdmin = user.email === SUPER_ADMIN_EMAIL;
+
+    if (!isSuperAdmin) {
+        findQuery["$match"] = {
+            "fullDocument.assigned": user.userId,
+        }
     }
 
     const stream = new ReadableStream({
         start(controller) {
-            const changeStream = ContactsModel.watch(
-                [
-                    {
-                        $match: {
-                            "fullDocument.assigned": {
-                                $in: ["123"]
-                            }
-                        }
-                    }
-                ]
-            );
+            const changeStream = ContactsModel.watch(!isSuperAdmin ? [findQuery] : undefined, { fullDocument: "updateLookup" });
 
             changeStream.on('change', (change) => {
                 controller.enqueue(`data: ${JSON.stringify(change)}\n\n`);
