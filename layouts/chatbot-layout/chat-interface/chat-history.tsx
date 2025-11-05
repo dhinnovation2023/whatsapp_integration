@@ -1,7 +1,7 @@
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
 import { MessagesModelInterface } from '@/models/messages';
-import { RiDownloadLine } from '@remixicon/react';
+import { RiDownloadLine, RiWhatsappLine } from '@remixicon/react';
 import axios from 'axios';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -126,8 +126,27 @@ const ChatHistory = ({
 
     if (notSelected) {
         return (
-            <div>
-                Not Sleected
+            <div
+                className='h-full p-5'
+            >
+                <div
+                    className='w-full h-full bg-background/60 flex items-center flex-col gap-5 justify-center rounded-4xl shadow-xl shadow-neutral-100'
+                >
+                    <RiWhatsappLine
+                        size={60}
+                        className='text-theme-primary'
+                    />
+                    <div
+                        className='text-center flex flex-col items-center gap-2'
+                    >
+                        <h2
+                            className='text-xl font-semibold text-foreground'
+                        >Select a Contact to Start Chatting</h2>
+                        <p
+                            className='text-foreground/50 max-w-[300px] text-sm'
+                        >Choose a contact from your list to view messages and start a conversation.</p>
+                    </div>
+                </div>
             </div>
         )
     }
