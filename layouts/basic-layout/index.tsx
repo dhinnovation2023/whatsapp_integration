@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 import DefaultSection from '../default-section'
 import BasicLayoutHeader from './header'
+import BasicLayoutFooter from './footer'
 
 const BasicLayout = ({
     children
@@ -15,6 +16,7 @@ const BasicLayout = ({
             >
                 {children}
             </DefaultSection>
+            <BasicLayoutFooter/>
         </div>
     )
 }

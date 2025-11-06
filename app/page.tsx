@@ -4,7 +4,7 @@ import ErrorTemplate from "@/components/ui-elements/error-template";
 import InputGroup from "@/components/ui/input-group";
 import { getClientSession } from "@/functions/auth/getClientSession";
 import { handleCatchBlock } from "@/functions/common";
-import DefaultSection from "@/layouts/default-section";
+import BasicLayout from "@/layouts/basic-layout";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -68,59 +68,61 @@ export default function Home() {
   }
 
   return (
-    <DefaultSection
-      className="flex items-center justify-center min-h-screen"
-    >
+    <BasicLayout>
       <div
-        className="min-w-[300px]"
+        className="flex items-center min-h-[80dvh] justify-center"
       >
-        {
-          loadingForm ? (
-            <p>Loading Form...</p>
-          ) : (
-            <form
-              onSubmit={handleFormSubmit}
-            >
-              <div
-                className="space-y-4"
+        <div
+          className="min-w-[400px] bg-background p-5 rounded-2xl"
+        >
+          {
+            loadingForm ? (
+              <p>Loading Form...</p>
+            ) : (
+              <form
+                onSubmit={handleFormSubmit}
               >
-                <InputGroup
-                  label="Email"
-                  name="email"
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="Email address"
-                  type="email"
-                  value={email}
-                />
-
-                <InputGroup
-                  label="Password"
-                  name="password"
-                  placeholder="Password"
-                  onChange={(event) => setPassword(event.target.value)}
-                  type="password"
-                  value={password}
-                />
-
-                <button
-                  className="text-lg font-semibold bg-theme-primary py-3 px-5 text-white w-full rounded-lg cursor-pointer"
+                <div
+                  className="space-y-4"
                 >
-                  {isLoading ? "Loading..." : "Login"}
-                </button>
+                  <InputGroup
+                    label="Email"
+                    name="email"
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="Email address"
+                    type="email"
+                    value={email}
+                  />
 
-                {
-                  error && (
-                    <ErrorTemplate
-                      error={error}
-                    />
-                  )
-                }
+                  <InputGroup
+                    label="Password"
+                    name="password"
+                    placeholder="Password"
+                    onChange={(event) => setPassword(event.target.value)}
+                    type="password"
+                    value={password}
+                  />
 
-              </div>
-            </form>
-          )
-        }
-      </div >
-    </DefaultSection >
+                  <button
+                    className="text-lg font-semibold bg-theme-primary py-3 px-5 text-white w-full rounded-lg cursor-pointer"
+                  >
+                    {isLoading ? "Loading..." : "Login"}
+                  </button>
+
+                  {
+                    error && (
+                      <ErrorTemplate
+                        error={error}
+                      />
+                    )
+                  }
+
+                </div>
+              </form>
+            )
+          }
+        </div >
+      </div>
+    </BasicLayout>
   )
 }
