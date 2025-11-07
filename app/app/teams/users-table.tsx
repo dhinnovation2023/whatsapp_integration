@@ -104,7 +104,13 @@ const UsersTable = () => {
                                                 {
                                                     label: isDeleting ? "Loading..." : "Delete",
                                                     customClass: "bg-red-500 text-white",
-                                                    onClick: () => deleteUser(user.userId)
+                                                    onClick: async () => {
+                                                        const confirm = window.confirm("Confirm deleting...");
+
+                                                        if (confirm) {
+                                                            await deleteUser(user.userId)
+                                                        }
+                                                    }
                                                 },
                                                 {
                                                     label: "Change Password",
