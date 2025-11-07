@@ -1,4 +1,4 @@
-import ChatSidebar from './chat-sidebar'
+import dynamic from 'next/dynamic'
 import ChatInterface from './chat-interface'
 import { ChatHistoryMessageInterface } from './chat-interface/chat-history'
 import { Dispatch, SetStateAction } from 'react'
@@ -17,9 +17,12 @@ const ChatBotLayout = ({
     setChatHistory: Dispatch<SetStateAction<ChatHistoryMessageInterface[]>>,
     sending: boolean,
 }) => {
+
+    const ChatSidebar = dynamic(() => import("./chat-sidebar"), { ssr: false })
+
     return (
         <div
-            className='flex items-stretch min-h-[95dvh] max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background rounded-2xl'
+            className='flex flex-col md:flex-row items-stretch min-h-[95dvh] md:max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background rounded-2xl'
         >
             <ChatSidebar />
             <ChatInterface

@@ -7,6 +7,7 @@ import { RiLoader4Line, RiSearchLine } from '@remixicon/react'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import ContactCard from './contact-card';
+import { useSearchParams } from 'next/navigation';
 
 export interface ChatContactsInterface {
     name: string,
@@ -19,6 +20,13 @@ const ChatSidebar = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [contacts, setContacts] = useState<ContactsModelInterface[]>([]);
+
+    const searchParams = useSearchParams();
+    const [isHidden] = useState(() => {
+        const phone = searchParams.get('phone');
+        return phone && window.innerWidth < 500;
+    });
+
 
     useEffect(() => {
 
@@ -43,7 +51,7 @@ const ChatSidebar = () => {
         const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
 
         (async () => {
-            
+
             if (Notification.permission !== "granted") {
                 await Notification.requestPermission();
             }
@@ -75,6 +83,10 @@ const ChatSidebar = () => {
         return () => event.close();
 
     }, [])
+
+    if (isHidden) {
+        return null;
+    }
 
     if (error) {
         return (
