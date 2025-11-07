@@ -19,11 +19,8 @@ const ContactCard = ({
 
     return (
         <>
-            <button
-                className={`flex group items-center gap-3 w-full py-4 px-5 cursor-pointer border-b border-stroke-light/50 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
-                onClick={() => {
-                    router.push(`/app?phone=${chat.phone}`)
-                }}
+            <div
+                className={`flex group items-center gap-3 w-full py-4 px-5 border-b border-stroke-light/50 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
             >
                 <div
                     className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : "bg-background-2"}`}
@@ -42,16 +39,19 @@ const ContactCard = ({
                 <div
                     className='space-y-0.5 w-full text-left'
                 >
-                    <h3
-                        className='text-sm font-semibold capitalize'
-                    >{chat.name}</h3>
+                    <button
+                        className='text-sm font-semibold capitalize cursor-pointer'
+                        onClick={() => {
+                            router.push(`/app?phone=${chat.phone}`)
+                        }}
+                    >{chat.name}</button>
                     <p
                         className='text-xs'
                     >{chat.phone}</p>
                 </div>
 
                 <div
-                    className='group-hover:block hidden'
+                    className='group-hover:block md:hidden'
                 >
                     <RiListSettingsLine
                         size={20}
@@ -60,10 +60,10 @@ const ContactCard = ({
                     />
                 </div>
 
-            </button>
+            </div>
 
             {
-                showPopup === "save-contact" && (
+                showPopup === "save-contact" ? (
                     <SaveContactPopup
                         defaultName={chat.name}
                         phone={chat.phone}
@@ -71,7 +71,7 @@ const ContactCard = ({
                             setShowPopup(null)
                         }}
                     />
-                )
+                ) : null
             }
 
         </>
