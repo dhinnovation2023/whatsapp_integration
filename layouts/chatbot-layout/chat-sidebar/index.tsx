@@ -41,18 +41,36 @@ const ChatSidebar = () => {
 
     useEffect(() => {
         const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
-        event.onmessage = (event) => {
-            const data = JSON.parse(event.data) as { fullDocument: ContactsModelInterface }
-            setContacts(prevContacts => {
-                const filtered = prevContacts.filter(contact => contact.phone !== data.fullDocument.phone);
-                const newContacts = [data.fullDocument, ...filtered];
-                return newContacts;
-            })
-        }
 
-        event.onerror = (err) => {
-            console.log("SSE Error:", err);
-        }
+        (async () => {
+            
+            if (Notification.permission !== "granted") {
+                await Notification.requestPermission();
+            }
+
+            event.onmessage = (event) => {
+                const data = JSON.parse(event.data) as { fullDocument: ContactsModelInterface }
+
+                if (Notification.permission === "granted" && data.fullDocument.unread !== null) {
+                    new Notification(
+                        "New notification!",
+                        {
+                            body: `You have ${data.fullDocument.unread} unread messages.`,
+                        }
+                    )
+                }
+
+                setContacts(prevContacts => {
+                    const filtered = prevContacts.filter(contact => contact.phone !== data.fullDocument.phone);
+                    const newContacts = [data.fullDocument, ...filtered];
+                    return newContacts;
+                })
+            }
+
+            event.onerror = (err) => {
+                console.log("SSE Error:", err);
+            }
+        })()
 
         return () => event.close();
 
