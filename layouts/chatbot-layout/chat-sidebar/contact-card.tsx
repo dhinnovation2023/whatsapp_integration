@@ -99,9 +99,27 @@ function AssignedUserName({
 
     const [userData, setUserData] = useState<TeamMembersModelInterface | null>(null);
     const [bgColor] = useState<string>(() => {
-        const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
-        return color;
+        const h = Math.floor(Math.random() * 360);
+        const hexColor = hslToHex(h, 70, 50);
+        return hexColor;
     })
+
+    function hslToHex(h: number, s: number, l: number) {
+        s /= 100;
+        l /= 100;
+
+        const k = (n: number) => (n + h / 30) % 12;
+        const a = s * Math.min(l, 1 - l);
+        const f = (n: number) =>
+            l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+
+        const toHex = (x: number) =>
+            Math.round(x * 255)
+                .toString(16)
+                .padStart(2, '0');
+
+        return `#${toHex(f(0))}${toHex(f(8))}${toHex(f(4))}`;
+    }
 
     useEffect(() => {
         (async () => {
@@ -122,7 +140,7 @@ function AssignedUserName({
     return (
         <span
             className={`text-[10px] font-light py-0.5 px-1.5 rounded-lg`}
-            style={{ backgroundColor: `${bgColor}30`, color: bgColor }}
+            style={{ backgroundColor: bgColor, color: "#ffffff" }}
         >{userData.name}</span>
     )
 }
