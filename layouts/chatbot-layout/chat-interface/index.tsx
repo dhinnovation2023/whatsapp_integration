@@ -19,7 +19,7 @@ const ChatInterface = ({
 
   return (
     <div
-      className='w-full max-h-screen h-[95dvh] bg-background-2/50 p-5 flex flex-col justify-end space-y-5'
+      className='w-full max-w-full max-h-screen h-[95dvh] bg-background-2/50 p-5 flex flex-col justify-end space-y-5'
     >
       <div
         className='h-full overflow-auto px-2.5'

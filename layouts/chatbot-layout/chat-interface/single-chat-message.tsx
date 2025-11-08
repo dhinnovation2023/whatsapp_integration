@@ -12,7 +12,7 @@ const SingleChatMessage = ({
 }) => {
     return (
         <div
-            className={'min-w-[40%] w-max space-y-2 bg-background py-3 px-5 rounded-xl' + ` ${chat.role === "client" ? "self-start" : " self-end"}`}
+            className={'min-w-[100px] w-max max-w-[600px] space-y-2 bg-background py-3 px-5 rounded-xl' + ` ${chat.role === "client" ? "self-start" : " self-end"}`}
             ref={lastMessageRef}
         >
             <p
