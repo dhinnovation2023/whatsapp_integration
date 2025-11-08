@@ -3,8 +3,11 @@
 import { ContactsModelInterface } from "@/models/contacts";
 import { RiListSettingsLine, RiUser6Line } from "@remixicon/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SaveContactPopup from "./save-contact-popup";
+import { TeamMembersModelInterface } from "@/models/team-member";
+import { handleCatchBlock } from "@/functions/common";
+import axios from "axios";
 
 const ContactCard = ({
     chat
@@ -40,11 +43,21 @@ const ContactCard = ({
                     className='space-y-0.5 w-full text-left'
                 >
                     <button
-                        className='text-sm font-semibold capitalize cursor-pointer'
+                        className='text-sm font-semibold capitalize cursor-pointer flex items-center gap-2'
                         onClick={() => {
                             router.push(`/app?phone=${chat.phone}`)
                         }}
-                    >{chat.name}</button>
+                    >
+                        <p>{chat.name}</p>
+
+                        {
+                            chat.assigned && (
+                                <AssignedUserName
+                                    userId={chat.assigned}
+                                />
+                            )
+                        }
+                    </button>
                     <p
                         className='text-xs'
                     >{chat.phone}</p>
@@ -75,6 +88,42 @@ const ContactCard = ({
             }
 
         </>
+    )
+}
+
+function AssignedUserName({
+    userId,
+}: {
+    userId: string,
+}) {
+
+    const [userData, setUserData] = useState<TeamMembersModelInterface | null>(null);
+    const [bgColor] = useState<string>(() => {
+        const color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        return color;
+    })
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await axios.post<TeamMembersModelInterface>('/api/teams/get-one-by-id', { userId });
+                setUserData(response.data);
+            } catch (err) {
+                const message = handleCatchBlock(err);
+                console.error(message);
+            }
+        })()
+    }, [])
+
+    if (!userData?.name) {
+        return null
+    }
+
+    return (
+        <span
+            className={`text-[10px] font-light py-0.5 px-1.5 rounded-lg`}
+            style={{ backgroundColor: `${bgColor}30`, color: bgColor }}
+        >{userData.name}</span>
     )
 }
 
