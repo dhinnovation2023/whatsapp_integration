@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 
 // eslint-disable-next-line
-export function handleCatchBlock (err: any) {
+export function handleCatchBlock(err: any) {
     console.log(err);
     let message = '';
 
@@ -21,3 +21,16 @@ export function handleCatchBlock (err: any) {
 
     return message;
 }
+
+export const mimeMap: Record<string, string> = {
+    'application/pdf': 'pdf',
+    'text/plain': 'txt',
+    'text/html': 'html',
+    'application/json': 'json',
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'application/zip': 'zip',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
+};

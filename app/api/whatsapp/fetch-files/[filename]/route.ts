@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { bucket } from "@/config/firebase";
+import { mimeMap } from "@/functions/common";
 
 export async function GET(request: NextRequest, { params }: {
   params: Promise<{
@@ -18,10 +19,12 @@ export async function GET(request: NextRequest, { params }: {
     const [buffer] = await file.download();
     const uint8Array = new Uint8Array(buffer);
 
+    const ext = mimeMap[contentType] || contentType.split('/')[1] || '';
+
     return new NextResponse(uint8Array, {
       headers: {
         "Content-Type": contentType,
-        "Content-Disposition": `inline; filename="${filename}"`,
+        "Content-Disposition": `inline; filename="${filename + '.' + ext}"`,
       },
     });
   } catch (err) {
