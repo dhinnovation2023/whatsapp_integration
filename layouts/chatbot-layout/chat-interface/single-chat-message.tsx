@@ -55,9 +55,42 @@ const SingleChatMessage = ({
 
             <p
                 className='text-xs text-foreground/60 text-right'
-            >{chat.date}</p>
+            >
+                {
+                    chat.role === "client" ? (
+                        <FormateDateInMessage
+                            timeStanp={parseInt(chat.date) * 1000}
+                        />
+                    ) : (
+                        <FormateDateInMessage
+                            timeStanp={parseInt(chat.date)}
+                        />
+                    )
+                }
+            </p>
         </div>
     )
 }
 
 export default SingleChatMessage
+
+function FormateDateInMessage({ timeStanp }: {
+    timeStanp: number
+}) {
+    const date = new Date(timeStanp)
+
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+
+    const formattedDate = `${day}/${month}/${year} ${formattedTime}`;
+    return formattedDate;
+
+}
