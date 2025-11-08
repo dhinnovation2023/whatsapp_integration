@@ -113,7 +113,7 @@ function AssignedUserName({
                 console.error(message);
             }
         })()
-    }, [])
+    }, [userId])
 
     if (!userData?.name) {
         return null
