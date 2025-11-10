@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
             if (m.type === "audio") {
                 await saveWhatsappFileToFirebase({
                     fileId: m.audio.id,
-                    mime_type: m.audioi.mime_type,
+                    mime_type: m.audio.mime_type,
                     phone: m.from,
                     timestamp,
                 });
