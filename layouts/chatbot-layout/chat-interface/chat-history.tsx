@@ -18,8 +18,8 @@ export interface ChatHistoryMessageInterface {
         mime_type: string,
     },
     location?: {
-        latitude: string,
-        longitude: string,
+        latitude: number,
+        longitude: number,
     }
 }
 

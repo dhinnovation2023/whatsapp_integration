@@ -3,17 +3,17 @@ import mongoose from "mongoose";
 
 export interface MessagesModelInterface {
     role: ChatRole,
-    number: string,
+    phone: string,
     message?: string,
     timestamp: string,
-    isNew: boolean,
-    attachments: {
+    newMessage: boolean,
+    attachments?: {
         path: string,
         mime_type: string,
     }
     location?: {
-        latitude: string,
-        longitude: string,
+        latitude: number,
+        longitude: number,
     }
 }
 
@@ -42,8 +42,12 @@ const messageSchema = new mongoose.Schema({
         mime_type: { type: String },
     },
     location: {
-        latitude: { type: Number },
-        longitude: { type: Number },
+        latitude: {
+            type: Number,
+        },
+        longitude: {
+            type: Number,
+        },
     },
 })
 
