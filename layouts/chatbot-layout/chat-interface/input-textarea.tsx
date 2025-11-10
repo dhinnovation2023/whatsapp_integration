@@ -71,7 +71,6 @@ const InputTextarea = ({
                     hidden
                     ref={fileInputElement}
                     onChange={(event) => {
-                        console.log(event.target.files)
                         if (event.target.files?.[0]) {
                             setAttachment(event.target.files[0]);
                         }

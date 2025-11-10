@@ -64,12 +64,11 @@ const DynamicChatContent = ({
       <div>
         <iframe
           src={`https://www.google.com/maps?q=${chat.location.latitude},${chat.location.longitude}&hl=en&z=14&output=embed`}
-          className='min-h-[200px] w-full'
+          className='min-h-[200px] w-full rounded-2xl'
         ></iframe>
       </div>
     )
   } else {
-    console.log(chat)
     return (
       <p>Message type not configured.</p>
     )

@@ -2,7 +2,6 @@ import { AxiosError } from "axios";
 
 // eslint-disable-next-line
 export function handleCatchBlock(err: any) {
-    console.log(err);
     let message = '';
 
     if (err instanceof AxiosError) {
