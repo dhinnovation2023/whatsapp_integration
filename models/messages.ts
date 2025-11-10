@@ -42,8 +42,8 @@ const messageSchema = new mongoose.Schema({
         mime_type: { type: String },
     },
     location: {
-        latitude: { type: String },
-        longitude: { type: String },
+        latitude: { type: Number },
+        longitude: { type: Number },
     },
 })
 
