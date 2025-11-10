@@ -36,20 +36,29 @@ const SingleChatMessage = ({
                             height={1000}
                         />
                     </div>
-                ) : chat.attachments ? (
+                ) : chat.attachments ? chat.attachments.mime_type.includes('audio/') ? (
                     <div>
-                        <a
-                            className='flex max-w-max items-center gap-2 py-2 px-4 bg-neutral-900 rounded-2xl text-white text-xs cursor-pointer'
-                            href={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
-                            rel="noopener noreferrer"
-                            target='_blank'
-                        >
-                            <RiDownloadLine
-                                size={15}
-                            />
-                            <p>Open {chat.attachments?.mime_type}</p>
-                        </a>
+                        <audio
+                            src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
+                            controls
+                        />
                     </div>
+                ) : (
+                    (
+                        <div>
+                            <a
+                                className='flex max-w-max items-center gap-2 py-2 px-4 bg-neutral-900 rounded-2xl text-white text-xs cursor-pointer'
+                                href={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
+                                rel="noopener noreferrer"
+                                target='_blank'
+                            >
+                                <RiDownloadLine
+                                    size={15}
+                                />
+                                <p>Open {chat.attachments?.mime_type}</p>
+                            </a>
+                        </div>
+                    )
                 ) : null
             }
 
