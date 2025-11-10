@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
         }
 
         const message = await fetchMessageByPhone({ phone });
-        await makeContactRead({ phone });
 
         return NextResponse.json(message)
 

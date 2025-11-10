@@ -47,6 +47,8 @@ const AppPage = () => {
                             throw new Error("Please type somthing!")
                         }
 
+                        await axios.post('/api/whatsapp/change-to-read', { phone });
+
                         if (attachment) {
                             const formData = new FormData();
                             formData.append('file', attachment);
@@ -65,6 +67,7 @@ const AppPage = () => {
                         }
 
                     } catch (err) {
+                        console.log(err);
                         const message = handleCatchBlock(err);
                         setError(message);
                     }
