@@ -28,15 +28,17 @@ export async function saveMessageToDB({ data }: {
 
             const session = await getServerSession();
 
-            if (!session || !session.user?.name) {
-                throw new Error("User not authorized!");
+            if (data.role === "team") {
+                if (!session || !session.user?.name) {
+                    throw new Error("User not authorized!");
+                }
             }
 
             await dbConnect();
 
             const newMessage = new MessagesModel({
                 ...data,
-                chatBy: data.role === "team" ? session.user.name : undefined,
+                chatBy: data.role === "team" ? session?.user?.name : undefined,
             })
 
             await newMessage.save();
