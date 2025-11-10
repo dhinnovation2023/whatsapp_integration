@@ -35,6 +35,8 @@ export async function POST(req: NextRequest) {
             const from = m.from;
             const timestamp = m.timestamp;
 
+            console.log("Test Voice Message:", m);
+
             // save to database
 
             await dbConnect();
