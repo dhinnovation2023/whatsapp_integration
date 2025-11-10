@@ -16,6 +16,10 @@ export interface ChatHistoryMessageInterface {
     attachments?: {
         path: string,
         mime_type: string,
+    },
+    location?: {
+        latitude: string,
+        longitude: string,
     }
 }
 

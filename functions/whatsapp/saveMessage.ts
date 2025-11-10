@@ -27,6 +27,8 @@ export async function saveMessageToDB({ data }: {
 
             await dbConnect();
 
+            console.log(data);
+
             const newMessage = new MessagesModel({
                 ...data,
             })
