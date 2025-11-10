@@ -14,7 +14,8 @@ export interface MessagesModelInterface {
     location?: {
         latitude: number,
         longitude: number,
-    }
+    },
+    chatBy: string,
 }
 
 const messageSchema = new mongoose.Schema({
@@ -49,6 +50,9 @@ const messageSchema = new mongoose.Schema({
             type: Number,
         },
     },
+    chatBy: {
+        type: String,
+    }
 })
 
 const MessagesModel = mongoose.models.Messages || mongoose.model("Messages", messageSchema)
