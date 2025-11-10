@@ -11,6 +11,10 @@ export interface MessagesModelInterface {
         path: string,
         mime_type: string,
     }
+    location?: {
+        latitude: string,
+        longitude: string,
+    }
 }
 
 const messageSchema = new mongoose.Schema({
@@ -36,6 +40,10 @@ const messageSchema = new mongoose.Schema({
     attachments: {
         path: { type: String },
         mime_type: { type: String },
+    },
+    location: {
+        latitude: { type: String },
+        longitude: { type: String },
     },
 })
 

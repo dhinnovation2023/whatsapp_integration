@@ -13,6 +13,10 @@ export interface NewMessageDataInterface {
         path: string,
         mime_type: string,
     },
+    location?: {
+        latitude: string,
+        longitude: string,
+    }
 }
 
 export async function saveMessageToDB({ data }: {
