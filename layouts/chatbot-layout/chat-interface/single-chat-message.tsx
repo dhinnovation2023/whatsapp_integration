@@ -16,7 +16,7 @@ const SingleChatMessage = ({
         >
             <p
                 className='text-foreground/60 text-xs'
-            >{chat.role === "team" ? "Abhilash" : "Client"}</p>
+            >{chat.role === "team" ? chat.chatBy ? chat.chatBy : "not-set" : "Client"}</p>
 
             {
                 <DynamicChatContent

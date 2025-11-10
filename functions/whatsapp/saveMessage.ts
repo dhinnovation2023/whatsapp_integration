@@ -2,6 +2,7 @@ import { dbConnect } from "@/config/dbConfig";
 import { handleCatchBlock } from "../common"
 import { ChatRole } from "@/layouts/chatbot-layout/chat-interface/chat-history";
 import MessagesModel from "@/models/messages";
+import { getServerSession } from "next-auth";
 
 export interface NewMessageDataInterface {
     role: ChatRole,
@@ -25,10 +26,17 @@ export async function saveMessageToDB({ data }: {
     return new Promise<void>(async (resolve, reject) => {
         try {
 
+            const session = await getServerSession();
+
+            if (!session || !session.user?.name) {
+                throw new Error("User not authorized!");
+            }
+
             await dbConnect();
 
             const newMessage = new MessagesModel({
                 ...data,
+                chatBy: data.role === "team" ? session.user.name : undefined,
             })
 
             await newMessage.save();

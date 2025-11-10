@@ -20,7 +20,8 @@ export interface ChatHistoryMessageInterface {
     location?: {
         latitude: number,
         longitude: number,
-    }
+    },
+    chatBy?: string,
 }
 
 const ChatHistory = ({
@@ -61,6 +62,7 @@ const ChatHistory = ({
                         message: message.message ? message.message : undefined,
                         attachments: message.attachments,
                         location: message.location,
+                        chatBy: message.chatBy,
                     }
 
                     history.push(data);
@@ -97,6 +99,7 @@ const ChatHistory = ({
                     message: data.fullDocument.message ? data.fullDocument.message : undefined,
                     attachments: data.fullDocument.attachments || undefined,
                     location: data.fullDocument.location || undefined,
+                    chatBy: data.fullDocument.chatBy,
                 }]
             ))
         };
