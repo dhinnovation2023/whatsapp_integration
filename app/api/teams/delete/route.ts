@@ -25,8 +25,6 @@ export async function POST(request: NextRequest) {
             throw new Error("userId is required");
         }
 
-        console.log(body)
-
         await deleteUser(body.userId);
 
         return NextResponse.json(true)

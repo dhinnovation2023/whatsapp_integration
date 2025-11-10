@@ -16,6 +16,10 @@ export interface ChatHistoryMessageInterface {
     attachments?: {
         path: string,
         mime_type: string,
+    },
+    location?: {
+        latitude: number,
+        longitude: number,
     }
 }
 
@@ -56,6 +60,7 @@ const ChatHistory = ({
                         role: message.role,
                         message: message.message ? message.message : undefined,
                         attachments: message.attachments,
+                        location: message.location,
                     }
 
                     history.push(data);
@@ -91,6 +96,7 @@ const ChatHistory = ({
                     role: data.fullDocument.role,
                     message: data.fullDocument.message ? data.fullDocument.message : undefined,
                     attachments: data.fullDocument.attachments || undefined,
+                    location: data.fullDocument.location || undefined,
                 }]
             ))
         };

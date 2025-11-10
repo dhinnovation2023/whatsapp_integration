@@ -81,6 +81,30 @@ export async function POST(req: NextRequest) {
                 })
             }
 
+            if (m.type === "audio") {
+                await saveWhatsappFileToFirebase({
+                    fileId: m.audio.id,
+                    mime_type: m.audio.mime_type,
+                    phone: from,
+                    timestamp,
+                });
+            }
+
+            if (m.type === "location") {
+                await saveMessageToDB({
+                    data: {
+                        role: "client",
+                        phone: from,
+                        newMessage: true,
+                        timestamp,
+                        location: {
+                            latitude: m.location.latitude,
+                            longitude: m.location.longitude,
+                        },
+                    }
+                })
+            }
+
             await makeContactUnread({ phone: from });
         }
 

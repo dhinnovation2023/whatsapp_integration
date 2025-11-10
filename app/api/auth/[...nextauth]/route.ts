@@ -25,7 +25,6 @@ const handler = NextAuth({
 
                 if (ADMIN_EMAIL === credentials?.email) {
                     if (ADMIN_PASSWORD === credentials.password) {
-                        console.log("Is super admin:")
                         return ({
                            name: "Super Admin",
                            email: ADMIN_EMAIL,

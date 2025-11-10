@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
 
         const body = await request.json() as UpdateContactNameRequestData;
         await updateContactName(body);
-        console.log(body);
 
         return NextResponse.json(true);
 
