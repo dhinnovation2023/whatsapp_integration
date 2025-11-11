@@ -73,6 +73,7 @@ export async function POST(req: NextRequest) {
                     phone: from,
                     timestamp,
                     caption: m.image.caption,
+                    wamid: m.id,
                 })
             }
 
@@ -82,6 +83,7 @@ export async function POST(req: NextRequest) {
                     mime_type: m.document.mime_type,
                     phone: from,
                     timestamp,
+                    wamid: m.id,
                 })
             }
 
@@ -91,6 +93,7 @@ export async function POST(req: NextRequest) {
                     mime_type: m.audio.mime_type,
                     phone: from,
                     timestamp,
+                    wamid: m.id,
                 });
             }
 
@@ -105,6 +108,7 @@ export async function POST(req: NextRequest) {
                             latitude: m.location.latitude,
                             longitude: m.location.longitude,
                         },
+                        wamid: m.id,
                     }
                 })
             }
