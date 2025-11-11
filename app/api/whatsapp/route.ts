@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
                         timestamp: timestamp,
                         message: m.text.body,
                         newMessage: true,
+                        wamid: m.id,
                     }
                 })
             }
