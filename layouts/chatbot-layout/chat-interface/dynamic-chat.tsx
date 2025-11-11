@@ -18,7 +18,9 @@ const DynamicChatContent = ({
 
   if (chat.attachments && chat.attachments.mime_type.includes('image/')) {
     return (
-      <div>
+      <div
+        className='space-y-2'
+      >
         <Image
           alt='Chat attachment'
           src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
