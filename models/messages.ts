@@ -16,6 +16,8 @@ export interface MessagesModelInterface {
         longitude: number,
     },
     chatBy: string,
+    updatedAt: string,
+    createdAt: string,
 }
 
 const messageSchema = new mongoose.Schema({
@@ -54,7 +56,7 @@ const messageSchema = new mongoose.Schema({
     chatBy: {
         type: String,
     }
-})
+}, { timestamps: true })
 
 const MessagesModel = mongoose.models.Messages || mongoose.model("Messages", messageSchema)
 export default MessagesModel;

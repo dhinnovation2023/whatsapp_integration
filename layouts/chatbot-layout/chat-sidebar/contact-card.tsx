@@ -1,6 +1,5 @@
 'use client';
 
-import { ContactsModelInterface } from "@/models/contacts";
 import { RiListSettingsLine, RiUser6Line } from "@remixicon/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -8,11 +7,13 @@ import SaveContactPopup from "./save-contact-popup";
 import { TeamMembersModelInterface } from "@/models/team-member";
 import { handleCatchBlock } from "@/functions/common";
 import axios from "axios";
+import { CustomContactsCardDataInterface } from "@/app/api/whatsapp/fetch-contacts/all/route";
+import LastMessageTemplate from "./last-message-template";
 
 const ContactCard = ({
     chat
 }: {
-    chat: ContactsModelInterface,
+    chat: CustomContactsCardDataInterface,
 }) => {
 
     const router = useRouter();
@@ -23,57 +24,71 @@ const ContactCard = ({
     return (
         <>
             <div
-                className={`flex group items-center gap-3 w-full py-4 px-5 border-b border-stroke-light/50 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
+                className={`py-4 px-5 border-b border-stroke-light/50 space-y-2 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
             >
                 <div
-                    className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : "bg-background-2"}`}
+                    className={`flex group items-center gap-3 w-full`}
                 >
-                    {
-                        chat.unread &&
-                        <p
-                            className="absolute -left-1.5 -top-1.5 w-4 h-4 rounded-full bg-theme-primary shadow-xl text-xs flex items-center justify-center text-white font-semibold"
-                        >{chat.unread}</p>
-                    }
-
-                    <RiUser6Line
-                        size={15}
-                    />
-                </div>
-                <div
-                    className='space-y-0.5 w-full text-left'
-                >
-                    <button
-                        className='text-sm text-left font-semibold capitalize cursor-pointer flex items-center gap-2'
-                        onClick={() => {
-                            router.push(`/app?phone=${chat.phone}`)
-                        }}
+                    <div
+                        className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : "bg-background-2"}`}
                     >
-                        <p
-                            className="line-clamp-1"
-                        >{chat.name}</p>
-
                         {
-                            chat.assigned && (
-                                <AssignedUserName
-                                    userId={chat.assigned}
-                                />
-                            )
+                            chat.unread &&
+                            <p
+                                className="absolute -left-1.5 -top-1.5 w-4 h-4 rounded-full bg-theme-primary shadow-xl text-xs flex items-center justify-center text-white font-semibold"
+                            >{chat.unread}</p>
                         }
-                    </button>
-                    <p
-                        className='text-xs'
-                    >{chat.phone}</p>
+
+                        <RiUser6Line
+                            size={15}
+                        />
+                    </div>
+                    <div
+                        className='space-y-0.5 w-full text-left'
+                    >
+                        <button
+                            className='text-sm text-left font-semibold capitalize cursor-pointer flex items-center gap-2'
+                            onClick={() => {
+                                router.push(`/app?phone=${chat.phone}`)
+                            }}
+                        >
+                            <p
+                                className="line-clamp-1"
+                                title={chat.name}
+                            >{chat.name}</p>
+
+                            {
+                                chat.assigned && (
+                                    <AssignedUserName
+                                        userId={chat.assigned}
+                                    />
+                                )
+                            }
+                        </button>
+                        <p
+                            className='text-xs'
+                        >{chat.phone}</p>
+                    </div>
+
+                    <div
+                        className='group-hover:block md:hidden'
+                    >
+                        <RiListSettingsLine
+                            size={20}
+                            className='cursor-pointer'
+                            onClick={() => setShowPopup("save-contact")}
+                        />
+                    </div>
+
                 </div>
 
-                <div
-                    className='group-hover:block md:hidden'
-                >
-                    <RiListSettingsLine
-                        size={20}
-                        className='cursor-pointer'
-                        onClick={() => setShowPopup("save-contact")}
-                    />
-                </div>
+                {
+                    chat.lastChat && (
+                        <LastMessageTemplate
+                            message={chat.lastChat}
+                        />
+                    )
+                }
 
             </div>
 

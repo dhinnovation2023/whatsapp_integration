@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import ContactCard from './contact-card';
 import { useSearchParams } from 'next/navigation';
+import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contacts/all/route';
 
 export interface ChatContactsInterface {
     name: string,
@@ -19,7 +20,7 @@ const ChatSidebar = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [contacts, setContacts] = useState<ContactsModelInterface[]>([]);
+    const [contacts, setContacts] = useState<CustomContactsCardDataInterface[]>([]);
 
     const searchParams = useSearchParams();
     const [isHidden, setIsHidden] = useState(false);
@@ -37,7 +38,7 @@ const ChatSidebar = () => {
 
                 const {
                     data,
-                } = await axios.get<ContactsModelInterface[]>('/api/whatsapp/fetch-contacts/all');
+                } = await axios.get<CustomContactsCardDataInterface[]>('/api/whatsapp/fetch-contacts/all');
                 setContacts(data);
                 setIsLoading(false);
 
