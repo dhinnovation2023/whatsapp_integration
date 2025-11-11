@@ -57,7 +57,7 @@ const messageSchema = new mongoose.Schema({
     chatBy: {
         type: String,
     },
-    mamid: {
+    wamid: {
         type: String,
     }
 }, { timestamps: true })
