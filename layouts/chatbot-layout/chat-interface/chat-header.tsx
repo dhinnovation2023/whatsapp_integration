@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 const ChatHeader = () => {
 
     const [currentChatDetails, setCurrentChatDetails] = useState<ContactsModelInterface | null>(null);
-    const [error, setError] = useState<string | null>(null);
     const [inProgress, setInProgress] = useState<boolean>(false);
 
     const searchParams = useSearchParams();
@@ -27,20 +26,13 @@ const ChatHeader = () => {
 
             } catch (err) {
                 const message = handleCatchBlock(err);
-                setError(message);
+                console.log(message);
+                setCurrentChatDetails(null);
             }
 
             setInProgress(false);
         })()
     }, [searchParams])
-
-    if (error) {
-        return (
-            <ErrorTemplate
-                error={error}
-            />
-        )
-    }
 
     return (
         <div
