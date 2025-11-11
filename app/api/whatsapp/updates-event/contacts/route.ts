@@ -3,6 +3,8 @@ import { dbConnect } from '@/config/dbConfig';
 import ContactsModel from '@/models/contacts';
 import { getServerSession } from 'next-auth';
 import TeamMemberModel, { TeamMembersModelInterface } from '@/models/team-member';
+import { fetchLastChatByPhone } from '@/functions/whatsapp/fetchLastChatByPhone';
+import { CustomContactsCardDataInterface } from '../../fetch-contacts/all/route';
 
 export async function GET(req: NextRequest) {
     await dbConnect();
@@ -41,8 +43,20 @@ export async function GET(req: NextRequest) {
         start(controller) {
             const changeStream = ContactsModel.watch(!isSuperAdmin ? [findQuery] : undefined, { fullDocument: "updateLookup" });
 
-            changeStream.on('change', (change) => {
-                controller.enqueue(`data: ${JSON.stringify(change)}\n\n`);
+            changeStream.on('change', async (change) => {
+                const lastChat = await fetchLastChatByPhone({ phone: change.fullDocument.phone });
+                const data: CustomContactsCardDataInterface = {
+                    ...change.fullDocument,
+                    lastChat,
+                }
+
+                const newContact: {
+                    fullDocument: CustomContactsCardDataInterface,
+                } = {
+                    fullDocument: data,
+                }
+
+                controller.enqueue(`data: ${JSON.stringify(newContact)}\n\n`);
             });
 
             changeStream.on('error', (err) => {

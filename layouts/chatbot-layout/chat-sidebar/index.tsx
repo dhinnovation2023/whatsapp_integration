@@ -2,7 +2,6 @@
 
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
-import { ContactsModelInterface } from '@/models/contacts';
 import { RiLoader4Line, RiSearchLine } from '@remixicon/react'
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
@@ -60,7 +59,7 @@ const ChatSidebar = () => {
             }
 
             event.onmessage = (event) => {
-                const data = JSON.parse(event.data) as { fullDocument: ContactsModelInterface }
+                const data = JSON.parse(event.data) as { fullDocument: CustomContactsCardDataInterface }
 
                 if (Notification.permission === "granted" && data.fullDocument.unread !== null) {
                     new Notification(
