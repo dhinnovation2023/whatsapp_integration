@@ -106,7 +106,7 @@ const ChatSidebar = () => {
     return (
         <div
             className={
-                'min-w-[300px] shrink-0 flex flex-col'
+                'md:max-w-[300px] w-full shrink-0 flex flex-col'
                 + ` ${isHidden ? "hidden" : ""}`
             }
         >

@@ -48,7 +48,9 @@ const ContactCard = ({
                             router.push(`/app?phone=${chat.phone}`)
                         }}
                     >
-                        <p>{chat.name}</p>
+                        <p
+                            className="line-clamp-1"
+                        >{chat.name}</p>
 
                         {
                             chat.assigned && (
