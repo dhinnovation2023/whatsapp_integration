@@ -18,7 +18,8 @@ export interface NewMessageDataInterface {
     location?: {
         latitude: number,
         longitude: number,
-    }
+    },
+    wamid?: string,
 }
 
 export async function saveMessageToDB({ data }: {

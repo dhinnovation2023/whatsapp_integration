@@ -18,6 +18,7 @@ export interface MessagesModelInterface {
     chatBy: string,
     updatedAt: string,
     createdAt: string,
+    wamid?: string,
 }
 
 const messageSchema = new mongoose.Schema({
@@ -54,6 +55,9 @@ const messageSchema = new mongoose.Schema({
         },
     },
     chatBy: {
+        type: String,
+    },
+    mamid: {
         type: String,
     }
 }, { timestamps: true })

@@ -93,6 +93,8 @@ const ChatHistory = ({
                 fullDocument: MessagesModelInterface,
             };
 
+            console.log("Check WAMID:", data.fullDocument);
+
             setChatHistory(prev => (
                 [...prev, {
                     date: data.fullDocument.timestamp,
