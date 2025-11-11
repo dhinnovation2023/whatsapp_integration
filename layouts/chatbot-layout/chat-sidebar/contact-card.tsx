@@ -24,7 +24,7 @@ const ContactCard = ({
     return (
         <>
             <div
-                className={`py-4 px-5 border-b border-stroke-light/50 space-y-2 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
+                className={`py-2 px-5 border-b border-stroke-light/50 space-y-2 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
             >
                 <div
                     className={`flex group items-center gap-3 w-full`}
@@ -44,7 +44,7 @@ const ContactCard = ({
                         />
                     </div>
                     <div
-                        className='space-y-0.5 w-full text-left'
+                        className='space-y-1 w-full text-left'
                     >
                         <button
                             className='text-sm text-left font-semibold capitalize cursor-pointer flex items-center gap-2'
@@ -55,7 +55,7 @@ const ContactCard = ({
                             <p
                                 className="line-clamp-1"
                                 title={chat.name}
-                            >{chat.name}</p>
+                            >{chat.name === "unknown" ? chat.phone : chat.name}</p>
 
                             {
                                 chat.assigned && (
@@ -65,9 +65,13 @@ const ContactCard = ({
                                 )
                             }
                         </button>
-                        <p
-                            className='text-xs'
-                        >{chat.phone}</p>
+                        {
+                            chat.lastChat && (
+                                <LastMessageTemplate
+                                    message={chat.lastChat}
+                                />
+                            )
+                        }
                     </div>
 
                     <div
@@ -81,14 +85,6 @@ const ContactCard = ({
                     </div>
 
                 </div>
-
-                {
-                    chat.lastChat && (
-                        <LastMessageTemplate
-                            message={chat.lastChat}
-                        />
-                    )
-                }
 
             </div>
 

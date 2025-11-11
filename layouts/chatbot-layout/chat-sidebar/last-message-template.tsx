@@ -9,7 +9,7 @@ const LastMessageTemplate = ({ message }: {
 
 return (
     <div
-        className="space-y-1"
+        className="space-y-1 flex justify-between gap-3"
     >
         <p
             className="space-x-1 line-clamp-1 text-xs"
@@ -17,7 +17,6 @@ return (
             {
                 message?.message && (
                     <>
-                        <b>Message:</b>
                         <span>{message?.message}</span>
                     </>
                 )
@@ -26,7 +25,6 @@ return (
             {
                 message?.attachments && (
                     <>
-                        <b>Attachement:</b>
                         <span>{message?.attachments?.mime_type}</span>
                     </>
                 )
@@ -41,9 +39,8 @@ return (
             }
         </p>
         <p
-            className="space-x-1 line-clamp-1 text-xs"
+            className="space-x-1 line-clamp-1 text-xs font-semibold text-right text-nowrap hidden group-hover:block min-w-max"
         >
-            <b>Last chat:</b>
             <span>
                 {
                     message?.role === "client" ? (
