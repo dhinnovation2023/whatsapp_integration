@@ -12,7 +12,9 @@ const DynamicChatContent = ({
 
   if (chat.message) {
     return (
-      <p>{chat.message}</p>
+      <p
+        className='wrap-break-word'
+      >{chat.message}</p>
     )
   }
 
@@ -32,7 +34,7 @@ const DynamicChatContent = ({
         {
           chat.attachments.caption && (
             <p
-              className='text-sm'
+              className='text-sm wrap-break-word'
             >{chat.attachments.caption}</p>
           )
         }

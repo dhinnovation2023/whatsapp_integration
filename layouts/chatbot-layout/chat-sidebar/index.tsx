@@ -5,7 +5,7 @@ import { handleCatchBlock } from '@/functions/common';
 import { ContactsModelInterface } from '@/models/contacts';
 import { RiLoader4Line, RiSearchLine } from '@remixicon/react'
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ContactCard from './contact-card';
 import { useSearchParams } from 'next/navigation';
 
@@ -22,11 +22,13 @@ const ChatSidebar = () => {
     const [contacts, setContacts] = useState<ContactsModelInterface[]>([]);
 
     const searchParams = useSearchParams();
-    const [isHidden] = useState(() => {
-        const phone = searchParams.get('phone');
-        return phone && window.innerWidth < 500;
-    });
+    const [isHidden, setIsHidden] = useState(false);
 
+    const checkIsMobile = useCallback(() => {
+        const phone = searchParams.get('phone');
+        const isMobile = phone && window.innerWidth < 500 ? true : false;
+        return isMobile;
+    }, [searchParams])
 
     useEffect(() => {
 
@@ -84,9 +86,10 @@ const ChatSidebar = () => {
 
     }, [])
 
-    if (isHidden) {
-        return null;
-    }
+    useEffect(() => {
+        const isMobile = checkIsMobile();
+        (() => { setIsHidden(isMobile); })()
+    }, [checkIsMobile])
 
     if (error) {
         return (
@@ -102,7 +105,10 @@ const ChatSidebar = () => {
 
     return (
         <div
-            className='min-w-[300px] shrink-0 flex flex-col'
+            className={
+                'min-w-[300px] shrink-0 flex flex-col'
+                + ` ${isHidden ? "hidden" : ""}`
+            }
         >
             <div
                 className='w-full p-3 border-b border-stroke-light/50'

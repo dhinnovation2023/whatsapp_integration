@@ -43,7 +43,7 @@ const ContactCard = ({
                     className='space-y-0.5 w-full text-left'
                 >
                     <button
-                        className='text-sm font-semibold capitalize cursor-pointer flex items-center gap-2'
+                        className='text-sm text-left font-semibold capitalize cursor-pointer flex items-center gap-2'
                         onClick={() => {
                             router.push(`/app?phone=${chat.phone}`)
                         }}
