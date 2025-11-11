@@ -8,7 +8,7 @@ export async function sendTextToWhatsapp({
     text: string,
     phone: string,
 }) {
-    return new Promise<void>(async (resolve, reject) => {
+    return new Promise<string>(async (resolve, reject) => {
         try {
 
             const ACCESS_TOKEN = process.env.WHATSAPP_ACCESS_TOKEN;
@@ -19,9 +19,9 @@ export async function sendTextToWhatsapp({
             }
 
             const bot = createBot(PHONE_NUMBER_ID, ACCESS_TOKEN);
-            await bot.sendText(phone, text);
+            const result = await bot.sendText(phone, text);
 
-            return resolve();
+            return resolve(result.messageId);
 
         } catch (err) {
             const message = handleCatchBlock(err);
@@ -34,7 +34,7 @@ export async function sendFileToWhatsapp({ filrebaseFileUrl, phone }: {
     filrebaseFileUrl: string,
     phone: string,
 }) {
-    return new Promise<void>(async (resolve, reject) => {
+    return new Promise<string>(async (resolve, reject) => {
         try {
 
             const PRODUCTION_BASE_URL = process.env.PRODUCTION_BASE_URL;
@@ -53,12 +53,12 @@ export async function sendFileToWhatsapp({ filrebaseFileUrl, phone }: {
             const fileUrl = `${PRODUCTION_BASE_URL}/api/whatsapp/fetch-files/${encodeURIComponent(filrebaseFileUrl)}`;
 
             const bot = createBot(PHONE_NUMBER_ID, ACCESS_TOKEN);
-            await bot.sendDocument(
+            const result = await bot.sendDocument(
                 phone, 
                 fileUrl,
             );
 
-            return resolve();
+            return resolve(result.messageId);
 
         } catch (err) {
             return reject(err);
