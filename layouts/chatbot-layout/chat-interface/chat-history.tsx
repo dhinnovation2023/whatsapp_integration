@@ -23,6 +23,10 @@ export interface ChatHistoryMessageInterface {
         longitude: number,
     },
     chatBy?: string,
+    context?: {
+        from: string,
+        id: string,
+    }
 }
 
 const ChatHistory = ({
@@ -64,6 +68,7 @@ const ChatHistory = ({
                         attachments: message.attachments,
                         location: message.location,
                         chatBy: message.chatBy,
+                        context: message.context,
                     }
 
                     history.push(data);
@@ -103,6 +108,7 @@ const ChatHistory = ({
                     attachments: data.fullDocument.attachments || undefined,
                     location: data.fullDocument.location || undefined,
                     chatBy: data.fullDocument.chatBy,
+                    context: data.fullDocument.context,
                 }]
             ))
         };
