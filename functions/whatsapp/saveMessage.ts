@@ -13,6 +13,7 @@ export interface NewMessageDataInterface {
     attachments?: {
         path: string,
         mime_type: string,
+        caption?: string,
     },
     location?: {
         latitude: number,

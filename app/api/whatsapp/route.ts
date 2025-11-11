@@ -71,6 +71,7 @@ export async function POST(req: NextRequest) {
                     mime_type: m.image.mime_type,
                     phone: from,
                     timestamp,
+                    caption: m.image.caption,
                 })
             }
 

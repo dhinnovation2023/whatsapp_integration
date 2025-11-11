@@ -26,6 +26,15 @@ const DynamicChatContent = ({
           width={500}
           height={1000}
         />
+
+        {
+          chat.attachments.caption && (
+            <p
+              className='text-sm'
+            >{chat.attachments.caption}</p>
+          )
+        }
+
       </div>
     )
   }

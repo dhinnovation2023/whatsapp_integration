@@ -41,6 +41,7 @@ const messageSchema = new mongoose.Schema({
     attachments: {
         path: { type: String },
         mime_type: { type: String },
+        caption: { type: String },
     },
     location: {
         latitude: {
