@@ -1,6 +1,7 @@
 import { handleCatchBlock } from "@/functions/common";
 import { saveLocalFileToFirebase } from "@/functions/whatsapp/saveFileToFirebase";
 import { sendFileToWhatsapp } from "@/functions/whatsapp/sendToWhatsapp";
+import MessagesModel from "@/models/messages";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -22,10 +23,18 @@ export async function POST(request: NextRequest) {
             phone,
         })
 
-        await sendFileToWhatsapp({
+        const messageeId = await sendFileToWhatsapp({
             filrebaseFileUrl: filePath,
             phone,
         });
+
+        console.log("Updating in database....", messageeId)
+
+        await MessagesModel.findOneAndUpdate({
+            "attachments.path": filePath,
+        }, {
+            wamid: messageeId,
+        })
 
         return NextResponse.json(true);
 

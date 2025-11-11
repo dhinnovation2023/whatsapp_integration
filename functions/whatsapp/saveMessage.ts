@@ -13,11 +13,17 @@ export interface NewMessageDataInterface {
     attachments?: {
         path: string,
         mime_type: string,
+        caption?: string,
     },
     location?: {
         latitude: number,
         longitude: number,
-    }
+    },
+    wamid?: string,
+    context?: {
+        from: string,
+        id: string,
+    },
 }
 
 export async function saveMessageToDB({ data }: {

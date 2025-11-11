@@ -12,13 +12,17 @@ const DynamicChatContent = ({
 
   if (chat.message) {
     return (
-      <p>{chat.message}</p>
+      <p
+        className='wrap-break-word'
+      >{chat.message}</p>
     )
   }
 
   if (chat.attachments && chat.attachments.mime_type.includes('image/')) {
     return (
-      <div>
+      <div
+        className='space-y-2'
+      >
         <Image
           alt='Chat attachment'
           src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
@@ -26,6 +30,15 @@ const DynamicChatContent = ({
           width={500}
           height={1000}
         />
+
+        {
+          chat.attachments.caption && (
+            <p
+              className='text-sm wrap-break-word'
+            >{chat.attachments.caption}</p>
+          )
+        }
+
       </div>
     )
   }

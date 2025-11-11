@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
             text: string,
         }
 
-        await sendTextToWhatsapp(data);
+        const messageId = await sendTextToWhatsapp(data);
 
         const timestamp = Date.now();
 
@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
                 timestamp: `${timestamp}`,
                 message: data.text,
                 newMessage: false,
+                wamid: messageId,
             }
         })
 

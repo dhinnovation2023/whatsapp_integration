@@ -16,12 +16,17 @@ export interface ChatHistoryMessageInterface {
     attachments?: {
         path: string,
         mime_type: string,
+        caption?: string,
     },
     location?: {
         latitude: number,
         longitude: number,
     },
     chatBy?: string,
+    context?: {
+        from: string,
+        id: string,
+    }
 }
 
 const ChatHistory = ({
@@ -63,6 +68,7 @@ const ChatHistory = ({
                         attachments: message.attachments,
                         location: message.location,
                         chatBy: message.chatBy,
+                        context: message.context,
                     }
 
                     history.push(data);
@@ -92,6 +98,8 @@ const ChatHistory = ({
                 fullDocument: MessagesModelInterface,
             };
 
+            console.log("Check WAMID:", data.fullDocument);
+
             setChatHistory(prev => (
                 [...prev, {
                     date: data.fullDocument.timestamp,
@@ -100,6 +108,7 @@ const ChatHistory = ({
                     attachments: data.fullDocument.attachments || undefined,
                     location: data.fullDocument.location || undefined,
                     chatBy: data.fullDocument.chatBy,
+                    context: data.fullDocument.context,
                 }]
             ))
         };

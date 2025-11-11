@@ -11,12 +11,21 @@ async function SaveFileToDatabase({
     mime_type,
     phone,
     timestamp,
+    caption,
+    wamid,
+    context,
 }: {
     buffer: Buffer,
     mime_type: string,
     phone: string,
     chatRole: ChatRole,
     timestamp: string,
+    caption?: string,
+    wamid?: string,
+    context?: {
+        from: string,
+        id: string,
+    },
 }) {
     return new Promise<string>(async (resolve, reject) => {
         try {
@@ -44,7 +53,10 @@ async function SaveFileToDatabase({
                     attachments: {
                         path: pathname,
                         mime_type,
+                        caption,
                     },
+                    wamid,
+                    context,
                 }
             })
 
@@ -62,11 +74,20 @@ export async function saveWhatsappFileToFirebase({
     mime_type,
     phone,
     timestamp,
+    caption,
+    wamid,
+    context,
 }: {
     fileId: string,
     mime_type: string,
     phone: string,
     timestamp: string,
+    caption?: string,
+    wamid?: string,
+    context?: {
+        from: string,
+        id: string,
+    },
 }) {
     return new Promise<void>(async (resolve, reject) => {
         try {
@@ -102,6 +123,9 @@ export async function saveWhatsappFileToFirebase({
                 mime_type,
                 phone,
                 timestamp,
+                caption,
+                wamid,
+                context,
             })
 
             return resolve();

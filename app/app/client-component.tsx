@@ -67,7 +67,6 @@ const AppPage = () => {
                         }
 
                     } catch (err) {
-                        console.log(err);
                         const message = handleCatchBlock(err);
                         setError(message);
                     }

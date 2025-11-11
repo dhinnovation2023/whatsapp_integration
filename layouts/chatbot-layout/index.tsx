@@ -1,7 +1,7 @@
-import dynamic from 'next/dynamic'
 import ChatInterface from './chat-interface'
 import { ChatHistoryMessageInterface } from './chat-interface/chat-history'
 import { Dispatch, SetStateAction } from 'react'
+import ChatSidebar from './chat-sidebar'
 
 const ChatBotLayout = ({
     onSubmit,
@@ -17,8 +17,6 @@ const ChatBotLayout = ({
     setChatHistory: Dispatch<SetStateAction<ChatHistoryMessageInterface[]>>,
     sending: boolean,
 }) => {
-
-    const ChatSidebar = dynamic(() => import("./chat-sidebar"), { ssr: false })
 
     return (
         <div

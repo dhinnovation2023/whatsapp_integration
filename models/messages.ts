@@ -16,6 +16,13 @@ export interface MessagesModelInterface {
         longitude: number,
     },
     chatBy: string,
+    updatedAt: string,
+    createdAt: string,
+    wamid?: string,
+    context?: {
+        from: string,
+        id: string,
+    }
 }
 
 const messageSchema = new mongoose.Schema({
@@ -41,6 +48,7 @@ const messageSchema = new mongoose.Schema({
     attachments: {
         path: { type: String },
         mime_type: { type: String },
+        caption: { type: String },
     },
     location: {
         latitude: {
@@ -52,8 +60,15 @@ const messageSchema = new mongoose.Schema({
     },
     chatBy: {
         type: String,
+    },
+    wamid: {
+        type: String,
+    },
+    context: {
+        from: { type: String },
+        id: { type: String },
     }
-})
+}, { timestamps: true })
 
 const MessagesModel = mongoose.models.Messages || mongoose.model("Messages", messageSchema)
 export default MessagesModel;

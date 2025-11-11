@@ -2,12 +2,13 @@
 
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
-import { ContactsModelInterface } from '@/models/contacts';
-import { RiLoader4Line, RiSearchLine } from '@remixicon/react'
+import { RiArrowDownSLine, RiLoader4Line, RiSearchLine } from '@remixicon/react'
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ContactCard from './contact-card';
 import { useSearchParams } from 'next/navigation';
+import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contacts/all/route';
+import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
 
 export interface ChatContactsInterface {
     name: string,
@@ -19,33 +20,50 @@ const ChatSidebar = () => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [contacts, setContacts] = useState<ContactsModelInterface[]>([]);
+    const [contacts, setContacts] = useState<CustomContactsCardDataInterface[]>([]);
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
 
     const searchParams = useSearchParams();
-    const [isHidden] = useState(() => {
-        const phone = searchParams.get('phone');
-        return phone && window.innerWidth < 500;
-    });
+    const [isHidden, setIsHidden] = useState(false);
 
+    const checkIsMobile = useCallback(() => {
+        const phone = searchParams.get('phone');
+        const isMobile = phone && window.innerWidth < 500 ? true : false;
+        return isMobile;
+    }, [searchParams])
 
     useEffect(() => {
 
         (async () => {
+            setPaginationLoading(true);
             try {
+
+                const requestData: FetchContactsFilterOptions = {
+                    currentPage,
+                }
 
                 const {
                     data,
-                } = await axios.get<ContactsModelInterface[]>('/api/whatsapp/fetch-contacts/all');
-                setContacts(data);
+                } = await axios.post<CustomContactsCardDataInterface[]>(
+                    '/api/whatsapp/fetch-contacts/all',
+                    requestData,
+                );
+
+                setContacts(prev => [...prev, ...data]);
                 setIsLoading(false);
 
             } catch (err) {
                 const message = handleCatchBlock(err);
                 setError(message);
             }
+
+            setPaginationLoading(false)
         })()
 
-    }, [])
+    }, [currentPage])
 
     useEffect(() => {
         const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
@@ -57,7 +75,7 @@ const ChatSidebar = () => {
             }
 
             event.onmessage = (event) => {
-                const data = JSON.parse(event.data) as { fullDocument: ContactsModelInterface }
+                const data = JSON.parse(event.data) as { fullDocument: CustomContactsCardDataInterface }
 
                 if (Notification.permission === "granted" && data.fullDocument.unread !== null) {
                     new Notification(
@@ -84,9 +102,10 @@ const ChatSidebar = () => {
 
     }, [])
 
-    if (isHidden) {
-        return null;
-    }
+    useEffect(() => {
+        const isMobile = checkIsMobile();
+        (() => { setIsHidden(isMobile); })()
+    }, [checkIsMobile])
 
     if (error) {
         return (
@@ -102,7 +121,10 @@ const ChatSidebar = () => {
 
     return (
         <div
-            className='min-w-[300px] shrink-0 flex flex-col'
+            className={
+                'md:max-w-[300px] w-full shrink-0 flex flex-col'
+                + ` ${isHidden ? "hidden" : ""}`
+            }
         >
             <div
                 className='w-full p-3 border-b border-stroke-light/50'
@@ -147,6 +169,31 @@ const ChatSidebar = () => {
                                     key={index}
                                 />
                             ))}
+
+                            <div
+                                className='p-2'
+                            >
+                                <button
+                                    className='flex items-center justify-center py-3 px-4 gap-2 text-theme-primary text-center w-full cursor-pointer font-semibold hover:bg-theme-primary/10 transition-all rounded-xl'
+                                    disabled={paginationLoading}
+                                    onClick={() => setCurrentPage(prev => ++prev)}
+                                >
+                                    {
+                                        paginationLoading ? (
+                                            <RiLoader4Line
+                                                size={25}
+                                                className='animate-spin'
+                                            />
+                                        ) : (
+                                            <RiArrowDownSLine
+                                        size={25}
+                                        className='shrink-0'
+                                    />
+                                        )
+                                    }
+                                    <span>Load more</span>
+                                </button>
+                            </div>
                         </div>
                     )
                 }

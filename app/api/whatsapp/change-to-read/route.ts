@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(true);
 
     } catch (err) {
-        console.log(err);
         const message = handleCatchBlock(err);
         return NextResponse.json(message, { status: 500 });
     }

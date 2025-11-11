@@ -4,9 +4,16 @@ import ContactsModel, { ContactsModelInterface } from "@/models/contacts";
 import { getServerSession } from "next-auth";
 import TeamMemberModel, { TeamMembersModelInterface } from "@/models/team-member";
 
-export async function fetchAllContacts() {
+export interface FetchContactsFilterOptions {
+    currentPage: number, // page number start from 1;
+}
+
+export async function fetchAllContacts(data: FetchContactsFilterOptions) {
     return new Promise<ContactsModelInterface[]>(async (resolve, reject) => {
         try {
+
+            const limit = 10 // 10 contacts per request
+            const skip = (data.currentPage - 1) * limit;
 
             await dbConnect();
 
@@ -33,12 +40,32 @@ export async function fetchAllContacts() {
                 findQuery["assigned"] = user.userId;
             }
 
-            const contacts = await ContactsModel.find(findQuery, null, { sort: { updatedAt: -1 } });
+            const contacts = await ContactsModel.find(findQuery, null, {
+                sort: { updatedAt: -1 },
+                skip,
+                limit,
+            });
             return resolve(contacts);
 
         } catch (err) {
             const message = handleCatchBlock(err);
             reject(message);
+        }
+    })
+}
+
+export async function fetchOneContactByPhone(phone: string) {
+    return new Promise<ContactsModelInterface>(async (resolve, reject) => {
+        try {
+
+            await dbConnect();
+
+            const contact = await ContactsModel.findOne({ phone });
+
+            return resolve(contact);
+
+        } catch (err) {
+            return reject(err);
         }
     })
 }
