@@ -1,12 +1,12 @@
 import { handleCatchBlock } from "@/functions/common";
 import { fetchReplayMessage } from "@/functions/whatsapp/fetchReplayMessage";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export interface FetchReplayMessageApiRouteMessage {
     wamid?: string,
 }
 
-export async function POST(request: NextResponse) {
+export async function POST(request: NextRequest) {
     try {
 
         const body = await request.json() as FetchReplayMessageApiRouteMessage;
