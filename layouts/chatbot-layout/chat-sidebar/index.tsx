@@ -2,12 +2,13 @@
 
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
-import { RiLoader4Line, RiSearchLine } from '@remixicon/react'
+import { RiArrowDownSLine, RiLoader4Line, RiSearchLine } from '@remixicon/react'
 import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import ContactCard from './contact-card';
 import { useSearchParams } from 'next/navigation';
 import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contacts/all/route';
+import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
 
 export interface ChatContactsInterface {
     name: string,
@@ -21,6 +22,10 @@ const ChatSidebar = () => {
     const [error, setError] = useState<string | null>(null);
     const [contacts, setContacts] = useState<CustomContactsCardDataInterface[]>([]);
 
+    // Pagination
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
+
     const searchParams = useSearchParams();
     const [isHidden, setIsHidden] = useState(false);
 
@@ -33,21 +38,32 @@ const ChatSidebar = () => {
     useEffect(() => {
 
         (async () => {
+            setPaginationLoading(true);
             try {
+
+                const requestData: FetchContactsFilterOptions = {
+                    currentPage,
+                }
 
                 const {
                     data,
-                } = await axios.get<CustomContactsCardDataInterface[]>('/api/whatsapp/fetch-contacts/all');
-                setContacts(data);
+                } = await axios.post<CustomContactsCardDataInterface[]>(
+                    '/api/whatsapp/fetch-contacts/all',
+                    requestData,
+                );
+
+                setContacts(prev => [...prev, ...data]);
                 setIsLoading(false);
 
             } catch (err) {
                 const message = handleCatchBlock(err);
                 setError(message);
             }
+
+            setPaginationLoading(false)
         })()
 
-    }, [])
+    }, [currentPage])
 
     useEffect(() => {
         const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
@@ -153,6 +169,31 @@ const ChatSidebar = () => {
                                     key={index}
                                 />
                             ))}
+
+                            <div
+                                className='p-2'
+                            >
+                                <button
+                                    className='flex items-center justify-center py-3 px-4 gap-2 text-theme-primary text-center w-full cursor-pointer font-semibold hover:bg-theme-primary/10 transition-all rounded-xl'
+                                    disabled={paginationLoading}
+                                    onClick={() => setCurrentPage(prev => ++prev)}
+                                >
+                                    {
+                                        paginationLoading ? (
+                                            <RiLoader4Line
+                                                size={25}
+                                                className='animate-spin'
+                                            />
+                                        ) : (
+                                            <RiArrowDownSLine
+                                        size={25}
+                                        className='shrink-0'
+                                    />
+                                        )
+                                    }
+                                    <span>Load more</span>
+                                </button>
+                            </div>
                         </div>
                     )
                 }

@@ -1,19 +1,21 @@
 import { handleCatchBlock } from "@/functions/common";
-import { fetchAllContacts } from "@/functions/whatsapp/fetchContacts";
+import { fetchAllContacts, FetchContactsFilterOptions } from "@/functions/whatsapp/fetchContacts";
 import { fetchLastChatByPhone } from "@/functions/whatsapp/fetchLastChatByPhone";
 import { ContactsModelInterface } from "@/models/contacts";
 import { MessagesModelInterface } from "@/models/messages";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export interface CustomContactsCardDataInterface extends ContactsModelInterface {
     lastChat?: MessagesModelInterface,
 }
 
-export async function GET() {
+export async function POST(request: NextRequest) {
     try {
 
-        const contacts = await fetchAllContacts();
-        const updatedContacts: CustomContactsCardDataInterface[] = []
+        const body = await request.json() as FetchContactsFilterOptions;
+
+        const contacts = await fetchAllContacts(body);
+        const updatedContacts: CustomContactsCardDataInterface[] = [];
 
         for (const contact of contacts) {
             const lastChat = await fetchLastChatByPhone({phone: contact.phone});
