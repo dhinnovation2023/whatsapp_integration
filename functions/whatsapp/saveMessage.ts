@@ -43,6 +43,11 @@ export async function saveMessageToDB({ data }: {
                 chatBy: data.role === "team" ? session?.user?.name : undefined,
             })
 
+            console.log({
+                ...data,
+                chatBy: data.role === "team" ? session?.user?.name : undefined,
+            })
+
             await newMessage.save();
             return resolve();
 
