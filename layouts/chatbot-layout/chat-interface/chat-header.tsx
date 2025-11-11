@@ -1,4 +1,3 @@
-import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
 import { ContactsModelInterface } from '@/models/contacts';
 import { RiLoader4Line } from '@remixicon/react';
