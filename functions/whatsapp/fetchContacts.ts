@@ -53,3 +53,19 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
         }
     })
 }
+
+export async function fetchOneContactByPhone(phone: string) {
+    return new Promise<ContactsModelInterface>(async (resolve, reject) => {
+        try {
+
+            await dbConnect();
+
+            const contact = await ContactsModel.findOne({ phone });
+
+            return resolve(contact);
+
+        } catch (err) {
+            return reject(err);
+        }
+    })
+}
