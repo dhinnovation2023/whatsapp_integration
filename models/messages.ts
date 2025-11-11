@@ -19,6 +19,10 @@ export interface MessagesModelInterface {
     updatedAt: string,
     createdAt: string,
     wamid?: string,
+    context?: {
+        from: string,
+        id: string,
+    }
 }
 
 const messageSchema = new mongoose.Schema({
@@ -59,6 +63,10 @@ const messageSchema = new mongoose.Schema({
     },
     wamid: {
         type: String,
+    },
+    context: {
+        from: { type: String },
+        id: { type: String },
     }
 }, { timestamps: true })
 

@@ -20,6 +20,10 @@ export interface NewMessageDataInterface {
         longitude: number,
     },
     wamid?: string,
+    context?: {
+        from: string,
+        id: string,
+    },
 }
 
 export async function saveMessageToDB({ data }: {

@@ -13,6 +13,7 @@ async function SaveFileToDatabase({
     timestamp,
     caption,
     wamid,
+    context,
 }: {
     buffer: Buffer,
     mime_type: string,
@@ -21,6 +22,10 @@ async function SaveFileToDatabase({
     timestamp: string,
     caption?: string,
     wamid?: string,
+    context?: {
+        from: string,
+        id: string,
+    },
 }) {
     return new Promise<string>(async (resolve, reject) => {
         try {
@@ -51,6 +56,7 @@ async function SaveFileToDatabase({
                         caption,
                     },
                     wamid,
+                    context,
                 }
             })
 
@@ -70,6 +76,7 @@ export async function saveWhatsappFileToFirebase({
     timestamp,
     caption,
     wamid,
+    context,
 }: {
     fileId: string,
     mime_type: string,
@@ -77,6 +84,10 @@ export async function saveWhatsappFileToFirebase({
     timestamp: string,
     caption?: string,
     wamid?: string,
+    context?: {
+        from: string,
+        id: string,
+    },
 }) {
     return new Promise<void>(async (resolve, reject) => {
         try {
@@ -114,6 +125,7 @@ export async function saveWhatsappFileToFirebase({
                 timestamp,
                 caption,
                 wamid,
+                context,
             })
 
             return resolve();

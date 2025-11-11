@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
                         message: m.text.body,
                         newMessage: true,
                         wamid: m.id,
+                        context: m.context,
                     }
                 })
             }
@@ -74,6 +75,7 @@ export async function POST(req: NextRequest) {
                     timestamp,
                     caption: m.image.caption,
                     wamid: m.id,
+                    context: m.context,
                 })
             }
 
@@ -84,6 +86,7 @@ export async function POST(req: NextRequest) {
                     phone: from,
                     timestamp,
                     wamid: m.id,
+                    context: m.context,
                 })
             }
 
@@ -94,6 +97,7 @@ export async function POST(req: NextRequest) {
                     phone: from,
                     timestamp,
                     wamid: m.id,
+                    context: m.context,
                 });
             }
 
@@ -109,6 +113,7 @@ export async function POST(req: NextRequest) {
                             longitude: m.location.longitude,
                         },
                         wamid: m.id,
+                        context: m.context,
                     }
                 })
             }
