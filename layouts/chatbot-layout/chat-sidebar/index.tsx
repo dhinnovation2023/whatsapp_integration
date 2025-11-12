@@ -40,7 +40,7 @@ const ChatSidebar = () => {
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting ) {
+                if (entry.isIntersecting && window.innerWidth > 500) {
                     setCurrentPage(prev => ++prev)
                 }
             });
