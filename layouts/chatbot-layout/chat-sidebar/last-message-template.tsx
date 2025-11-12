@@ -9,7 +9,7 @@ const LastMessageTemplate = ({ message }: {
 
 return (
     <div
-        className="space-y-1 flex justify-between gap-3"
+        className="space-y-1 min-h-5 flex justify-between gap-3"
     >
         <p
             className="space-x-1 line-clamp-1 text-xs group-hover:hidden"
@@ -39,7 +39,7 @@ return (
             }
         </p>
         <p
-            className="space-x-1 line-clamp-1 text-xs font-semibold text-right text-nowrap hidden group-hover:block min-w-max"
+            className="space-x-1 line-clamp-1 text-[11px] font-semibold text-right text-nowrap hidden group-hover:block min-w-max"
         >
             <span>
                 {

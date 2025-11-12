@@ -1,9 +1,8 @@
 'use client';
 
-import { RiListSettingsLine, RiUser6Line } from "@remixicon/react";
+import { RiUser6Line } from "@remixicon/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import SaveContactPopup from "./save-contact-popup";
 import { TeamMembersModelInterface } from "@/models/team-member";
 import { handleCatchBlock } from "@/functions/common";
 import axios from "axios";
@@ -18,8 +17,6 @@ const ContactCard = ({
 
     const router = useRouter();
     const searchParams = useSearchParams();
-
-    const [showPopup, setShowPopup] = useState<null | "save-contact">(null);
 
     return (
         <>
@@ -74,32 +71,9 @@ const ContactCard = ({
                         }
                     </div>
 
-                    <div
-                        className='group-hover:block md:hidden'
-                    >
-                        <RiListSettingsLine
-                            size={20}
-                            className='cursor-pointer'
-                            onClick={() => setShowPopup("save-contact")}
-                        />
-                    </div>
-
                 </div>
 
             </div>
-
-            {
-                showPopup === "save-contact" ? (
-                    <SaveContactPopup
-                        defaultName={chat.name}
-                        phone={chat.phone}
-                        onClose={() => {
-                            setShowPopup(null)
-                        }}
-                    />
-                ) : null
-            }
-
         </>
     )
 }
