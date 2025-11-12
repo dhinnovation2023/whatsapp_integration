@@ -2,13 +2,16 @@
 
 import Image from 'next/image';
 import { ChatHistoryMessageInterface } from './chat-history'
-import { RiDownloadLine } from '@remixicon/react';
+import { RiDownloadLine, RiMicFill, RiMultiImageFill } from '@remixicon/react';
+import { useState } from 'react';
 
 const DynamicChatContent = ({
   chat,
 }: {
   chat: ChatHistoryMessageInterface,
 }) => {
+
+  const [loadAttachment, setLoadAttachment] = useState<boolean>(false);
 
   if (chat.message) {
     return (
@@ -23,13 +26,34 @@ const DynamicChatContent = ({
       <div
         className='space-y-2'
       >
-        <Image
-          alt='Chat attachment'
-          src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
-          className='max-w-[150px] w-full rounded-2xl'
-          width={500}
-          height={1000}
-        />
+        <div>
+          {
+            loadAttachment ? (
+              <Image
+                alt='Chat attachment'
+                src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
+                className='max-w-[150px] w-full rounded-2xl'
+                width={500}
+                height={1000}
+              />
+            ) : (
+              <div
+                className='space-y-2'
+              >
+                <RiMultiImageFill
+                  size={20}
+                  className='w-[50px] h-[50px] rounded-xl p-3 bg-black/5'
+                />
+                <button
+                  className='text-theme-primary font-semibold text-sm cursor-pointer'
+                  onClick={() => setLoadAttachment(true)}
+                >
+                  Load image
+                </button>
+              </div>
+            )
+          }
+        </div>
 
         {
           chat.attachments.caption && (
@@ -46,10 +70,27 @@ const DynamicChatContent = ({
   if (chat.attachments && chat.attachments.mime_type.includes('audio/')) {
     return (
       <div>
-        <audio
-          src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
-          controls
-        />
+        {
+          loadAttachment ? (
+            <audio
+              src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
+              controls
+            />
+          ) : (
+            <div
+              className='flex items-center gap-3'
+            >
+              <RiMicFill
+                size={20}
+                className='shrink-0'
+              />
+              <button
+                className='text-theme-primary font-semibold text-sm cursor-pointer'
+                onClick={() => setLoadAttachment(true)}
+              >Load voice record</button>
+            </div>
+          )
+        }
       </div>
     )
   }
