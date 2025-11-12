@@ -38,6 +38,8 @@ const SaveContactPopup = ({
 
             await axios.post("/api/whatsapp/update-assigned", requestData);
 
+            onClose();
+
         } catch (err) {
             const message = handleCatchBlock(err);
             window.alert(message);
@@ -57,6 +59,8 @@ const SaveContactPopup = ({
             }
 
             await axios.post("/api/whatsapp/update-name", requestData);
+
+            onClose();
 
         } catch (err) {
             const message = handleCatchBlock(err);

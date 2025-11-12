@@ -24,7 +24,7 @@ const ChatInterface = ({
     >
       <ChatHeader/>
       <div
-        className='h-full overflow-auto px-5'
+        className='h-full overflow-auto px-5 pb-4'
       >
         <Suspense>
           <ChatHistory 

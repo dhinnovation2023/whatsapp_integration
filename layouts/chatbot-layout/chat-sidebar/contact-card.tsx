@@ -24,7 +24,7 @@ const ContactCard = ({
     return (
         <>
             <div
-                className={`py-2 px-5 border-b border-stroke-light/50 space-y-2 ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
+                className={`py-2 px-5 min-h-[65px] border-b border-stroke-light/50 space-y-2 flex items-center ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
             >
                 <div
                     className={`flex group items-center gap-3 w-full`}

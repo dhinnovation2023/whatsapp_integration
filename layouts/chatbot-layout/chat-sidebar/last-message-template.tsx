@@ -12,7 +12,7 @@ return (
         className="space-y-1 flex justify-between gap-3"
     >
         <p
-            className="space-x-1 line-clamp-1 text-xs"
+            className="space-x-1 line-clamp-1 text-xs group-hover:hidden"
         >
             {
                 message?.message && (
