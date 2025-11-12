@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ChatHistoryMessageInterface } from './chat-history'
 import { RiDownloadLine, RiMicFill, RiMultiImageFill } from '@remixicon/react';
 import { useState } from 'react';
+import TranslatableText from './translate';
 
 const DynamicChatContent = ({
   chat,
@@ -15,9 +16,9 @@ const DynamicChatContent = ({
 
   if (chat.message) {
     return (
-      <p
-        className='wrap-break-word'
-      >{chat.message}</p>
+      <TranslatableText
+        text={chat.message}
+      />
     )
   }
 
@@ -57,9 +58,9 @@ const DynamicChatContent = ({
 
         {
           chat.attachments.caption && (
-            <p
-              className='text-sm wrap-break-word'
-            >{chat.attachments.caption}</p>
+            <TranslatableText
+              text={chat.attachments.caption}
+            />
           )
         }
 
