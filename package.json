@@ -17,12 +17,14 @@
     "firebase-admin": "^13.5.0",
     "framer-motion": "^12.23.24",
     "google-auth-library": "^10.5.0",
+    "linkify-react": "^4.3.2",
     "mongoose": "^8.19.2",
     "next": "16.0.1",
     "next-auth": "^4.24.13",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "yet-another-react-lightbox": "^3.25.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

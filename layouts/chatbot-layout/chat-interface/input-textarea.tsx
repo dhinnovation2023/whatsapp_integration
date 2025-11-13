@@ -1,7 +1,8 @@
 'use client';
 
 import { RiAddLargeLine, RiCloseLine, RiLoader4Line, RiSendPlaneLine } from '@remixicon/react'
-import { useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react'
 
 const InputTextarea = ({
     onSubmit,
@@ -10,7 +11,7 @@ const InputTextarea = ({
     onSubmit: (
         value: string,
         file: File | null,
-    ) => void,
+    ) => void | Promise<void>,
     sending: boolean,
 }) => {
 
@@ -18,6 +19,17 @@ const InputTextarea = ({
     const [attachment, setAttachment] = useState<File | null>(null);
 
     const fileInputElement = useRef<HTMLInputElement>(null);
+    const inputTextareRef = useRef<HTMLInputElement>(null);
+
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        
+        if (inputTextareRef.current) {
+            inputTextareRef.current.focus();
+        }
+
+    }, [searchParams])
 
     return (
         <div
@@ -82,17 +94,30 @@ const InputTextarea = ({
                 </>
                 <input
                     type="text"
+                    ref={inputTextareRef}
                     placeholder='Enter message'
                     className='w-full outline-none'
                     value={value}
                     onChange={(event) => setValue(event.target.value)}
-                    onKeyDown={(event) => {
+                    onKeyDown={async (event) => {
+
                         if (event.key === "Enter") {
-                            onSubmit(value, attachment);
+                            await onSubmit(value, attachment);
                             setValue("");
                             setAttachment(null)
                             if (fileInputElement.current) {
                                 fileInputElement.current.files = null;
+                            }
+
+                            if (inputTextareRef.current) {
+                                while (true) {
+                                    await new Promise(resolve => setTimeout(resolve, 500));
+                                    if (!inputTextareRef.current.disabled) {
+                                        break;
+                                    }
+                                }
+
+                                inputTextareRef.current.focus();
                             }
                         }
                     }}

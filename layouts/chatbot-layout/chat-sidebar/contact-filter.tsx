@@ -97,8 +97,6 @@ const ContactFilter = ({
         setLoading(true);
         try {
 
-            console.log(values.teamMember)
-
             const requestData: FetchContactsFilterOptions = {
                 currentPage: 1,
                 assigned: !reset ? values.teamMember : undefined,

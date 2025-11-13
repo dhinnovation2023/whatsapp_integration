@@ -4,6 +4,7 @@ import { handleCatchBlock } from '@/functions/common';
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { TranslateLanguageApiRequestDataInterface } from '@/app/api/translate/route';
 import axios from 'axios';
+import LinkifyText from '@/components/ui-elements/linkify-text';
 
 const TranslatableText = ({ text }: {
     text: string,
@@ -43,7 +44,11 @@ const TranslatableText = ({ text }: {
         <div>
             <p
                 className='wrap-break-word'
-            >{output || text}</p>
+            >
+                <LinkifyText
+                    text={output || text}
+                />
+            </p>
 
             {/* translate option */}
             <div

@@ -5,6 +5,7 @@ import { ChatHistoryMessageInterface } from './chat-history'
 import { RiDownloadLine, RiMicFill, RiMultiImageFill } from '@remixicon/react';
 import { useState } from 'react';
 import TranslatableText from './translate';
+import ImageLightbox from '@/components/ui-elements/image-lightbox';
 
 const DynamicChatContent = ({
   chat,
@@ -13,6 +14,7 @@ const DynamicChatContent = ({
 }) => {
 
   const [loadAttachment, setLoadAttachment] = useState<boolean>(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
   if (chat.message) {
     return (
@@ -23,6 +25,7 @@ const DynamicChatContent = ({
   }
 
   if (chat.attachments && chat.attachments.mime_type.includes('image/')) {
+    const imageUrl = `/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`;
     return (
       <div
         className='space-y-2'
@@ -32,10 +35,11 @@ const DynamicChatContent = ({
             loadAttachment ? (
               <Image
                 alt='Chat attachment'
-                src={`/api/whatsapp/fetch-files/${encodeURIComponent(chat.attachments.path)}`}
-                className='max-w-[150px] w-full rounded-2xl'
+                src={imageUrl}
+                className='max-w-[150px] w-full rounded-2xl cursor-pointer'
                 width={500}
                 height={1000}
+                onClick={() => setIsLightboxOpen(true)}
               />
             ) : (
               <div
@@ -54,6 +58,11 @@ const DynamicChatContent = ({
               </div>
             )
           }
+          <ImageLightbox
+            images={[{ src: imageUrl }]}
+            isOpen={isLightboxOpen}
+            setIsOpen={setIsLightboxOpen}
+          />
         </div>
 
         {
