@@ -2,7 +2,7 @@
 
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
-import { RiArrowDownSLine, RiCloseLine, RiEqualizer2Line, RiLoader4Line } from '@remixicon/react'
+import { RiArrowDownSLine, RiCloseLargeLine, RiCloseLine, RiEqualizer2Line, RiLoader4Line } from '@remixicon/react'
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ContactCard from './contact-card';
@@ -32,6 +32,15 @@ const ChatSidebar = () => {
     // filter
     const [showFilter, setShowFilter] = useState<boolean>(false);
     // selected values
+    const [searchLoading, setSearchLoading] = useState<boolean>(false);
+    const [searchInput, setSearchInput] = useState<{
+        value: string,
+        apply: boolean,
+    }>({
+        value: '',
+        apply: true,
+    });
+
     const [enableDateFilter, setEnableDateFilter] = useState<boolean>(false);
     const [teamMember, setTeamMembers] = useState<string>('');
     const [date, setDate] = useState<{
@@ -64,11 +73,17 @@ const ChatSidebar = () => {
 
     }, [isLoading])
 
+    // Normal pagination ans initial fetch
     useEffect(() => {
+
+        if (searchInput.value.length > 0 || !searchInput.apply) {
+            return;
+        }
 
         (async () => {
             setPaginationLoading(true);
             try {
+                console.log("Running...")
 
                 const requestData: FetchContactsFilterOptions = {
                     currentPage,
@@ -98,7 +113,7 @@ const ChatSidebar = () => {
             setPaginationLoading(false)
         })()
 
-    }, [currentPage, date, teamMember])
+    }, [currentPage, date, teamMember, searchInput])
 
     useEffect(() => {
         const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
@@ -142,6 +157,43 @@ const ChatSidebar = () => {
         (() => { setIsHidden(isMobile); })()
     }, [checkIsMobile])
 
+    async function searchContact(type?: "reset") {
+        setSearchLoading(true);
+
+        if (type === "reset") {
+            setSearchInput(prev => ({
+                ...prev,
+                value: '',
+            }))
+        }
+
+        try {
+            const requestData: FetchContactsFilterOptions = {
+                currentPage: 1,
+                search: type === "reset" ? '' : searchInput.value,
+            }
+
+            const {
+                data,
+            } = await axios.post<CustomContactsCardDataInterface[]>(
+                '/api/whatsapp/fetch-contacts/all',
+                requestData,
+            );
+
+            setContacts(data);
+            setCurrentPage(1);
+
+        } catch (err) {
+            const message = handleCatchBlock(err);
+            setError(message);
+        }
+        setSearchLoading(false);
+        setSearchInput(prev => ({
+            ...prev,
+            apply: true,
+        }))
+    }
+
     if (error) {
         return (
             <div
@@ -157,7 +209,7 @@ const ChatSidebar = () => {
     return (
         <div
             className={
-                'md:max-w-[300px] w-full shrink-0 flex flex-col'
+                'md:max-w-[320px] w-full shrink-0 flex flex-col'
                 + ` ${isHidden ? "hidden" : ""}`
             }
         >
@@ -170,8 +222,44 @@ const ChatSidebar = () => {
                     <input
                         type="text"
                         className='outline-none w-full'
-                        placeholder='Enter name'
+                        placeholder='Press enter to search'
+                        value={searchInput.value}
+                        onChange={(event) => {
+                            setSearchInput({
+                                apply: false,
+                                value: event.target.value,
+                            })
+                        }}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter") {
+                                searchContact(!searchInput.value ? "reset" : undefined);
+                            }
+                        }}
                     />
+                    {
+                        searchInput.value.length > 0 && (
+                            <button
+                                className='text-foreground shrink-0 p-2 cursor-pointer'
+                                disabled={searchLoading}
+                                onClick={() => {
+                                    searchContact("reset")
+                                }}
+                            >
+                                {
+                                    searchLoading ? (
+                                        <RiLoader4Line
+                                            size={20}
+                                            className='animate-spin'
+                                        />
+                                    ) : (
+                                        <RiCloseLargeLine
+                                            size={20}
+                                        />
+                                    )
+                                }
+                            </button>
+                        )
+                    }
                     <button
                         className='text-foreground shrink-0 bg-background rounded-xl p-2 shadow-md cursor-pointer'
                         onClick={() => setShowFilter(prev => !prev)}

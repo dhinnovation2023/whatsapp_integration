@@ -52,9 +52,9 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
             }
 
             if (data.search) {
-                findQuery['$and'] = [
-                    { name: { regex: data.search } },
-                    { phone: { reqex: data.search } }
+                findQuery['$or'] = [
+                    { name: { $regex: data.search, $options: "i" } },
+                    { phone: { $regex: data.search, $options: "i" } }
                 ];
             }
 
