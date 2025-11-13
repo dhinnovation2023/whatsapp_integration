@@ -105,7 +105,9 @@ const ContactFilter = ({ onClose }: {
 
             setPaginationLoading(false);
         })()
-    }, [currentPage, date])
+
+        // eslint-disable-next-line
+    }, [currentPage])
 
     async function handleFormSubmit(event: FormEvent) {
 
