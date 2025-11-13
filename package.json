@@ -17,6 +17,7 @@
     "firebase-admin": "^13.5.0",
     "framer-motion": "^12.23.24",
     "google-auth-library": "^10.5.0",
+    "linkify-react": "^4.3.2",
     "mongoose": "^8.19.2",
     "next": "16.0.1",
     "next-auth": "^4.24.13",
