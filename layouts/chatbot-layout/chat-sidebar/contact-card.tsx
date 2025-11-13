@@ -10,9 +10,11 @@ import { CustomContactsCardDataInterface } from "@/app/api/whatsapp/fetch-contac
 import LastMessageTemplate from "./last-message-template";
 
 const ContactCard = ({
-    chat
+    chat,
+    onClose,
 }: {
     chat: CustomContactsCardDataInterface,
+    onClose?: () => void,
 }) => {
 
     const router = useRouter();
@@ -46,6 +48,9 @@ const ContactCard = ({
                         <button
                             className='text-sm text-left font-semibold capitalize cursor-pointer flex items-center gap-2'
                             onClick={() => {
+                                if (onClose) {
+                                    onClose()
+                                }
                                 router.push(`/app?phone=${chat.phone}`)
                             }}
                         >

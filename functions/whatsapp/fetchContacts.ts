@@ -69,7 +69,7 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
 
             }
 
-            console.log(findQuery);
+            console.log(findQuery)
 
             const contacts = await ContactsModel.find(findQuery, null, {
                 sort: { updatedAt: -1 },

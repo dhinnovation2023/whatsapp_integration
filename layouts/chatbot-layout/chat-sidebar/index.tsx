@@ -9,7 +9,7 @@ import ContactCard from './contact-card';
 import { useSearchParams } from 'next/navigation';
 import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contacts/all/route';
 import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
-import ContactFilter from './contact-filter';
+import ContactFilter from './contacts-filter';
 import { AnimatePresence } from 'framer-motion';
 
 export interface ChatContactsInterface {
@@ -40,13 +40,6 @@ const ChatSidebar = () => {
         value: '',
         apply: true,
     });
-
-    const [enableDateFilter, setEnableDateFilter] = useState<boolean>(false);
-    const [teamMember, setTeamMembers] = useState<string>('');
-    const [date, setDate] = useState<{
-        start: Date,
-        end: Date,
-    } | null>(null);
 
     const searchParams = useSearchParams();
     const [isHidden, setIsHidden] = useState(false);
@@ -83,16 +76,9 @@ const ChatSidebar = () => {
         (async () => {
             setPaginationLoading(true);
             try {
-                console.log("Running...")
 
                 const requestData: FetchContactsFilterOptions = {
                     currentPage,
-                    assigned: teamMember,
-                    date: date ? {
-                        start: date.start.getTime(),
-                        end: date.end.getTime(),
-                    } : undefined,
-                    search: ""
                 }
 
                 const {
@@ -113,7 +99,7 @@ const ChatSidebar = () => {
             setPaginationLoading(false)
         })()
 
-    }, [currentPage, date, teamMember, searchInput])
+    }, [currentPage, searchInput])
 
     useEffect(() => {
         const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
@@ -214,7 +200,7 @@ const ChatSidebar = () => {
             }
         >
             <div
-                className='w-full p-3 border-b border-stroke-light/50 space-y-3'
+                className='w-full p-3 border-b border-stroke-light/50'
             >
                 <div
                     className='flex items-center gap-1 bg-background-2/70 py-2 pl-4 pr-2 rounded-2xl'
@@ -283,18 +269,7 @@ const ChatSidebar = () => {
                     {
                         showFilter && (
                             <ContactFilter
-                                setContacts={setContacts}
-                                update={{
-                                    setTeamMembers,
-                                    setDate,
-                                }}
-                                values={{
-                                    date,
-                                    teamMember,
-                                }}
-                                key={"filter-popup"}
-                                enableDateFilter={enableDateFilter}
-                                setEnableDateFilter={setEnableDateFilter}
+                                onClose={() => setShowFilter(prev => !prev)}
                             />
                         )
                     }
