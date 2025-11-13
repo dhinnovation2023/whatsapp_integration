@@ -5,7 +5,13 @@ import { getServerSession } from "next-auth";
 import TeamMemberModel, { TeamMembersModelInterface } from "@/models/team-member";
 
 export interface FetchContactsFilterOptions {
-    currentPage: number, // page number start from 1;
+    currentPage: number, // page number start from 1
+    search?: string,
+    assigned?: string,
+    date?: {
+        start: number,
+        end: number,
+    },
 }
 
 export async function fetchAllContacts(data: FetchContactsFilterOptions) {
@@ -27,7 +33,8 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
             }
 
             const findQuery: {
-                [key: string]: string,
+                // eslint-disable-next-line
+                [key: string]: any,
             } = {};
 
             if (userSession.user.email !== SUPER_ADMIN_EMAIL) {
@@ -38,7 +45,31 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
                 }
 
                 findQuery["assigned"] = user.userId;
+            } else {
+                if (data.assigned) {
+                    findQuery["assigned"] = data.assigned;
+                }
             }
+
+            if (data.search) {
+                findQuery['$and'] = [
+                    { name: { regex: data.search } },
+                    { phone: { reqex: data.search } }
+                ];
+            }
+
+            if (data.date) {
+                const startDate = new Date(data.date.start)
+                const endDate = new Date(data.date.end);
+
+                findQuery['createdAt'] = {
+                    $gte: startDate, 
+                    $lte: endDate,
+                }
+
+            }
+
+            console.log(findQuery);
 
             const contacts = await ContactsModel.find(findQuery, null, {
                 sort: { updatedAt: -1 },
