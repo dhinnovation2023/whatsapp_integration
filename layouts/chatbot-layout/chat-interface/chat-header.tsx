@@ -4,11 +4,13 @@ import { RiLoader4Line } from '@remixicon/react';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react'
+import SaveContactPopup from '../chat-sidebar/save-contact-popup';
 
 const ChatHeader = () => {
 
     const [currentChatDetails, setCurrentChatDetails] = useState<ContactsModelInterface | null>(null);
     const [inProgress, setInProgress] = useState<boolean>(false);
+    const [showSettingsPopup, setShowSettingsPopup] = useState<boolean>(false);
 
     const searchParams = useSearchParams();
 
@@ -31,11 +33,11 @@ const ChatHeader = () => {
 
             setInProgress(false);
         })()
-    }, [searchParams])
+    }, [searchParams, showSettingsPopup])
 
     return (
         <div
-            className='border-b border-stroke-light py-4 px-5 min-h-[60px] flex items-center'
+            className='border-b border-stroke-light py-4 px-5 min-h-[60px] flex items-center bg-background'
         >
             {
                 inProgress ? (
@@ -50,14 +52,25 @@ const ChatHeader = () => {
                     </div>
                 ) : (
                     <div>
-                        <p
-                            className='text-sm font-semibold capitalize'
-                        >{currentChatDetails?.name}</p>
+                        <button
+                            className='text-sm font-semibold capitalize cursor-pointer'
+                            onClick={() => setShowSettingsPopup(true)}
+                        >{currentChatDetails?.name}</button>
                         <p
                             className='text-xs'
                         >{currentChatDetails?.phone}</p>
                     </div>
                 )
+            }
+
+            {
+                showSettingsPopup && currentChatDetails ? (
+                    <SaveContactPopup
+                        defaultName={currentChatDetails.name}
+                        onClose={() => setShowSettingsPopup(false)}
+                        phone={currentChatDetails.phone}
+                    />
+                ) : null
             }
         </div>
     )

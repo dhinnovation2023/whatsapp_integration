@@ -2,13 +2,15 @@
 
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
-import { RiArrowDownSLine, RiLoader4Line, RiSearchLine } from '@remixicon/react'
+import { RiArrowDownSLine, RiCloseLine, RiEqualizer2Line, RiLoader4Line } from '@remixicon/react'
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ContactCard from './contact-card';
 import { useSearchParams } from 'next/navigation';
 import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contacts/all/route';
 import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
+import ContactFilter from './contact-filter';
+import { AnimatePresence } from 'framer-motion';
 
 export interface ChatContactsInterface {
     name: string,
@@ -26,6 +28,16 @@ const ChatSidebar = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
     const loadMoreElement = useRef<HTMLButtonElement>(null)
+
+    // filter
+    const [showFilter, setShowFilter] = useState<boolean>(false);
+    // selected values
+    const [enableDateFilter, setEnableDateFilter] = useState<boolean>(false);
+    const [teamMember, setTeamMembers] = useState<string>('');
+    const [date, setDate] = useState<{
+        start: Date,
+        end: Date,
+    } | null>(null);
 
     const searchParams = useSearchParams();
     const [isHidden, setIsHidden] = useState(false);
@@ -60,6 +72,12 @@ const ChatSidebar = () => {
 
                 const requestData: FetchContactsFilterOptions = {
                     currentPage,
+                    assigned: teamMember,
+                    date: date ? {
+                        start: date.start.getTime(),
+                        end: date.end.getTime(),
+                    } : undefined,
+                    search: ""
                 }
 
                 const {
@@ -80,7 +98,7 @@ const ChatSidebar = () => {
             setPaginationLoading(false)
         })()
 
-    }, [currentPage])
+    }, [currentPage, date, teamMember])
 
     useEffect(() => {
         const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
@@ -144,10 +162,10 @@ const ChatSidebar = () => {
             }
         >
             <div
-                className='w-full p-3 border-b border-stroke-light/50'
+                className='w-full p-3 border-b border-stroke-light/50 space-y-3'
             >
                 <div
-                    className='flex items-center gap-1 bg-background-2/70 py-3 px-4 rounded-2xl'
+                    className='flex items-center gap-1 bg-background-2/70 py-2 pl-4 pr-2 rounded-2xl'
                 >
                     <input
                         type="text"
@@ -155,11 +173,44 @@ const ChatSidebar = () => {
                         placeholder='Enter name'
                     />
                     <button
-                        className='text-black/40 shrink-0'
+                        className='text-foreground shrink-0 bg-background rounded-xl p-2 shadow-md cursor-pointer'
+                        onClick={() => setShowFilter(prev => !prev)}
                     >
-                        <RiSearchLine />
+                        {
+                            showFilter ? (
+                                <RiCloseLine
+                                    size={20}
+                                />
+                            ) : (
+                                <RiEqualizer2Line
+                                    size={20}
+                                />
+                            )
+                        }
                     </button>
                 </div>
+
+                {/* Filters */}
+                <AnimatePresence>
+                    {
+                        showFilter && (
+                            <ContactFilter
+                                setContacts={setContacts}
+                                update={{
+                                    setTeamMembers,
+                                    setDate,
+                                }}
+                                values={{
+                                    date,
+                                    teamMember,
+                                }}
+                                key={"filter-popup"}
+                                enableDateFilter={enableDateFilter}
+                                setEnableDateFilter={setEnableDateFilter}
+                            />
+                        )
+                    }
+                </AnimatePresence>
             </div>
 
             <div
