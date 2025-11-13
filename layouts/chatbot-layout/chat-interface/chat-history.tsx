@@ -26,7 +26,8 @@ export interface ChatHistoryMessageInterface {
     context?: {
         from: string,
         id: string,
-    }
+    },
+    wamid?: string,
 }
 
 const ChatHistory = ({
@@ -69,6 +70,7 @@ const ChatHistory = ({
                         location: message.location,
                         chatBy: message.chatBy,
                         context: message.context,
+                        wamid: message.wamid,
                     }
 
                     history.push(data);
@@ -174,7 +176,7 @@ const ChatHistory = ({
         >
             {chatHistory.map((chat, index, chats) => (
                 <SingleChatMessage
-                    key={index}
+                    key={chat.wamid || index}
                     chat={chat}
                     lastMessageRef={(chats.length - 1) === index ? lastMessageRef : undefined}
                 />
