@@ -56,24 +56,17 @@ const TranslatableText = ({ text }: {
             >
 
                 <button
-                    className='py-2 px-4 rounded-full shadow-md shadow-blue-900/10 bg-blue-900 text-white cursor-pointer'
+                    className='text-blue-900 cursor-pointer text-xs mt-2'
                     onClick={translateMessage}
                     title='Translate'
                 >
                     {
                         isLoading ? (
-                            <RiLoader4Line
-                                size={15}
-                                className='animate-spin'
-                            />
+                            <p>Translating...</p>
                         ) : output ? (
-                            <RiResetLeftLine
-                                size={15}
-                            />
+                            <p>Show origin</p>
                         ) : (
-                            <RiTranslate2
-                                size={15}
-                            />
+                            <p>Translate</p>
                         )
                     }
                 </button>
