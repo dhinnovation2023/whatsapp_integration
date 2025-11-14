@@ -1,10 +1,10 @@
 import ErrorTemplate from '@/components/ui-elements/error-template';
-import { handleCatchBlock } from '@/functions/common';
+import { FormateDateInMessage, handleCatchBlock, isDifferentDay } from '@/functions/common';
 import { MessagesModelInterface } from '@/models/messages';
 import { RiWhatsappLine } from '@remixicon/react';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react'
 import SingleChatMessage from './single-chat-message';
 
 type ChatRole = "client" | "team";
@@ -174,13 +174,46 @@ const ChatHistory = ({
         <div
             className='flex flex-col w-full gap-3 min-h-max'
         >
-            {chatHistory.map((chat, index, chats) => (
-                <SingleChatMessage
-                    key={chat.wamid || index}
-                    chat={chat}
-                    lastMessageRef={(chats.length - 1) === index ? lastMessageRef : undefined}
-                />
-            ))}
+            {chatHistory.map((chat, index, chats) => {
+
+                const prevDay = chats[index - 1];
+
+                if (prevDay) {
+                    const currentDate = new Date(chat.role === "client" ? parseInt(chat.date) * 1000 : parseInt(chat.date));
+                    const prevDayDate = new Date(prevDay.role === "client" ? parseInt(prevDay.date) * 1000 : parseInt(prevDay.date));
+
+                    if (isDifferentDay(currentDate, prevDayDate)) {
+                        return (
+                            <Fragment
+                                key={chat.wamid ? chat.wamid + index : index}
+                            >
+                                <div
+                                    className='flex items-center justify-center bg-background-2/80 rounded-2xl py-2'
+                                >
+                                    <p
+                                        className='bg-background text-xs py-2 px-4 rounded-full font-semibold'
+                                    >
+                                        {FormateDateInMessage({timeStanp: currentDate.getTime()}).split(' ')[0]}
+                                    </p>
+                                </div>
+                                <SingleChatMessage
+                                    chat={chat}
+                                    lastMessageRef={(chats.length - 1) === index ? lastMessageRef : undefined}
+                                />
+                            </Fragment>
+                        )
+                    }
+                }
+
+                return (
+                    <SingleChatMessage
+                        key={chat.wamid ? chat.wamid + index : index}
+                        chat={chat}
+                        lastMessageRef={(chats.length - 1) === index ? lastMessageRef : undefined}
+                    />
+                )
+
+            })}
         </div>
     )
 }
