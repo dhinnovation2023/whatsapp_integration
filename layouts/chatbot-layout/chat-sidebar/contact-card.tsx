@@ -67,6 +67,9 @@ const ContactCard = ({
                                 )
                             }
                         </button>
+                        <p
+                            className="text-xs"
+                        >{chat.phone}</p>
                         {
                             chat.lastChat && (
                                 <LastMessageTemplate
