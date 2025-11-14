@@ -55,7 +55,7 @@ const InputGroup = (data: {
                 name={data.name}
                 value={data.value}
                 onChange={data.onChange}
-                className='w-full py-2 px-4 border border-stroke-light rounded-lg'
+                className='w-full py-2 px-4 border border-stroke-light rounded-lg min-h-10'
             />
         </div>
     )

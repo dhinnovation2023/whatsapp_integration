@@ -272,9 +272,9 @@ const ContactFilter = ({ onClose }: {
                                 >
                                     <p>No results found!</p>
                                 </div>
-                            ) : contacts.map((contact) => (
+                            ) : contacts.map((contact, index) => (
                                 <ContactCard
-                                    key={contact.phone}
+                                    key={contact.phone + index}
                                     chat={contact}
                                     onClose={onClose}
                                 />

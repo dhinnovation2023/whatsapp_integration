@@ -294,10 +294,10 @@ const ChatSidebar = () => {
                         <div
                             className='space-y-0 min-h-max'
                         >
-                            {contacts.map((chat) => (
+                            {contacts.map((chat, index) => (
                                 <ContactCard
                                     chat={chat}
-                                    key={chat.phone}
+                                    key={chat.phone + index}
                                 />
                             ))}
 

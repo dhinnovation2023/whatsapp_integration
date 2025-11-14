@@ -118,7 +118,7 @@ function AssignedUserName({
     return (
         <span
             className={`text-[10px] font-light py-0.5 px-1.5 rounded-lg text-nowrap`}
-            style={{ backgroundColor: bgColor, color: "#ffffff" }}
+            style={{ backgroundColor: userData.labelColor || bgColor, color: "#ffffff" }}
         >{userData.name}</span>
     )
 }

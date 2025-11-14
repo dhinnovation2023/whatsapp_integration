@@ -3,10 +3,12 @@
 import { handleCatchBlock } from "@/functions/common";
 import { TeamMembersModelInterface } from "@/models/team-member";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const UsersTable = () => {
     const [users, setUsers] = useState<TeamMembersModelInterface[]>([]);
+    const router = useRouter();
 
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -113,9 +115,11 @@ const UsersTable = () => {
                                                     }
                                                 },
                                                 {
-                                                    label: "Change Password",
+                                                    label: "Edit",
                                                     customClass: "bg-green-500 text-white",
-                                                    onClick: () => { },
+                                                    onClick: () => {
+                                                        router.push(`/app/teams/edit?userId=${user.userId}`)
+                                                    },
                                                 }
                                             ].map((item, index) => (
                                                 <button
