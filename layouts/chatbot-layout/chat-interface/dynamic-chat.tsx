@@ -9,17 +9,21 @@ import ImageLightbox from '@/components/ui-elements/image-lightbox';
 
 const DynamicChatContent = ({
   chat,
+  hideTranslate,
 }: {
   chat: ChatHistoryMessageInterface,
+  hideTranslate?: boolean,
 }) => {
 
   const [loadAttachment, setLoadAttachment] = useState<boolean>(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
   if (chat.message) {
+    
     return (
       <TranslatableText
         text={chat.message}
+        hideTranslatable={hideTranslate}
       />
     )
   }
@@ -69,6 +73,7 @@ const DynamicChatContent = ({
           chat.attachments.caption && (
             <TranslatableText
               text={chat.attachments.caption}
+              hideTranslatable={hideTranslate}
             />
           )
         }

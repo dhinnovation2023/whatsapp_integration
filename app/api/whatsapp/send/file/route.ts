@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
 
         const file = formData.get("file") as File;
         const phone = formData.get("phone")?.toString();
+        const context = formData.get("context")?.toString();
 
         if (!file || !phone) {
             throw new Error("File and Phone is required!");
@@ -23,17 +24,22 @@ export async function POST(request: NextRequest) {
             phone,
         })
 
-        const messageeId = await sendFileToWhatsapp({
+        const { wamid } = await sendFileToWhatsapp({
             filrebaseFileUrl: filePath,
             phone,
+            context: context ? ({
+                wamid: context,
+            }) : undefined,
         });
-
-        console.log("Updating in database....", messageeId)
 
         await MessagesModel.findOneAndUpdate({
             "attachments.path": filePath,
         }, {
-            wamid: messageeId,
+            wamid,
+            context: context ? ({
+                from: phone,
+                id: context,
+            }) : undefined,
         })
 
         return NextResponse.json(true);

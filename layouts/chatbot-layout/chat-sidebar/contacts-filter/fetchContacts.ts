@@ -12,7 +12,6 @@ export async function fetchFilteredContacts (options: FetchContactsFilterOptions
                 '/api/whatsapp/fetch-contacts/all',
                 options,
             );
-            console.log(contacts);
             return resolve(contacts);
 
         } catch (err) {

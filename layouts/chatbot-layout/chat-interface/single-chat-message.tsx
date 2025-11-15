@@ -1,19 +1,23 @@
 'use client';
 
-import { Ref, useEffect, useState } from 'react'
+import { Dispatch, Ref, SetStateAction, useEffect, useState } from 'react'
 import { ChatHistoryMessageInterface } from './chat-history'
 import DynamicChatContent from './dynamic-chat'
 import { FormateDateInMessage, handleCatchBlock } from '@/functions/common'
 import { MessagesModelInterface } from '@/models/messages';
 import axios from 'axios';
 import { FetchReplayMessageApiRouteMessage } from '@/app/api/whatsapp/fetch-replay-message/route';
+import { ReplayContextDataInterface } from '@/app/app/client-component';
 
 const SingleChatMessage = ({
     chat,
     lastMessageRef,
+    setReplayContext,
 }: {
     chat: ChatHistoryMessageInterface,
     lastMessageRef?: Ref<HTMLDivElement>,
+    replayContext: ReplayContextDataInterface | null,
+    setReplayContext: Dispatch<SetStateAction<ReplayContextDataInterface | null>>
 }) => {
 
     const [replayMessage, setReplayMessage] = useState<MessagesModelInterface | null>(null);
@@ -43,9 +47,21 @@ const SingleChatMessage = ({
             className={'min-w-[100px] w-max max-w-full md:max-w-[600px] space-y-2 bg-background py-3 px-5 rounded-xl' + ` ${chat.role === "client" ? "self-start" : " self-end"}`}
             ref={lastMessageRef}
         >
-            <p
-                className='text-foreground/60 text-xs'
-            >{chat.role === "team" ? chat.chatBy ? chat.chatBy : "not-set" : "Client"}</p>
+            <div
+                className='flex items-center justify-between gap-4'
+            >
+                <p
+                    className='text-foreground/60 text-xs'
+                >{chat.role === "team" ? chat.chatBy ? chat.chatBy : "not-set" : "Client"}</p>
+                <button
+                    className='text-xs font-semibold cursor-pointer'
+                    onClick={() => {
+                        setReplayContext(chat.wamid ? ({wamid: chat.wamid}) : null);
+                    }}
+                >
+                    Replay
+                </button>
+            </div>
 
             {
                 replayMessage && (

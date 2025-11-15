@@ -88,8 +88,6 @@ const EditTeamMembers = () => {
                     throw new Error("user data not found!");
                 }
 
-                console.log("userData", userData)
-
                 setFormData({
                     name: userData.name,
                     email: userData.email,

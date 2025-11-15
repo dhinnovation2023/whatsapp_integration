@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react'
 import SingleChatMessage from './single-chat-message';
+import { ReplayContextDataInterface } from '@/app/app/client-component';
 
 type ChatRole = "client" | "team";
 
@@ -33,9 +34,13 @@ export interface ChatHistoryMessageInterface {
 const ChatHistory = ({
     chatHistory,
     setChatHistory,
+    replayContext,
+    setReplayContext,
 }: {
     chatHistory: ChatHistoryMessageInterface[],
     setChatHistory: Dispatch<SetStateAction<ChatHistoryMessageInterface[]>>,
+    replayContext: ReplayContextDataInterface | null,
+    setReplayContext: Dispatch<SetStateAction<ReplayContextDataInterface | null>>,
 }) => {
 
     const searchparams = useSearchParams();
@@ -100,8 +105,6 @@ const ChatHistory = ({
                 fullDocument: MessagesModelInterface,
             };
 
-            console.log("Check WAMID:", data.fullDocument);
-
             setChatHistory(prev => (
                 [...prev, {
                     date: data.fullDocument.timestamp,
@@ -111,6 +114,7 @@ const ChatHistory = ({
                     location: data.fullDocument.location || undefined,
                     chatBy: data.fullDocument.chatBy,
                     context: data.fullDocument.context,
+                    wamid: data.fullDocument.wamid,
                 }]
             ))
         };
@@ -193,12 +197,14 @@ const ChatHistory = ({
                                     <p
                                         className='bg-background text-xs py-2 px-4 rounded-full font-semibold'
                                     >
-                                        {FormateDateInMessage({timeStanp: currentDate.getTime()}).split(' ')[0]}
+                                        {FormateDateInMessage({ timeStanp: currentDate.getTime() }).split(' ')[0]}
                                     </p>
                                 </div>
                                 <SingleChatMessage
                                     chat={chat}
                                     lastMessageRef={(chats.length - 1) === index ? lastMessageRef : undefined}
+                                    replayContext={replayContext}
+                                    setReplayContext={setReplayContext}
                                 />
                             </Fragment>
                         )
@@ -210,6 +216,8 @@ const ChatHistory = ({
                         key={chat.wamid ? chat.wamid + index : index}
                         chat={chat}
                         lastMessageRef={(chats.length - 1) === index ? lastMessageRef : undefined}
+                        replayContext={replayContext}
+                        setReplayContext={setReplayContext}
                     />
                 )
 

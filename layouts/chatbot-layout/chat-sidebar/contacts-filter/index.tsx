@@ -51,7 +51,6 @@ const ContactFilter = ({ onClose }: {
             {
                 value: date?.end || new Date(),
                 onChange: (event) => {
-                    console.log(event.target.value)
                     setDate(prev => ({
                         ...prev,
                         end: event.target.valueAsDate || new Date(),
@@ -291,7 +290,6 @@ const ContactFilter = ({ onClose }: {
                                         }
 
                                         setCurrentPage(prev => {
-                                            console.log("prev value:", prev);
                                             return prev + 1;
                                         })
                                     }}
