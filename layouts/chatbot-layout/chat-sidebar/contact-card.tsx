@@ -8,28 +8,44 @@ import { handleCatchBlock } from "@/functions/common";
 import axios from "axios";
 import { CustomContactsCardDataInterface } from "@/app/api/whatsapp/fetch-contacts/all/route";
 import LastMessageTemplate from "./last-message-template";
+import { StatusModelInterface } from "@/models/status";
 
 const ContactCard = ({
     chat,
     onClose,
+    statusList,
 }: {
     chat: CustomContactsCardDataInterface,
     onClose?: () => void,
+    statusList: StatusModelInterface[],
 }) => {
+
+    const [currentStatus, setCurrentStatus] = useState<StatusModelInterface | null>(null);
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
+    useEffect(() => {
+        (() => {
+            const targetStatus = statusList.find((status) => status.statusId === chat.statusId);
+            setCurrentStatus(targetStatus || null);
+        })()
+    }, [statusList.length, statusList, chat.statusId])
+
     return (
         <>
             <div
-                className={`py-2 px-5 min-h-[65px] border-b border-stroke-light/50 space-y-2 flex items-center ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
+                className={`py-2 px-5 min-h-[65px] border-b border-stroke-light/50 space-y-2 flex items-center overflow-hidden ${chat.phone === searchParams.get('phone') ? "bg-theme-primary/10" : "hover:bg-stroke-light/10"}`}
             >
                 <div
                     className={`flex group items-center gap-3 w-full`}
                 >
                     <div
-                        className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : "bg-background-2"}`}
+                        className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : ""}`}
+                        style={{
+                            backgroundColor: currentStatus?.color,
+                            color: currentStatus ? "white" : '',
+                        }}
                     >
                         {
                             chat.unread &&
@@ -67,6 +83,9 @@ const ContactCard = ({
                                 )
                             }
                         </button>
+                        <p
+                            className="text-xs"
+                        >{chat.phone}</p>
                         {
                             chat.lastChat && (
                                 <LastMessageTemplate
@@ -115,7 +134,7 @@ function AssignedUserName({
     return (
         <span
             className={`text-[10px] font-light py-0.5 px-1.5 rounded-lg text-nowrap`}
-            style={{ backgroundColor: bgColor, color: "#ffffff" }}
+            style={{ backgroundColor: userData.labelColor || bgColor, color: "#ffffff" }}
         >{userData.name}</span>
     )
 }

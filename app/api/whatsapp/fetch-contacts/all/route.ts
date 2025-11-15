@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
                 assigned: contact.assigned,
                 unread: contact.unread,
                 lastChat,
+                statusId: contact.statusId,
             }
 
             updatedContacts.push(data);

@@ -9,11 +9,17 @@ import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
+export interface ReplayContextDataInterface {
+    wamid: string,
+}
+
 const AppPage = () => {
 
     const searchparams = useSearchParams();
     const [chatHistory, setChatHistory] = useState<ChatHistoryMessageInterface[]>([]);
     const [error, setError] = useState<string | null>(null);
+
+    const [replayContext, setReplayContext] = useState<ReplayContextDataInterface | null>(null);
 
     const [sending, setSending] = useState<boolean>(false);
 
@@ -30,6 +36,8 @@ const AppPage = () => {
                 )
             }
             <ChatBotLayout
+                replayContext={replayContext}
+                setReplayContext={setReplayContext}
                 sending={sending}
                 onSubmit={async (value, attachment) => {
                     setSending(true);
@@ -53,6 +61,10 @@ const AppPage = () => {
                             const formData = new FormData();
                             formData.append('file', attachment);
                             formData.append('phone', phone);
+                            
+                            if (replayContext) {
+                                formData.append("context", replayContext.wamid)
+                            }
 
                             await axios.post('/api/whatsapp/send/file', formData, {
                                 headers: {
@@ -63,8 +75,13 @@ const AppPage = () => {
                             await axios.post('/api/whatsapp/send', {
                                 phone,
                                 text: value,
+                                context: replayContext ? ({
+                                    wamid: replayContext.wamid,
+                                }) : undefined,
                             })
                         }
+
+                        setReplayContext(null);
 
                     } catch (err) {
                         const message = handleCatchBlock(err);

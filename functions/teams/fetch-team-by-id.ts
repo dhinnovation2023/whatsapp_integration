@@ -5,7 +5,7 @@ export async function fetchTeamMemberByUserId(userId: string) {
     return new Promise<TeamMembersModelInterface>(async (resolve, reject) => {
         try {
             await dbConnect();
-            const user = await TeamMemberModel.findOne({ userId }, "name email") as TeamMembersModelInterface;
+            const user = await TeamMemberModel.findOne({ userId }, "name email labelColor") as TeamMembersModelInterface;
 
             if (!user) {
                 throw new Error("User not found!");

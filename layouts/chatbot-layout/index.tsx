@@ -2,12 +2,15 @@ import ChatInterface from './chat-interface'
 import { ChatHistoryMessageInterface } from './chat-interface/chat-history'
 import { Dispatch, SetStateAction } from 'react'
 import ChatSidebar from './chat-sidebar'
+import { ReplayContextDataInterface } from '@/app/app/client-component'
 
 const ChatBotLayout = ({
     onSubmit,
     chatHistory,
     setChatHistory,
     sending,
+    replayContext,
+    setReplayContext,
 }: {
     onSubmit: (
         value: string,
@@ -16,6 +19,8 @@ const ChatBotLayout = ({
     chatHistory: ChatHistoryMessageInterface[],
     setChatHistory: Dispatch<SetStateAction<ChatHistoryMessageInterface[]>>,
     sending: boolean,
+    replayContext: ReplayContextDataInterface | null,
+    setReplayContext: Dispatch<SetStateAction<ReplayContextDataInterface | null>>,
 }) => {
 
     return (
@@ -28,6 +33,8 @@ const ChatBotLayout = ({
                 chatHistory={chatHistory}
                 setChatHistory={setChatHistory}
                 sending={sending}
+                replayContext={replayContext}
+                setReplayContext={setReplayContext}
             />
         </div>
     )

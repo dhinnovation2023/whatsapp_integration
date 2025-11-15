@@ -10,6 +10,10 @@ const menuItems: {
         label: "Teams",
         href: "/app/teams",
     },
+    {
+        label: "Status Settings",
+        href: "/app/status-settings",
+    },
 ]
 
 export default menuItems

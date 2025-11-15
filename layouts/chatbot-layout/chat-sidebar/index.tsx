@@ -11,6 +11,7 @@ import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contac
 import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
 import ContactFilter from './contacts-filter';
 import { AnimatePresence } from 'framer-motion';
+import { StatusModelInterface } from '@/models/status';
 
 export interface ChatContactsInterface {
     name: string,
@@ -23,6 +24,7 @@ const ChatSidebar = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [contacts, setContacts] = useState<CustomContactsCardDataInterface[]>([]);
+    const [statusList, setStatusList] = useState<StatusModelInterface[]>([]);
 
     // Pagination
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -88,6 +90,9 @@ const ChatSidebar = () => {
                     requestData,
                 );
 
+                const { data: statusList } = await axios.post<StatusModelInterface[]>('/api/status/get-all');
+
+                setStatusList(statusList);
                 setContacts(prev => [...prev, ...data]);
                 setIsLoading(false);
 
@@ -294,10 +299,11 @@ const ChatSidebar = () => {
                         <div
                             className='space-y-0 min-h-max'
                         >
-                            {contacts.map((chat) => (
+                            {contacts.map((chat, index) => (
                                 <ContactCard
                                     chat={chat}
-                                    key={chat.phone}
+                                    key={chat.phone + index}
+                                    statusList={statusList}
                                 />
                             ))}
 

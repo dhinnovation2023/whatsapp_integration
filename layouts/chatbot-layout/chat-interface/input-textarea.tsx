@@ -1,18 +1,24 @@
 'use client';
 
+import { ReplayContextDataInterface } from '@/app/app/client-component';
 import { RiAddLargeLine, RiCloseLine, RiLoader4Line, RiSendPlaneLine } from '@remixicon/react'
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import SelectedReplayMessage from './selected-replay-message';
 
 const InputTextarea = ({
     onSubmit,
     sending,
+    replayContext,
+    setReplayContext
 }: {
     onSubmit: (
         value: string,
         file: File | null,
     ) => void | Promise<void>,
     sending: boolean,
+    replayContext: ReplayContextDataInterface | null,
+    setReplayContext: Dispatch<SetStateAction<ReplayContextDataInterface | null>>,
 }) => {
 
     const [value, setValue] = useState<string>('');
@@ -35,6 +41,14 @@ const InputTextarea = ({
         <div
             className='px-5 pb-5'
         >
+            {
+                replayContext?.wamid && (
+                    <SelectedReplayMessage
+                        wamid={replayContext.wamid}
+                        setReplayContext={setReplayContext}
+                    />
+                )
+            }
             <div
                 className='py-2 px-5 bg-background flex items-center rounded-2xl gap-3 relative'
             >

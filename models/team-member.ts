@@ -5,6 +5,7 @@ export interface TeamMembersModelInterface {
     name: string,
     email: string,
     password: string,
+    labelColor?: string,
 }
 
 const teamMembersSchema = new mongoose.Schema<TeamMembersModelInterface>({
@@ -26,6 +27,9 @@ const teamMembersSchema = new mongoose.Schema<TeamMembersModelInterface>({
         type: String,
         required: true,
     },
+    labelColor: {
+        type: String,
+    }
 })
 
 const TeamMemberModel = mongoose.models.TeamMember || mongoose.model("TeamMember", teamMembersSchema);
