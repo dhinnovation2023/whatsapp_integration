@@ -8,17 +8,29 @@ import { handleCatchBlock } from "@/functions/common";
 import axios from "axios";
 import { CustomContactsCardDataInterface } from "@/app/api/whatsapp/fetch-contacts/all/route";
 import LastMessageTemplate from "./last-message-template";
+import { StatusModelInterface } from "@/models/status";
 
 const ContactCard = ({
     chat,
     onClose,
+    statusList,
 }: {
     chat: CustomContactsCardDataInterface,
     onClose?: () => void,
+    statusList: StatusModelInterface[],
 }) => {
+
+    const [currentStatus, setCurrentStatus] = useState<StatusModelInterface | null>(null);
 
     const router = useRouter();
     const searchParams = useSearchParams();
+
+    useEffect(() => {
+        (() => {
+            const targetStatus = statusList.find((status) => status.statusId === chat.statusId);
+            setCurrentStatus(targetStatus || null);
+        })()
+    }, [statusList.length, statusList, chat.statusId])
 
     return (
         <>
@@ -29,7 +41,11 @@ const ContactCard = ({
                     className={`flex group items-center gap-3 w-full`}
                 >
                     <div
-                        className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : "bg-background-2"}`}
+                        className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : ""}`}
+                        style={{
+                            backgroundColor: currentStatus?.color,
+                            color: currentStatus ? "white" : '',
+                        }}
                     >
                         {
                             chat.unread &&

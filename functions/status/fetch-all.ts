@@ -2,7 +2,7 @@ import { dbConnect } from "@/config/dbConfig";
 import StatusModel, { StatusModelInterface } from "@/models/status";
 
 export interface FetchAllStatusFilterInterface {
-    currentPage: number,
+    currentPage?: number,
 }
 
 export async function fetchAllStatus({
@@ -12,8 +12,13 @@ export async function fetchAllStatus({
         try {
             await dbConnect();
 
-            const limit = 10;
-            const skip = (currentPage - 1) * limit;
+            let limit;
+            let skip;
+
+            if (currentPage) {
+                limit = 10;
+                skip = (currentPage - 1) * limit;
+            }
 
             const statusList = await StatusModel.find({}, null, { limit, skip });
 

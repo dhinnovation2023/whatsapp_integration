@@ -12,12 +12,14 @@ import { RiCloseLine } from "@remixicon/react";
 import ContactCard from "../contact-card";
 import { fetchFilteredContacts } from "./fetchContacts";
 import LoadMoreFilterButton from "./load-more";
+import { StatusModelInterface } from "@/models/status";
 
 const ContactFilter = ({ onClose }: {
     onClose: () => void,
 }) => {
 
     const [contacts, setContacts] = useState<CustomContactsCardDataInterface[]>([]);
+    const [statusList, setStatusList] = useState<StatusModelInterface[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
     const [disablePagination, setDisablePagiination] = useState<boolean>(false);
@@ -107,6 +109,18 @@ const ContactFilter = ({ onClose }: {
 
         // eslint-disable-next-line
     }, [currentPage])
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const { data: statusList } = await axios.post<StatusModelInterface[]>('/api/status/get-all');
+                setStatusList(statusList);
+            } catch (err) {
+                const message = handleCatchBlock(err);
+                setError(message);
+            }
+        })()
+    }, [])
 
     async function handleFormSubmit(event: FormEvent) {
 
@@ -276,6 +290,7 @@ const ContactFilter = ({ onClose }: {
                                     key={contact.phone + index}
                                     chat={contact}
                                     onClose={onClose}
+                                    statusList={statusList}
                                 />
                             ))
                         }

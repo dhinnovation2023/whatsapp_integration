@@ -5,6 +5,7 @@ export interface ContactsModelInterface {
     phone: string,
     assigned?: string,
     unread?: number | null,
+    statusId?: string,
 } 
 
 const contactsSchema = new mongoose.Schema({
@@ -22,6 +23,9 @@ const contactsSchema = new mongoose.Schema({
     },
     unread: {
         type: Number,
+    },
+    statusId: {
+        type: String,
     }
 }, { timestamps: true })
 
