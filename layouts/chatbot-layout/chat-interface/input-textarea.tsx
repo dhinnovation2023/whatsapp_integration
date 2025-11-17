@@ -30,7 +30,7 @@ const InputTextarea = ({
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        
+
         if (inputTextareRef.current) {
             inputTextareRef.current.focus();
         }
@@ -136,6 +136,17 @@ const InputTextarea = ({
                         }
                     }}
                     disabled={sending || attachment ? true : false}
+                    onPaste={(event) => {
+                        const items = event.clipboardData.items;
+                        console.log(items)
+
+                        for (const item of items) {
+                            if (item.type.indexOf("image") === 0) {
+                                const file = item.getAsFile();
+                                if (file) setAttachment(file);
+                            }
+                        }
+                    }}
                 />
                 <button
                     className='shrink-0 rounded-2xl bg-theme-primary text-white min-w-[50px] h-[50px] flex items-center justify-center cursor-pointer'

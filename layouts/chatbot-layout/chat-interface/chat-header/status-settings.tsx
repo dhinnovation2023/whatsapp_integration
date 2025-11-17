@@ -87,7 +87,7 @@ const StatusSettings = ({ currentChat }: {
                     setShowPopup(prev => !prev)
                 }}
                 style={{
-                    backgroundColor: !currentStatus ? "#cecece40" : currentStatus.color,
+                    backgroundColor: !currentStatus ? "var(--foreground)" : currentStatus.color,
                 }}
             >
                 <p>{currentStatus ? currentStatus.name : "-- Select Status --"}</p>
