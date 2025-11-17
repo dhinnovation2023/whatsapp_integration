@@ -5,6 +5,7 @@ import { ContactsModelInterface } from '@/models/contacts';
 import { StatusModelInterface } from '@/models/status';
 import { RiArrowDownSLine, RiLoader4Line } from '@remixicon/react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react'
 
 const StatusSettings = ({ currentChat }: {
@@ -17,6 +18,8 @@ const StatusSettings = ({ currentChat }: {
 
     const [statusList, setStatusList] = useState<StatusModelInterface[]>([]);
     const [currentStatus, setCurrentStatus] = useState<StatusModelInterface | null>(null);
+
+    const router = useRouter();
 
     useEffect(() => {
         (async () => {
@@ -52,6 +55,7 @@ const StatusSettings = ({ currentChat }: {
             setError(message);
         }
         setInProgress(false);
+        router.refresh();
     }
 
     if (error) {

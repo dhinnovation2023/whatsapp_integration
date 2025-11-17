@@ -11,6 +11,7 @@ import { fetchFilteredContacts } from './contacts-filter/fetchContacts';
 import ContactInplaceFilter from './contacts-inplace-filter';
 import { AnimatePresence } from 'framer-motion';
 import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
+import axios from 'axios';
 
 const ChatSidebar = () => {
 
@@ -66,6 +67,58 @@ const ChatSidebar = () => {
             observer.observe(loadMoreButtonRef.current);
         }
     }, [initialLoading])
+
+    // Load all status list
+    useEffect(() => {
+        (async () => {
+            try {
+                const {
+                    data: statusList,
+                } = await axios.post('/api/status/get-all');
+                setStatusList(statusList);
+            } catch (err) {
+                const message = handleCatchBlock(err);
+                setError(message);
+            }
+        })()
+    }, [])
+
+    useEffect(() => {
+        const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
+
+        (async () => {
+
+            if (Notification.permission !== "granted") {
+                await Notification.requestPermission();
+            }
+
+            event.onmessage = (event) => {
+                const data = JSON.parse(event.data) as { fullDocument: CustomContactsCardDataInterface }
+
+                if (Notification.permission === "granted" && data.fullDocument.unread !== null) {
+                    new Notification(
+                        "New notification!",
+                        {
+                            body: `You have ${data.fullDocument.unread} unread messages.`,
+                        }
+                    )
+                }
+
+                setContacts(prevContacts => {
+                    const filtered = prevContacts.filter(contact => contact.phone !== data.fullDocument.phone);
+                    const newContacts = [data.fullDocument, ...filtered];
+                    return newContacts;
+                })
+            }
+
+            event.onerror = (err) => {
+                console.log("SSE Error:", err);
+            }
+        })()
+
+        return () => event.close();
+
+    }, [])
 
     async function handlePagination(target?: number) {
         setInProgress(true);
