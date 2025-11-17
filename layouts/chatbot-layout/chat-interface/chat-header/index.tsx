@@ -76,11 +76,11 @@ const ChatHeader = () => {
                 }
             </div>
             {
-                !inProgress && (
+                !inProgress && currentChatDetails ? (
                     <StatusSettings
                         currentChat={currentChatDetails}
                     />
-                )
+                ) : null
             }
         </div>
     )
