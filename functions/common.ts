@@ -56,9 +56,9 @@ export function FormateDateInMessage({ timeStanp }: {
     const yesterday = new Date(Date.now() - 86400000);
 
     if (!isDifferentDay(today, date)) {
-        return "Today";
+        return "Today" + ` ${formattedTime}`;
     } else if (!isDifferentDay(yesterday, date)) {
-        return "Yesterday";
+        return "Yesterday" + ` ${formattedTime}`;
     }
 
     return formattedDate;
