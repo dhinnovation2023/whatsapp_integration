@@ -41,11 +41,12 @@ const ContactCard = ({
                     className={`flex group items-center gap-3 w-full`}
                 >
                     <div
-                        className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary text-white" : ""}`}
+                        className={`w-[30px] h-[30px] rounded-full flex items-center justify-center shrink-0 relative ${chat.phone === searchParams.get('phone') ? "bg-theme-primary! text-white" : ""}`}
                         style={{
-                            backgroundColor: currentStatus?.color,
+                            backgroundColor: currentStatus ? currentStatus.color : "#00000005",
                             color: currentStatus ? "white" : '',
                         }}
+                        title={currentStatus?.name}
                     >
                         {
                             chat.unread &&
