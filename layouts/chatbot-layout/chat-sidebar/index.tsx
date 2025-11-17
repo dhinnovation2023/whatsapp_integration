@@ -51,6 +51,22 @@ const ChatSidebar = () => {
         })()
     }, [])
 
+    // useEffect for Observer
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            for (const entry of entries) {
+                if (entry.isIntersecting) {
+                    const element = entry.target as HTMLButtonElement;
+                    element.click();
+                }
+            }
+        })
+
+        if (loadMoreButtonRef.current) {
+            observer.observe(loadMoreButtonRef.current);
+        }
+    }, [initialLoading])
+
     async function handlePagination(target?: number) {
         setInProgress(true);
         try {
