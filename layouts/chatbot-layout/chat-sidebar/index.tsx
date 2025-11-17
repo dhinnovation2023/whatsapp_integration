@@ -1,199 +1,94 @@
 'use client';
 
+import { RiArrowDownSLine, RiEqualizer2Line, RiLoader4Line } from '@remixicon/react';
+import ContactCard from './contact-card';
+import { useEffect, useRef, useState } from 'react';
+import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contacts/all/route';
+import { StatusModelInterface } from '@/models/status';
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common';
-import { RiArrowDownSLine, RiCloseLargeLine, RiCloseLine, RiEqualizer2Line, RiLoader4Line } from '@remixicon/react'
-import axios from 'axios';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import ContactCard from './contact-card';
-import { useSearchParams } from 'next/navigation';
-import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contacts/all/route';
-import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
-import ContactFilter from './contacts-filter';
+import { fetchFilteredContacts } from './contacts-filter/fetchContacts';
+import ContactInplaceFilter from './contacts-inplace-filter';
 import { AnimatePresence } from 'framer-motion';
-import { StatusModelInterface } from '@/models/status';
-
-export interface ChatContactsInterface {
-    name: string,
-    lastMessage: string,
-    isNew: boolean,
-}
+import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
 
 const ChatSidebar = () => {
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [initialLoading, setInitialLoading] = useState<boolean>(true);
+    const [inProgress, setInProgress] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [showFilter, setShowFilter] = useState<boolean>(false);
+    const loadMoreButtonRef = useRef<HTMLButtonElement>(null);
+
     const [contacts, setContacts] = useState<CustomContactsCardDataInterface[]>([]);
     const [statusList, setStatusList] = useState<StatusModelInterface[]>([]);
-
-    // Pagination
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [paginationLoading, setPaginationLoading] = useState<boolean>(false);
-    const loadMoreElement = useRef<HTMLButtonElement>(null)
 
-    // filter
-    const [showFilter, setShowFilter] = useState<boolean>(false);
-    // selected values
-    const [searchLoading, setSearchLoading] = useState<boolean>(false);
-    const [searchInput, setSearchInput] = useState<{
-        value: string,
-        apply: boolean,
+    // Filters
+    const [searchInput, setSearchInput] = useState<string>('');
+    const [teamMember, setTeamMember] = useState<string>('');
+    const [enableDateFilter, setEnableDateFilter] = useState<boolean>(false);
+    const [date, setDate] = useState<{
+        start: Date,
+        end: Date,
     }>({
-        value: '',
-        apply: true,
+        start: new Date(Date.now() - (86400000 * 30)),
+        end: new Date(),
     });
 
-    const searchParams = useSearchParams();
-    const [isHidden, setIsHidden] = useState(false);
-
-    const checkIsMobile = useCallback(() => {
-        const phone = searchParams.get('phone');
-        const isMobile = phone && window.innerWidth < 500 ? true : false;
-        return isMobile;
-    }, [searchParams])
-
     useEffect(() => {
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && window.innerWidth > 500) {
-                    setCurrentPage(prev => ++prev)
-                }
-            });
-        })
-
-        if (loadMoreElement.current) {
-            observer.observe(loadMoreElement.current);
-        }
-
-    }, [isLoading])
-
-    // Normal pagination ans initial fetch
-    useEffect(() => {
-
-        if (searchInput.value.length > 0 || !searchInput.apply) {
-            return;
-        }
-
         (async () => {
-            setPaginationLoading(true);
             try {
-
-                const requestData: FetchContactsFilterOptions = {
-                    currentPage,
-                }
-
-                const {
-                    data,
-                } = await axios.post<CustomContactsCardDataInterface[]>(
-                    '/api/whatsapp/fetch-contacts/all',
-                    requestData,
-                );
-
-                const { data: statusList } = await axios.post<StatusModelInterface[]>('/api/status/get-all');
-
-                setStatusList(statusList);
-                setContacts(prev => [...prev, ...data]);
-                setIsLoading(false);
-
+                const contacts = await fetchFilteredContacts({
+                    currentPage: 1,
+                })
+                setContacts(contacts);
+                setInitialLoading(false)
             } catch (err) {
                 const message = handleCatchBlock(err);
                 setError(message);
             }
-
-            setPaginationLoading(false)
         })()
-
-    }, [currentPage, searchInput])
-
-    useEffect(() => {
-        const event = new EventSource(`/api/whatsapp/updates-event/contacts`);
-
-        (async () => {
-
-            if (Notification.permission !== "granted") {
-                await Notification.requestPermission();
-            }
-
-            event.onmessage = (event) => {
-                const data = JSON.parse(event.data) as { fullDocument: CustomContactsCardDataInterface }
-
-                if (Notification.permission === "granted" && data.fullDocument.unread !== null) {
-                    new Notification(
-                        "New notification!",
-                        {
-                            body: `You have ${data.fullDocument.unread} unread messages.`,
-                        }
-                    )
-                }
-
-                setContacts(prevContacts => {
-                    const filtered = prevContacts.filter(contact => contact.phone !== data.fullDocument.phone);
-                    const newContacts = [data.fullDocument, ...filtered];
-                    return newContacts;
-                })
-            }
-
-            event.onerror = (err) => {
-                console.log("SSE Error:", err);
-            }
-        })()
-
-        return () => event.close();
-
     }, [])
 
-    useEffect(() => {
-        const isMobile = checkIsMobile();
-        (() => { setIsHidden(isMobile); })()
-    }, [checkIsMobile])
-
-    async function searchContact(type?: "reset") {
-        setSearchLoading(true);
-
-        if (type === "reset") {
-            setSearchInput(prev => ({
-                ...prev,
-                value: '',
-            }))
-        }
-
+    async function handlePagination(target?: number) {
+        setInProgress(true);
         try {
-            const requestData: FetchContactsFilterOptions = {
-                currentPage: 1,
-                search: type === "reset" ? '' : searchInput.value,
+
+            let targetPage: number | null = null;
+
+            if (target) {
+                targetPage = target;
+            } else {
+                const nextPage = currentPage + 1;
+                targetPage = nextPage;
             }
 
-            const {
-                data,
-            } = await axios.post<CustomContactsCardDataInterface[]>(
-                '/api/whatsapp/fetch-contacts/all',
-                requestData,
-            );
+            const contacts = await fetchFilteredContacts({
+                currentPage: targetPage,
+                assigned: teamMember,
+                date: enableDateFilter ? ({
+                    start: date.start.getTime(),
+                    end: date.end.getTime(),
+                }) : undefined,
+                search: searchInput,
+            })
 
-            setContacts(data);
-            setCurrentPage(1);
+            setContacts(prev => target ? contacts : [...prev, ...contacts]);
+            setCurrentPage(targetPage)
 
         } catch (err) {
             const message = handleCatchBlock(err);
             setError(message);
         }
-        setSearchLoading(false);
-        setSearchInput(prev => ({
-            ...prev,
-            apply: true,
-        }))
+        setInProgress(false);
     }
 
     if (error) {
         return (
-            <div
-                className='min-w-[300px] shrink-0 flex flex-col p-4'
-            >
-                <ErrorTemplate
-                    error={error}
-                />
-            </div>
+            <ErrorTemplate
+                error={error}
+            />
         )
     }
 
@@ -201,11 +96,10 @@ const ChatSidebar = () => {
         <div
             className={
                 'md:max-w-[320px] w-full shrink-0 flex flex-col'
-                + ` ${isHidden ? "hidden" : ""}`
             }
         >
             <div
-                className='w-full p-3 border-b border-stroke-light/50'
+                className='w-full p-3 border-b border-stroke-light/50 space-y-3'
             >
                 <div
                     className='flex items-center gap-1 bg-background-2/70 py-2 pl-4 pr-2 rounded-2xl'
@@ -214,78 +108,55 @@ const ChatSidebar = () => {
                         type="text"
                         className='outline-none w-full'
                         placeholder='Press enter to search'
-                        value={searchInput.value}
-                        onChange={(event) => {
-                            setSearchInput({
-                                apply: false,
-                                value: event.target.value,
-                            })
-                        }}
+                        value={searchInput}
+                        onChange={(event) => setSearchInput(event.target.value)}
                         onKeyDown={(event) => {
                             if (event.key === "Enter") {
-                                searchContact(!searchInput.value ? "reset" : undefined);
+                                handlePagination(1);
                             }
                         }}
                     />
-                    {
-                        searchInput.value.length > 0 && (
-                            <button
-                                className='text-foreground shrink-0 p-2 cursor-pointer'
-                                disabled={searchLoading}
-                                onClick={() => {
-                                    searchContact("reset")
-                                }}
-                            >
-                                {
-                                    searchLoading ? (
-                                        <RiLoader4Line
-                                            size={20}
-                                            className='animate-spin'
-                                        />
-                                    ) : (
-                                        <RiCloseLargeLine
-                                            size={20}
-                                        />
-                                    )
-                                }
-                            </button>
-                        )
-                    }
                     <button
                         className='text-foreground shrink-0 bg-background rounded-xl p-2 shadow-md cursor-pointer'
-                        onClick={() => setShowFilter(prev => !prev)}
+                        onClick={() => {
+                            setShowFilter(prev => !prev);
+                        }}
                     >
-                        {
-                            showFilter ? (
-                                <RiCloseLine
-                                    size={20}
-                                />
-                            ) : (
-                                <RiEqualizer2Line
-                                    size={20}
-                                />
-                            )
-                        }
+                        <RiEqualizer2Line
+                            size={20}
+                        />
                     </button>
                 </div>
 
-                {/* Filters */}
                 <AnimatePresence>
                     {
                         showFilter && (
-                            <ContactFilter
-                                onClose={() => setShowFilter(prev => !prev)}
+                            <ContactInplaceFilter
+                                key={"conteact-filter-inplace"}
+                                date={date}
+                                enableDateFilter={enableDateFilter}
+                                setDate={setDate}
+                                setEnableDateFilter={setEnableDateFilter}
+                                setTeamMember={setTeamMember}
+                                teamMember={teamMember}
+                                onFilterSubmit={async (event) => {
+                                    if (event) {
+                                        event.preventDefault();
+                                    }
+                                    await handlePagination(1);
+                                }}
                             />
                         )
                     }
                 </AnimatePresence>
+
             </div>
 
             <div
                 className='overflow-auto min-h-[200px]'
             >
                 {
-                    isLoading ? (
+                    initialLoading ? (
                         <div
                             className='flex items-center gap-4 py-4 px-6 text-foreground/60'
                         >
@@ -312,15 +183,16 @@ const ChatSidebar = () => {
                             >
                                 <button
                                     className='flex items-center justify-center py-3 px-4 gap-2 text-theme-primary text-center w-full cursor-pointer font-semibold hover:bg-theme-primary/10 transition-all rounded-xl'
-                                    disabled={paginationLoading}
-                                    onClick={() => setCurrentPage(prev => ++prev)}
-                                    ref={loadMoreElement}
+                                    ref={loadMoreButtonRef}
+                                    onClick={() => {
+                                        handlePagination()
+                                    }}
                                 >
                                     {
-                                        paginationLoading ? (
+                                        inProgress ? (
                                             <RiLoader4Line
                                                 size={25}
-                                                className='animate-spin'
+                                                className='shrink-0 animate-spin'
                                             />
                                         ) : (
                                             <RiArrowDownSLine
@@ -329,7 +201,7 @@ const ChatSidebar = () => {
                                             />
                                         )
                                     }
-                                    <span>{paginationLoading ? "Loading Contacts..." : "Load more"}</span>
+                                    <span>{inProgress ? "Loading..." : "Load more"}</span>
                                 </button>
                             </div>
                         </div>
