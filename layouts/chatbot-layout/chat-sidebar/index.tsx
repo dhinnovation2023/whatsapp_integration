@@ -212,6 +212,7 @@ const ChatSidebar = () => {
                                         event.preventDefault();
                                     }
                                     await handlePagination(1);
+                                    setShowFilter(false);
                                 }}
                             />
                         )
