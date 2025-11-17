@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { fetchAllStatus } from '@/functions/status/fetch-all'
 import DashboardLayout from '@/layouts/dashboard'
 import StatusListItem from './status-list-item';
