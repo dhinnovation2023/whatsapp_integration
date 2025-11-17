@@ -10,7 +10,6 @@ import { handleCatchBlock } from '@/functions/common';
 import { fetchFilteredContacts } from './contacts-filter/fetchContacts';
 import ContactInplaceFilter from './contacts-inplace-filter';
 import { AnimatePresence } from 'framer-motion';
-import { FetchContactsFilterOptions } from '@/functions/whatsapp/fetchContacts';
 import axios from 'axios';
 
 const ChatSidebar = () => {
@@ -32,10 +31,10 @@ const ChatSidebar = () => {
     const [date, setDate] = useState<{
         start: Date,
         end: Date,
-    }>({
+    }>(() => ({
         start: new Date(Date.now() - (86400000 * 30)),
         end: new Date(),
-    });
+    }));
 
     useEffect(() => {
         (async () => {
