@@ -12,6 +12,7 @@ export interface FetchContactsFilterOptions {
         start: number,
         end: number,
     },
+    statusId?: string,
 }
 
 export async function fetchAllContacts(data: FetchContactsFilterOptions) {
@@ -56,6 +57,10 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
                     { name: { $regex: data.search, $options: "i" } },
                     { phone: { $regex: data.search, $options: "i" } }
                 ];
+            }
+
+            if (data.statusId) {
+                findQuery["statusId"] = data.statusId;
             }
 
             if (data.date) {

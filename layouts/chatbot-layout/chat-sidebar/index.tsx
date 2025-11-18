@@ -27,6 +27,7 @@ const ChatSidebar = () => {
     // Filters
     const [searchInput, setSearchInput] = useState<string>('');
     const [teamMember, setTeamMember] = useState<string>('');
+    const [statusId, setStatusId] = useState<string>('');
     const [enableDateFilter, setEnableDateFilter] = useState<boolean>(false);
     const [date, setDate] = useState<{
         start: Date,
@@ -140,6 +141,7 @@ const ChatSidebar = () => {
                     end: date.end.getTime(),
                 }) : undefined,
                 search: searchInput,
+                statusId,
             })
 
             setContacts(prev => target ? contacts : [...prev, ...contacts]);
@@ -207,6 +209,8 @@ const ChatSidebar = () => {
                                 setEnableDateFilter={setEnableDateFilter}
                                 setTeamMember={setTeamMember}
                                 teamMember={teamMember}
+                                statusId={statusId}
+                                setStatusId={setStatusId}
                                 onFilterSubmit={async (event) => {
                                     if (event) {
                                         event.preventDefault();

@@ -6,6 +6,7 @@ import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState }
 import { motion } from "framer-motion";
 import { handleCatchBlock } from '@/functions/common';
 import axios from 'axios';
+import { StatusModelInterface } from '@/models/status';
 
 const ContactInplaceFilter = ({
     date,
@@ -15,6 +16,8 @@ const ContactInplaceFilter = ({
     enableDateFilter,
     setEnableDateFilter,
     onFilterSubmit,
+    setStatusId,
+    statusId,
 }: {
     date: { start: Date, end: Date },
     setDate: Dispatch<SetStateAction<{ start: Date, end: Date }>>,
@@ -22,6 +25,8 @@ const ContactInplaceFilter = ({
     setTeamMember: Dispatch<SetStateAction<string>>,
     enableDateFilter: boolean,
     setEnableDateFilter: Dispatch<SetStateAction<boolean>>,
+    statusId: string,
+    setStatusId: Dispatch<SetStateAction<string>>,
 
     // formSubmit
     onFilterSubmit: (event?: FormEvent) => void | Promise<void>,
@@ -30,6 +35,7 @@ const ContactInplaceFilter = ({
     const [error, setError] = useState<string | null>(null);
     const [inProgress, setInProgress] = useState<boolean>(false);
     const [teams, setTeams] = useState<TeamMembersModelInterface[]>([]);
+    const [statusList, setStatusList] = useState<StatusModelInterface[]>([]);
 
     const [resetType, setResetType] = useState<"clear" | "reset">("clear");
 
@@ -65,6 +71,12 @@ const ContactInplaceFilter = ({
                 } = await axios.post<TeamMembersModelInterface[]>('/api/teams/get');
 
                 setTeams(data);
+
+                const {
+                    data: statusList,
+                } = await axios.post<StatusModelInterface[]>('/api/status/get-all');
+                setStatusList(statusList)
+
             } catch (err) {
                 const message = handleCatchBlock(err);
                 setError(message);
@@ -83,7 +95,7 @@ const ContactInplaceFilter = ({
             animate={{
                 opacity: 1,
                 padding: "12px 16px",
-                maxHeight: 200,
+                maxHeight: 300,
             }}
             exit={{
                 opacity: 0,
@@ -118,6 +130,28 @@ const ContactInplaceFilter = ({
                                 value={team.userId}
                                 key={index}
                             >{team.name}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div
+                    className="bg-background py-2 px-3 rounded-xl"
+                >
+                    <select
+                        className="w-full block outline-none"
+                        name="status-list" 
+                        id="statusList"
+                        onChange={(event) => {
+                            setStatusId(event.target.value);
+                        }}
+                        value={statusId}
+                    >
+                        <option value="">-- Select Status --</option>
+                        {statusList.map((status, index) => (
+                            <option
+                                value={status.statusId}
+                                key={index}
+                            >{status.name}</option>
                         ))}
                     </select>
                 </div>
@@ -182,6 +216,7 @@ const ContactInplaceFilter = ({
                                     end: new Date(),
                                 })
                                 setTeamMember('');
+                                setStatusId('');
                                 setResetType("reset");
                             } else {
                                 onFilterSubmit();
