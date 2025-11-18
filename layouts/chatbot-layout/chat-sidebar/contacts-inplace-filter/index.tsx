@@ -18,6 +18,8 @@ const ContactInplaceFilter = ({
     onFilterSubmit,
     setStatusId,
     statusId,
+    setUnreaded,
+    unreaded,
 }: {
     date: { start: Date, end: Date },
     setDate: Dispatch<SetStateAction<{ start: Date, end: Date }>>,
@@ -27,6 +29,8 @@ const ContactInplaceFilter = ({
     setEnableDateFilter: Dispatch<SetStateAction<boolean>>,
     statusId: string,
     setStatusId: Dispatch<SetStateAction<string>>,
+    unreaded: boolean,
+    setUnreaded: Dispatch<SetStateAction<boolean>>,
 
     // formSubmit
     onFilterSubmit: (event?: FormEvent) => void | Promise<void>,
@@ -189,6 +193,29 @@ const ContactInplaceFilter = ({
                     ))}
                 </div>
 
+                <div>
+                    <div>
+                        {
+                            [
+                                {
+                                    label: "Unread",
+                                    onClick: () => {
+                                        setUnreaded(prev => !prev);
+                                    },
+                                    enable: unreaded,
+                                },
+                            ].map((item, index) => (
+                                <button
+                                    key={index}
+                                    className={`py-1 px-3 rounded-full border-2 text-xs cursor-pointer font-semibold ${item.enable ? "bg-theme-primary/10 border-theme-primary text-theme-primary" : "border-stroke-light bg-stroke-light/50 text-foreground/50"}`}
+                                    type='button'
+                                    onClick={item.onClick}
+                                >{item.label}</button>
+                            ))
+                        }
+                    </div>
+                </div>
+
                 {
                     error && (
                         <ErrorTemplate
@@ -217,6 +244,7 @@ const ContactInplaceFilter = ({
                                 })
                                 setTeamMember('');
                                 setStatusId('');
+                                setUnreaded(false)
                                 setResetType("reset");
                             } else {
                                 onFilterSubmit();

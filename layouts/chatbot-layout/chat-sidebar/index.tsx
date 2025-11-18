@@ -28,6 +28,7 @@ const ChatSidebar = () => {
     const [searchInput, setSearchInput] = useState<string>('');
     const [teamMember, setTeamMember] = useState<string>('');
     const [statusId, setStatusId] = useState<string>('');
+    const [unreaded, setUnreaded] = useState<boolean>(false);
     const [enableDateFilter, setEnableDateFilter] = useState<boolean>(false);
     const [date, setDate] = useState<{
         start: Date,
@@ -142,6 +143,7 @@ const ChatSidebar = () => {
                 }) : undefined,
                 search: searchInput,
                 statusId,
+                unread: unreaded,
             })
 
             setContacts(prev => target ? contacts : [...prev, ...contacts]);
@@ -211,6 +213,8 @@ const ChatSidebar = () => {
                                 teamMember={teamMember}
                                 statusId={statusId}
                                 setStatusId={setStatusId}
+                                unreaded={unreaded}
+                                setUnreaded={setUnreaded}
                                 onFilterSubmit={async (event) => {
                                     if (event) {
                                         event.preventDefault();

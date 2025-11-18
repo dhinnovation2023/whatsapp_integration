@@ -13,6 +13,7 @@ export interface FetchContactsFilterOptions {
         end: number,
     },
     statusId?: string,
+    unread?: boolean,
 }
 
 export async function fetchAllContacts(data: FetchContactsFilterOptions) {
@@ -68,10 +69,13 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
                 const endDate = new Date(data.date.end);
 
                 findQuery['createdAt'] = {
-                    $gte: startDate, 
+                    $gte: startDate,
                     $lte: endDate,
                 }
+            }
 
+            if (data.unread === true) {
+                findQuery["unread"] = { $exists: true, $gt: 0 };
             }
 
             const contacts = await ContactsModel.find(findQuery, null, {
