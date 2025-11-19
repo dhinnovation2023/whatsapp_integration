@@ -7,6 +7,7 @@ export interface UpdateTeamDataApiRouteRequestDataInterface {
     name: string,
     email: string,
     labelColor: string,
+    password?: string,
 }
 
 export async function POST(request: NextRequest) {

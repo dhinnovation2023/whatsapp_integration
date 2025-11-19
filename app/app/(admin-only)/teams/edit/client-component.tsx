@@ -19,14 +19,17 @@ const EditTeamMembersClient = () => {
 
     const searchParams = useSearchParams();
 
+    const [enablePasswordReset, setEnablePasswordReset] = useState<boolean>(false);
     const [formData, setFormData] = useState<{
         name: string,
         email: string,
         labelColor: string,
+        password?: string,
     }>({
         name: '',
         email: '',
         labelColor: '',
+        password: '',
     });
 
     const fieldsData: {
@@ -128,9 +131,12 @@ const EditTeamMembersClient = () => {
                 throw new Error("user id not found!");
             }
 
+            const {password, ...otherData} = formData;
+
             const requestData: UpdateTeamDataApiRouteRequestDataInterface = {
-                ...formData,
+                ...otherData,
                 userId,
+                password: enablePasswordReset ? password : undefined,
             }
 
             await axios.post('/api/teams/update', requestData);
@@ -178,6 +184,33 @@ const EditTeamMembersClient = () => {
                                     value={field.value}
                                 />
                             ))}
+
+                            <div
+                                className='flex items-center gap-2'
+                            >
+                                <input
+                                    type="checkbox"
+                                    name='reset-password-check'
+                                    id="reset-password-check"
+                                    checked={enablePasswordReset}
+                                    onChange={(event) => {
+                                        setEnablePasswordReset(event.target.checked)
+                                    }}
+                                />
+                                <label htmlFor="reset-password-check">Reset Password</label>
+                            </div>
+                            <InputGroup
+                                label='New Password'
+                                name='newPassword'
+                                placeholder='New Password'
+                                value={formData.password}
+                                type='password'
+                                disabled={!enablePasswordReset ? true : false}
+                                onChange={(event) => setFormData(prev => ({
+                                    ...prev,
+                                    password: event.target.value,
+                                }))}
+                            />
 
                             <button
                                 className='bg-theme-primary py-3 px-4 rounded-xl text-background'

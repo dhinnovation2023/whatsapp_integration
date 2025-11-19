@@ -27,8 +27,7 @@ export async function verifyUser({
                 throw new Error("User not found");
             }
 
-            const isPasswordMatching = compareHashValue(password, user.password);
-
+            const isPasswordMatching = await compareHashValue(password, user.password);
             if (!isPasswordMatching) {
                 throw new Error("Password is not correct!");
             }

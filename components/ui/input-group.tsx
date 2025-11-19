@@ -11,7 +11,8 @@ const InputGroup = (data: {
     options?: {
         label: string,
         value: string,
-    }[]
+    }[],
+    disabled?: boolean,
 }) => {
 
     if (data.type === "select") {
@@ -43,7 +44,7 @@ const InputGroup = (data: {
 
     return (
         <div
-            className='flex flex-col gap-2'
+            className={'flex flex-col gap-2' + ` ${data.disabled ? "opacity-30" : ""}`}
         >
             <label
                 htmlFor={data.name}
@@ -56,6 +57,7 @@ const InputGroup = (data: {
                 value={data.value}
                 onChange={data.onChange}
                 className='w-full py-2 px-4 border border-stroke-light rounded-lg min-h-10 bg-background'
+                disabled={data.disabled ? true : false}
             />
         </div>
     )
