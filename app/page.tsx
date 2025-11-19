@@ -6,13 +6,14 @@ import { getClientSession } from "@/functions/auth/getClientSession";
 import { handleCatchBlock } from "@/functions/common";
 import BasicLayout from "@/layouts/basic-layout";
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
 export default function Home() {
 
   const [loadingForm, setLoadingForm] = useState<boolean>(true);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -66,6 +67,14 @@ export default function Home() {
     setIsLoading(false);
 
   }
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    const message = error === "CredentialsSignin" ? "Incorrect login details" : null;
+
+    setError(message);
+
+  }, [searchParams])
 
   return (
     <BasicLayout>
