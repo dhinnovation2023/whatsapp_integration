@@ -14,6 +14,7 @@ export interface GenerateBasicReportRequestDataInterface {
         start: number,
         end: number,
     },
+    userId?: string,
 }
 
 interface BasicReportDataRowInterface {
@@ -25,7 +26,7 @@ interface BasicReportDataRowInterface {
     "chat_url": string,
 }
 
-export async function generateBasicReport({ date }: GenerateBasicReportRequestDataInterface) {
+export async function generateBasicReport({ date, userId }: GenerateBasicReportRequestDataInterface) {
     return new Promise(async (resolve, reject) => {
         try {
             let startDate, endDate;
@@ -53,6 +54,10 @@ export async function generateBasicReport({ date }: GenerateBasicReportRequestDa
                     $lte: endDate,
                 };
 
+            }
+
+            if (userId) {
+                findQuery["assigned"] = userId;
             }
 
             if (!startDate || !endDate) {

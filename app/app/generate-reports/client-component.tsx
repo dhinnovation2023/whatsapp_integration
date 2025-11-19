@@ -3,22 +3,41 @@
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import InputGroup from '@/components/ui/input-group'
 import { handleCatchBlock } from '@/functions/common';
-import { ChangeEvent, FormEvent, InputHTMLAttributes, useState } from 'react'
+import { ChangeEvent, FormEvent, InputHTMLAttributes, useEffect, useState } from 'react'
 import { generateBasicReportFromClient } from './generate-basic-report';
 import { RiFileChartLine, RiLoader4Line } from '@remixicon/react';
 import Link from 'next/link';
+import { TeamMembersModelInterface } from '@/models/team-member';
+import axios from 'axios';
 
 const GenerateReportPageClientComponent = () => {
 
   const [inProgress, setInProgress] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [users, setUsers] = useState<TeamMembersModelInterface[]>([])
 
   const [sheetUrl, setSheetUrl] = useState<string | null>(null);
 
+  const [userId, setUserId] = useState<string>('');
   const [date, setDate] = useState<{ start: Date, end: Date }>({
     start: new Date(Date.now() - (86400000 * 30)),
     end: new Date(),
   });
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const {
+          data
+        } = await axios.post<TeamMembersModelInterface[]>('/api/teams/get');
+
+        setUsers(data);
+      } catch (err) {
+        const message = handleCatchBlock(err);
+        setError(message);
+      }
+    })()
+  }, [])
 
   const fieldsData: {
     label: string,
@@ -28,6 +47,10 @@ const GenerateReportPageClientComponent = () => {
     name: string,
     type?: InputHTMLAttributes<HTMLInputElement>["type"] | "select",
     required?: boolean,
+    options?: {
+      label: string,
+      value: string,
+    }[]
   }[] = [
       {
         label: "Start Date",
@@ -56,6 +79,17 @@ const GenerateReportPageClientComponent = () => {
         required: true,
         value: `${date.end.getFullYear()}-${(date.end.getMonth() + 1).toString().padStart(2, '0')}-${date.end.getDate().toString().padStart(2, '0')}`,
         type: "date"
+      },
+      {
+        label: "Assigned user",
+        name: "userId",
+        placeholder: "Select user",
+        value: userId,
+        onChange: (event) => {
+          setUserId(event.target.value)
+        },
+        type: "select",
+        options: users.map((user) => ({ label: user.name, value: user.userId }))
       }
     ]
 
@@ -76,6 +110,7 @@ const GenerateReportPageClientComponent = () => {
           start: date.start.getTime(),
           end: date.end.getTime(),
         },
+        userId,
       })
 
       setSheetUrl(sheetUrl);
