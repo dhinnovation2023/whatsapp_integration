@@ -12,7 +12,9 @@ const ErrorTemplate = ({ error }: {
                 size={20}
                 className='shrink-0'
             />
-            <p>{error}</p>
+            <p
+                className='line-clamp-1'
+            >{error}</p>
         </div>
     )
 }

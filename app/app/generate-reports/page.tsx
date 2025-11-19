@@ -1,8 +1,8 @@
 import DashboardLayout from '@/layouts/dashboard'
-import React from 'react'
 import GenerateReportPageClientComponent from './client-component'
 
-const ReportsPage = () => {
+const ReportsPage = async () => {
+
   return (
     <DashboardLayout
         pageTitle='Generate Reports'

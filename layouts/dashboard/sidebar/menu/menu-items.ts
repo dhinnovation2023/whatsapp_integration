@@ -1,4 +1,4 @@
-import { RemixiconComponentType, RiFileChartFill, RiFlagFill, RiGroupFill, RiMailFill } from "@remixicon/react"
+import { RemixiconComponentType, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill } from "@remixicon/react"
 
 const menuItems: {
     label: string,
@@ -24,6 +24,11 @@ const menuItems: {
         label: "Generate Reports",
         href: "/app/generate-reports",
         icon: RiFileChartFill,
+    },
+    {
+        label: "Google OAuth",
+        href: "/app/google-oauth",
+        icon: RiGoogleFill,
     }
 ]
 

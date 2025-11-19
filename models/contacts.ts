@@ -6,6 +6,8 @@ export interface ContactsModelInterface {
     assigned?: string,
     unread?: number | null,
     statusId?: string,
+    createdAt: Date,
+    updatedAt: Date,
 } 
 
 const contactsSchema = new mongoose.Schema({

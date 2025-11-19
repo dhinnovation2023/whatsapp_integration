@@ -27,7 +27,7 @@ const InputGroup = (data: {
                     name={data.name}
                     value={data.value}
                     onChange={data.onChange}
-                    className='w-full py-2 px-4 border border-stroke-light rounded-lg'
+                    className='w-full py-2 px-4 border border-stroke-light rounded-lg bg-background'
                 >
                     <option value="">-- {data.placeholder} --</option>
                     {data.options?.map((option, index) => (
@@ -55,7 +55,7 @@ const InputGroup = (data: {
                 name={data.name}
                 value={data.value}
                 onChange={data.onChange}
-                className='w-full py-2 px-4 border border-stroke-light rounded-lg min-h-10'
+                className='w-full py-2 px-4 border border-stroke-light rounded-lg min-h-10 bg-background'
             />
         </div>
     )
