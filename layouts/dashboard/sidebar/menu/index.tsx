@@ -15,6 +15,15 @@ const SidebarMenu = () => {
     >
       {menuItems.map((menu, index) => {
 
+        if (typeof menu === "string") {
+          return (
+            <h2
+              key={index}
+              className="text-sm font-semibold underline"
+            >{menu}</h2>
+          )
+        }
+
         if (menu.submenu) {
           return (
             <SubmenuItem

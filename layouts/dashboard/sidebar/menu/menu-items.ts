@@ -10,12 +10,14 @@ export interface DashboardMenuItemsInterface {
     }[]
 }
 
-const menuItems: DashboardMenuItemsInterface[] = [
+const menuItems: (DashboardMenuItemsInterface | string)[] = [
+    "WhatsApp",
     {
         label: "Inbox",
         href: "/app",
         icon: RiMailFill,
     },
+    "WhatsApp Settings",
     {
         label: "Teams",
         href: "/app/teams",
@@ -26,15 +28,11 @@ const menuItems: DashboardMenuItemsInterface[] = [
         href: "/app/status-settings",
         icon: RiFlagFill,
     },
+    "Others Use Cases",
     {
         label: "Generate Reports",
         href: "/app/generate-reports",
         icon: RiFileChartFill,
-    },
-    {
-        label: "Google OAuth",
-        href: "/app/google-oauth",
-        icon: RiGoogleFill,
     },
     {
         label: "Warranty",
@@ -51,10 +49,16 @@ const menuItems: DashboardMenuItemsInterface[] = [
             },
             {
                 label: "Brands",
-                href: "#",
+                href: "/app/warranty-cert/brands",
             },
         ]
-    }
+    },
+    "Google",
+    {
+        label: "Google OAuth",
+        href: "/app/google-oauth",
+        icon: RiGoogleFill,
+    },
 ]
 
 export default menuItems
