@@ -18,6 +18,7 @@ const SidebarMenu = () => {
         if (menu.submenu) {
           return (
             <SubmenuItem
+              key={index}
               menuItem={menu}
             />
           )
