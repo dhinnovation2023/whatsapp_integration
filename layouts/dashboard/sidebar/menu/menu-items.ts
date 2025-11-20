@@ -1,10 +1,16 @@
-import { RemixiconComponentType, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill } from "@remixicon/react"
+import { RemixiconComponentType, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiShieldCheckFill } from "@remixicon/react"
 
-const menuItems: {
+export interface DashboardMenuItemsInterface {
     label: string,
     href: string,
     icon: RemixiconComponentType,
-}[] = [
+    submenu?: {
+        label: string,
+        href: string,
+    }[]
+}
+
+const menuItems: DashboardMenuItemsInterface[] = [
     {
         label: "Inbox",
         href: "/app",
@@ -29,6 +35,25 @@ const menuItems: {
         label: "Google OAuth",
         href: "/app/google-oauth",
         icon: RiGoogleFill,
+    },
+    {
+        label: "Warranty",
+        href: "#",
+        icon: RiShieldCheckFill,
+        submenu: [
+            {
+                label: "View All",
+                href: "/app/warranty-cert",
+            },
+            {
+                label: "Add New",
+                href: "/app/warranty-cert/add",
+            },
+            {
+                label: "Brands",
+                href: "#",
+            },
+        ]
     }
 ]
 
