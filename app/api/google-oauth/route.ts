@@ -20,7 +20,6 @@ export async function GET(request: NextRequest) {
         await saveTokensToDB({ tokens });
 
         const redirectUrl = new URL('/app', request.nextUrl);
-        console.log(redirectUrl)
 
         return NextResponse.redirect(redirectUrl)
 

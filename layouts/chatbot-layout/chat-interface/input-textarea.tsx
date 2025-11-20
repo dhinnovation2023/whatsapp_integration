@@ -138,7 +138,6 @@ const InputTextarea = ({
                     disabled={sending || attachment ? true : false}
                     onPaste={(event) => {
                         const items = event.clipboardData.items;
-                        console.log(items)
 
                         for (const item of items) {
                             if (item.type.indexOf("image") === 0) {

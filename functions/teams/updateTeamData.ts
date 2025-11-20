@@ -14,8 +14,6 @@ export async function updateTeamData({ userId, password, ...details }: UpdateTea
                 newHashPassword = await generateHashFromValue(password);
             }
 
-            console.log("Password:", newHashPassword)
-
             await TeamMemberModel.findOneAndUpdate(
                 { userId },
                 {

@@ -31,8 +31,6 @@ export default async function AdminOnlyPagesLayout({ children }: PropsWithChildr
         )
     }
 
-    console.log("Testing 1")
-
     return (
         <>
             {children}
