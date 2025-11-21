@@ -3,10 +3,18 @@ import { fetchAllStatus } from '@/functions/status/fetch-all'
 import DashboardLayout from '@/layouts/dashboard'
 import StatusListItem from './status-list-item';
 import AddStatusForm from './add-status-form';
+import { getBulkStatusChatCount } from '@/functions/status/get-bulk-status-chat-count';
 
 const StatusSettingsPage = async () => {
 
     const statusList = await fetchAllStatus({ currentPage: 1 });
+    const statusIdList: string[] = [];
+
+    for (const status of statusList) {
+        statusIdList.push(status.statusId);
+    }
+
+    const statusCountList = await getBulkStatusChatCount({ statusIdList });
 
     return (
         <DashboardLayout
@@ -45,6 +53,10 @@ const StatusSettingsPage = async () => {
                                         createdAt: item.createdAt,
                                         updatedAt: item.updatedAt,
                                     }}
+                                    statusCount={
+                                        statusCountList.find((countItem) => countItem.statusId === item.statusId)
+                                            ?.count || 0
+                                    }
                                 />
                             ))
                         }

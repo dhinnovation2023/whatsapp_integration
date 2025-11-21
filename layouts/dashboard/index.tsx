@@ -14,11 +14,11 @@ const DashboardLayout = ({
 
     return (
         <div
-            className='flex flex-col md:flex-row items-stretch min-h-screen bg-background-2'
+            className='flex flex-col md:flex-row items-stretch min-h-screen md:max-h-screen bg-background-2'
         >
             <DashboardSidebar />
             <div
-                className='w-full'
+                className='w-full max-h-screen overflow-auto'
             >
                 <div>
                     {

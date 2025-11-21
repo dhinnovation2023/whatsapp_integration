@@ -12,6 +12,8 @@
     "@awadoc/whatsapp-cloud-api": "^1.1.0",
     "@google-cloud/translate": "^9.3.0",
     "@remixicon/react": "^4.7.0",
+    "@tiptap/react": "^3.11.0",
+    "@tiptap/starter-kit": "^3.11.0",
     "axios": "^1.13.1",
     "bcrypt": "^6.0.0",
     "firebase-admin": "^13.5.0",
