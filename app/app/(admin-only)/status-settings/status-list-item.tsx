@@ -8,11 +8,14 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import StatusEditMode from './edit-mode';
+import Link from 'next/link';
 
 const StatusListItem = ({
   item,
+  statusCount,
 }: {
   item: StatusModelInterface,
+  statusCount: number,
 }) => {
 
   const [error, setError] = useState<string | null>(null);
@@ -78,7 +81,15 @@ const StatusListItem = ({
         />
         <p
           className='font-semibold'
-        >{item.name}</p>
+        >
+          {item.name}
+          &nbsp;
+          <Link
+            href={`/app?statusId=${encodeURIComponent(item.statusId)}`}
+          >
+            ({statusCount})
+          </Link>
+        </p>
       </div>
       <div
         className='flex items-center gap-2'

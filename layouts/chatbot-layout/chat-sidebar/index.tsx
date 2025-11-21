@@ -11,8 +11,11 @@ import { fetchFilteredContacts } from './contacts-filter/fetchContacts';
 import ContactInplaceFilter from './contacts-inplace-filter';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import { useSearchParams } from 'next/navigation';
 
 const ChatSidebar = () => {
+
+    const searchParams = useSearchParams();
 
     const [initialLoading, setInitialLoading] = useState<boolean>(true);
     const [inProgress, setInProgress] = useState<boolean>(false);
@@ -41,8 +44,16 @@ const ChatSidebar = () => {
     useEffect(() => {
         (async () => {
             try {
+
+                const statusId = searchParams.get('statusId');
+
+                if (statusId) {
+                    setStatusId(statusId);
+                }
+
                 const contacts = await fetchFilteredContacts({
                     currentPage: 1,
+                    statusId: statusId || undefined,
                 })
                 setContacts(contacts);
                 setInitialLoading(false)
@@ -51,7 +62,7 @@ const ChatSidebar = () => {
                 setError(message);
             }
         })()
-    }, [])
+    }, [searchParams])
 
     // useEffect for Observer
     useEffect(() => {

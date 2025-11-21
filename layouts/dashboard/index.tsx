@@ -18,7 +18,7 @@ const DashboardLayout = ({
         >
             <DashboardSidebar />
             <div
-                className='w-full'
+                className='w-full max-h-screen overflow-auto'
             >
                 <div>
                     {
