@@ -29,14 +29,22 @@ const ChatBotLayout = ({
     const searchParams = useSearchParams();
 
     useEffect(() => {
-        setIsSidebarOpen(false);
+        (() => {
+            setIsSidebarOpen(prev => {
+                if (prev === true) {
+                    return false;
+                } else {
+                    return prev;
+                }
+            })
+        })()
     }, [searchParams])
 
     return (
         <div
-            className='flex flex-col md:flex-row items-stretch min-h-dvh max-h-screen md:min-h-[95dvh] md:max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background md:rounded-2xl overflow-hidden'
+            className='flex flex-col md:flex-row items-stretch min-h-dvh max-h-dvh md:min-h-[95dvh] md:max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background md:rounded-2xl overflow-hidden'
         >
-            <ChatSidebar 
+            <ChatSidebar
                 isSidebarOpen={isSidebarOpen}
                 setIsSidebarOpen={setIsSidebarOpen}
             />

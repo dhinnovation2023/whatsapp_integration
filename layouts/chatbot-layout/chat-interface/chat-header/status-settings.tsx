@@ -109,7 +109,7 @@ const StatusSettings = ({ currentChat }: {
                             {statusList.map((status, index) => (
                                 <button
                                     key={index}
-                                    className='flex items-center py-1 px-3 text-sm rounded-2xl w-full cursor-pointer gap-2'
+                                    className='flex items-center py-1 px-3 text-sm rounded-2xl w-full cursor-pointer gap-2 min-w-max'
                                     style={{
                                         backgroundColor: `${status.color}10`,
                                         color: status.color,
