@@ -2,9 +2,10 @@
 
 import ChatInterface from './chat-interface'
 import { ChatHistoryMessageInterface } from './chat-interface/chat-history'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import ChatSidebar from './chat-sidebar'
 import { ReplayContextDataInterface } from '@/app/app/client-component'
+import { useSearchParams } from 'next/navigation';
 
 const ChatBotLayout = ({
     onSubmit,
@@ -25,10 +26,15 @@ const ChatBotLayout = ({
     setReplayContext: Dispatch<SetStateAction<ReplayContextDataInterface | null>>,
 }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        setIsSidebarOpen(false);
+    }, [searchParams])
 
     return (
         <div
-            className='flex flex-col md:flex-row items-stretch min-h-screen max-h-screen md:min-h-[95dvh] md:max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background md:rounded-2xl overflow-hidden'
+            className='flex flex-col md:flex-row items-stretch min-h-dvh max-h-screen md:min-h-[95dvh] md:max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background md:rounded-2xl overflow-hidden'
         >
             <ChatSidebar 
                 isSidebarOpen={isSidebarOpen}

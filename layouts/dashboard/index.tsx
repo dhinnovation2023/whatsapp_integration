@@ -14,7 +14,7 @@ const DashboardLayout = ({
 
     return (
         <div
-            className='flex flex-col md:flex-row items-stretch min-h-screen md:max-h-screen bg-background-2'
+            className='flex flex-col md:flex-row items-stretch min-h-dvh md:min-h-screen md:max-h-screen bg-background-2'
         >
             <DashboardSidebar />
             <div
