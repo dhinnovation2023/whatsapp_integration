@@ -78,7 +78,7 @@ const ChatSidebar = ({
         })()
 
         // eslint-disable-next-line
-    }, [searchParams])
+    }, [searchParams.get])
 
     // useEffect for Observer
     useEffect(() => {
