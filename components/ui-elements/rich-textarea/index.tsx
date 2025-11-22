@@ -41,7 +41,7 @@ export default function TiptapEditor({
     }, [reset, editor, disableUseEffect])
 
     return (
-        <div className="border p-4 rounded">
+        <div className="border border-stroke-light p-4 rounded-2xl bg-background">
             {/* Options */}
             <div
                 className='flex items-end gap-3'
@@ -81,7 +81,7 @@ export default function TiptapEditor({
                         <button
                             key={index}
                             type='button'
-                            className='text-sm py-2 px-3 font-semibold rounded-md bg-dark-2 text-white dark:bg-white dark:text-dark-2'
+                            className='text-sm py-2 px-3 font-semibold rounded-md bg-background shadow-md cursor-pointer hover:bg-background-2 active:shadow-none active:scale-95'
                             onClick={() => {
                                 if (option.value === "p") {
                                     editor?.chain().focus().setParagraph().run();

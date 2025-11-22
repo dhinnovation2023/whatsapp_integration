@@ -22,3 +22,37 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* TipTap Styles */
+.tiptap.ProseMirror {
+  outline: none !important;
+  min-height: 400px;
+}
+
+.tiptap.ProseMirror>* {
+  margin-bottom: 15px;
+}
+
+.tiptap.ProseMirror>h1 {
+  font-size: 40px;
+}
+
+.tiptap.ProseMirror>h2 {
+  font-size: 37px;
+}
+
+.tiptap.ProseMirror>h3 {
+  font-size: 34px;
+}
+
+.tiptap.ProseMirror>h4 {
+  font-size: 31px;
+}
+
+.tiptap.ProseMirror>h5 {
+  font-size: 28px;
+}
+
+.tiptap.ProseMirror>h6 {
+  font-size: 25px;
+}

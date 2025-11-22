@@ -51,6 +51,10 @@ const menuItems: (DashboardMenuItemsInterface | string)[] = [
                 label: "Brands",
                 href: "/app/warranty-cert/brands",
             },
+            {
+                label: "Add Brands",
+                href: "/app/warranty-cert/brands/add",
+            },
         ]
     },
     "Google",

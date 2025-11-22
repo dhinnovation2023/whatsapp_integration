@@ -1,6 +1,6 @@
 import React, { ChangeEvent, InputHTMLAttributes } from 'react'
 
-const InputGroup = (data: {
+export interface InputGroupDataInterface {
     label: string,
     placeholder: string,
     value?: string,
@@ -13,7 +13,9 @@ const InputGroup = (data: {
         value: string,
     }[],
     disabled?: boolean,
-}) => {
+}
+
+const InputGroup = (data: InputGroupDataInterface) => {
 
     if (data.type === "select") {
         return (
