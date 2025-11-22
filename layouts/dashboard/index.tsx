@@ -30,6 +30,7 @@ const DashboardLayout = ({
                     }
                     <DefaultSection
                         className='md:py-3'
+                        disablePX
                     >
                         <div
                             className='w-full'
