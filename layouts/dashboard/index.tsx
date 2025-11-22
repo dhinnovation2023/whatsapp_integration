@@ -7,9 +7,11 @@ const DashboardLayout = ({
     children,
     pageTitle,
     hidePageHeader,
+    fullwidth,
 }: PropsWithChildren<{
     pageTitle: string,
     hidePageHeader?: boolean,
+    fullwidth?: boolean,
 }>) => {
 
     return (
@@ -29,8 +31,8 @@ const DashboardLayout = ({
                         )
                     }
                     <DefaultSection
-                        className='md:py-3'
                         disablePX
+                        fullwidth={fullwidth}
                     >
                         <div
                             className='w-full'

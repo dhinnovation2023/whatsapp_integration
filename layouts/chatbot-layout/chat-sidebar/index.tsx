@@ -195,7 +195,7 @@ const ChatSidebar = ({
     return (
         <div
             className={
-                'md:max-w-[320px] w-full shrink-0 md:flex flex-col transition-all z-999 md:z-0 fixed md:relative left-0 top-0 bg-background shadow-2xl md:shadow-none max-h-full overflow-hidden' +
+                'md:max-w-[400px] md:w-1/2 shrink md:flex flex-col transition-all z-999 md:z-0 fixed md:relative left-0 top-0 bg-background shadow-2xl md:shadow-none max-h-full overflow-hidden' +
                 ` ${isSidebarOpen ? "max-w-[320px] flex" : "max-w-0 hidden"}`
             }
         >

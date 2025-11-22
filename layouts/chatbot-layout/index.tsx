@@ -42,7 +42,7 @@ const ChatBotLayout = ({
 
     return (
         <div
-            className='flex flex-col md:flex-row items-stretch min-h-dvh max-h-dvh md:min-h-[95dvh] md:max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background md:rounded-2xl overflow-hidden'
+            className='flex flex-col md:flex-row items-stretch min-h-dvh max-h-dvh shadow-2xl shadow-neutral-200 border border-stroke-light bg-background overflow-hidden'
         >
             <ChatSidebar
                 isSidebarOpen={isSidebarOpen}
