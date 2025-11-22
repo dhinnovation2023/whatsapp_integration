@@ -20,6 +20,7 @@ const ContactInplaceFilter = ({
     statusId,
     setUnreaded,
     unreaded,
+    setEnableNoStatus,
 }: {
     date: { start: Date, end: Date },
     setDate: Dispatch<SetStateAction<{ start: Date, end: Date }>>,
@@ -31,6 +32,7 @@ const ContactInplaceFilter = ({
     setStatusId: Dispatch<SetStateAction<string>>,
     unreaded: boolean,
     setUnreaded: Dispatch<SetStateAction<boolean>>,
+    setEnableNoStatus: Dispatch<SetStateAction<boolean>>,
 
     // formSubmit
     onFilterSubmit: (event?: FormEvent) => void | Promise<void>,
@@ -245,6 +247,7 @@ const ContactInplaceFilter = ({
                                 setTeamMember('');
                                 setStatusId('');
                                 setUnreaded(false)
+                                setEnableNoStatus(false);
                                 setResetType("reset");
                             } else {
                                 onFilterSubmit();

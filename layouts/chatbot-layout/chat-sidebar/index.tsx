@@ -31,6 +31,7 @@ const ChatSidebar = () => {
     const [searchInput, setSearchInput] = useState<string>('');
     const [teamMember, setTeamMember] = useState<string>('');
     const [statusId, setStatusId] = useState<string>('');
+    const [enableNoStatus, setEnableNoStatus] = useState<boolean>(false);
     const [unreaded, setUnreaded] = useState<boolean>(false);
     const [enableDateFilter, setEnableDateFilter] = useState<boolean>(false);
     const [date, setDate] = useState<{
@@ -51,9 +52,16 @@ const ChatSidebar = () => {
                     setStatusId(statusId);
                 }
 
+                const noStatus = searchParams.get("no-status");
+
+                if (noStatus === "true") {
+                    setEnableNoStatus(true);
+                }
+
                 const contacts = await fetchFilteredContacts({
                     currentPage: 1,
                     statusId: statusId || undefined,
+                    noStatus: noStatus === "true" || enableNoStatus ? true : false,
                 })
                 setContacts(contacts);
                 setInitialLoading(false)
@@ -155,6 +163,7 @@ const ChatSidebar = () => {
                 search: searchInput,
                 statusId,
                 unread: unreaded,
+                noStatus: enableNoStatus,
             })
 
             setContacts(prev => target ? contacts : [...prev, ...contacts]);
@@ -233,6 +242,7 @@ const ChatSidebar = () => {
                                     await handlePagination(1);
                                     setShowFilter(false);
                                 }}
+                                setEnableNoStatus={setEnableNoStatus}
                             />
                         )
                     }

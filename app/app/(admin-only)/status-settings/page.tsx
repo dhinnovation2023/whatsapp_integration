@@ -4,6 +4,8 @@ import DashboardLayout from '@/layouts/dashboard'
 import StatusListItem from './status-list-item';
 import AddStatusForm from './add-status-form';
 import { getBulkStatusChatCount } from '@/functions/status/get-bulk-status-chat-count';
+import { getNoStatusContactsCount } from '@/functions/status/get-no-status-contact';
+import Link from 'next/link';
 
 const StatusSettingsPage = async () => {
 
@@ -15,6 +17,7 @@ const StatusSettingsPage = async () => {
     }
 
     const statusCountList = await getBulkStatusChatCount({ statusIdList });
+    const noStatusContactsCount = await getNoStatusContactsCount();
 
     return (
         <DashboardLayout
@@ -38,6 +41,30 @@ const StatusSettingsPage = async () => {
                             statusList.length === 0 && (
                                 <div>
                                     No results found
+                                </div>
+                            )
+                        }
+
+                        {
+                            noStatusContactsCount > 0 && (
+                                <div
+                                    className='bg-background-2 py-4 px-4 flex items-center gap-5 justify-between rounded-2xl'
+                                >
+                                    <div
+                                        className='flex items-center gap-3'
+                                    >
+                                        <p
+                                            className='font-semibold'
+                                        >
+                                            Unknown Contacts
+                                            &nbsp;
+                                            <Link
+                                                href={`/app?no-status=true`}
+                                            >
+                                                ({noStatusContactsCount})
+                                            </Link>
+                                        </p>
+                                    </div>
                                 </div>
                             )
                         }

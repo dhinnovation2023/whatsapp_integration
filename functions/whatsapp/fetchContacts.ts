@@ -14,6 +14,7 @@ export interface FetchContactsFilterOptions {
     },
     statusId?: string,
     unread?: boolean,
+    noStatus?: boolean,
 }
 
 export async function fetchAllContacts(data: FetchContactsFilterOptions) {
@@ -76,6 +77,13 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
 
             if (data.unread === true) {
                 findQuery["unread"] = { $exists: true, $gt: 0 };
+            }
+
+            if (data.noStatus === true) {
+                findQuery["$or"] = [
+                    { statusId: null },
+                    { statusId: { $exists: false } },
+                ]
             }
 
             const contacts = await ContactsModel.find(findQuery, null, {
