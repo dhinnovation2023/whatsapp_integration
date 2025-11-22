@@ -27,7 +27,7 @@ const ChatInterface = ({
 
   return (
     <div
-      className='w-full max-w-full max-h-dvh h-dvh md:h-[95dvh] bg-background-2/50 flex flex-col justify-end'
+      className='w-full max-w-full max-h-dvh h-dvh md:h-screen bg-background-2/50 flex flex-col justify-end'
     >
       <ChatHeader
         setIsSidebarOpen={setIsSidebarOpen}
