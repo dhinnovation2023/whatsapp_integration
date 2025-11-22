@@ -1,8 +1,8 @@
 'use client';
 
-import { RiArrowDownSLine, RiEqualizer2Line, RiLoader4Line } from '@remixicon/react';
+import { RiArrowDownSLine, RiCloseLargeLine, RiEqualizer2Line, RiLoader4Line } from '@remixicon/react';
 import ContactCard from './contact-card';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { CustomContactsCardDataInterface } from '@/app/api/whatsapp/fetch-contacts/all/route';
 import { StatusModelInterface } from '@/models/status';
 import ErrorTemplate from '@/components/ui-elements/error-template';
@@ -13,7 +13,13 @@ import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 
-const ChatSidebar = () => {
+const ChatSidebar = ({
+    isSidebarOpen,
+    setIsSidebarOpen,
+}: {
+    isSidebarOpen: boolean,
+    setIsSidebarOpen: Dispatch<SetStateAction<boolean>>,
+}) => {
 
     const searchParams = useSearchParams();
 
@@ -70,6 +76,8 @@ const ChatSidebar = () => {
                 setError(message);
             }
         })()
+
+        // eslint-disable-next-line
     }, [searchParams])
 
     // useEffect for Observer
@@ -187,12 +195,25 @@ const ChatSidebar = () => {
     return (
         <div
             className={
-                'md:max-w-[320px] w-full shrink-0 flex flex-col'
+                'md:max-w-[320px]! w-full shrink-0 md:flex flex-col transition-all z-999 md:z-0 fixed md:relative left-0 top-0 bg-background shadow-2xl md:shadow-none max-h-full' +
+                ` ${isSidebarOpen ? "max-w-[320px] flex" : "max-w-0 hidden"}`
             }
         >
             <div
                 className='w-full p-3 border-b border-stroke-light/50 space-y-3'
             >
+                {
+                    isSidebarOpen && (
+                        <button
+                            className='fixed top-[15px] right-[15px] bg-foreground text-background shadow-md rounded-full w-10 h-10 flex items-center justify-center'
+                            onClick={() => setIsSidebarOpen(prev => !prev)}
+                        >
+                            <RiCloseLargeLine
+                                size={20}
+                            />
+                        </button>
+                    )
+                }
                 <div
                     className='flex items-center gap-1 bg-background-2/70 py-2 pl-4 pr-2 rounded-2xl'
                 >
@@ -251,7 +272,7 @@ const ChatSidebar = () => {
             </div>
 
             <div
-                className='overflow-auto min-h-[200px]'
+                className='overflow-auto min-h-[200px] max-h-full'
             >
                 {
                     initialLoading ? (

@@ -90,7 +90,9 @@ const StatusSettings = ({ currentChat }: {
                     backgroundColor: !currentStatus ? "var(--foreground)" : currentStatus.color,
                 }}
             >
-                <p>{currentStatus ? currentStatus.name : "-- Select Status --"}</p>
+                <p
+                    className='line-clamp-1'
+                >{currentStatus ? currentStatus.name : "-- Select Status --"}</p>
                 <RiArrowDownSLine
                     size={15}
                 />

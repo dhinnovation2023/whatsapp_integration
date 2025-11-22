@@ -29,7 +29,7 @@ const DashboardLayout = ({
                         )
                     }
                     <DefaultSection
-                        className='py-3'
+                        className='md:py-3'
                     >
                         <div
                             className='w-full'

@@ -10,7 +10,7 @@ const DefaultSection = ({
 }>) => {
     return (
         <div
-            className={`w-full px-5 ${outerClassName}`}
+            className={`w-full md:px-5 ${outerClassName}`}
         >
             <div
                 className={`mx-auto max-w-[1440px] w-full ${className}`}

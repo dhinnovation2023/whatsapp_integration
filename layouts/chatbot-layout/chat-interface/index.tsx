@@ -11,6 +11,7 @@ const ChatInterface = ({
   sending,
   replayContext,
   setReplayContext,
+  setIsSidebarOpen,
 }: {
   onSubmit: (
     value: string,
@@ -21,13 +22,16 @@ const ChatInterface = ({
   sending: boolean,
   replayContext: ReplayContextDataInterface | null,
   setReplayContext: Dispatch<SetStateAction<ReplayContextDataInterface | null>>,
+  setIsSidebarOpen: Dispatch<SetStateAction<boolean>>,
 }) => {
 
   return (
     <div
-      className='w-full max-w-full max-h-screen h-[95dvh] bg-background-2/50 flex flex-col justify-end'
+      className='w-full max-w-full max-h-screen h-screen md:h-[95dvh] bg-background-2/50 flex flex-col justify-end'
     >
-      <ChatHeader/>
+      <ChatHeader
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
       <div
         className='h-full overflow-auto px-5 pb-4'
       >

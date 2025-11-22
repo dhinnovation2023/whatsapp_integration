@@ -1,5 +1,5 @@
 import { dbConnect } from "@/config/dbConfig";
-import ContactsModel, { ContactsModelInterface } from "@/models/contacts";
+import ContactsModel from "@/models/contacts";
 
 export async function getNoStatusContactsCount() {
     return new Promise<number>(async (resolve, reject) => {

@@ -1,6 +1,8 @@
+'use client';
+
 import ChatInterface from './chat-interface'
 import { ChatHistoryMessageInterface } from './chat-interface/chat-history'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import ChatSidebar from './chat-sidebar'
 import { ReplayContextDataInterface } from '@/app/app/client-component'
 
@@ -22,12 +24,16 @@ const ChatBotLayout = ({
     replayContext: ReplayContextDataInterface | null,
     setReplayContext: Dispatch<SetStateAction<ReplayContextDataInterface | null>>,
 }) => {
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
     return (
         <div
-            className='flex flex-col md:flex-row items-stretch min-h-[95dvh] md:max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background rounded-2xl overflow-hidden'
+            className='flex flex-col md:flex-row items-stretch min-h-screen max-h-screen md:min-h-[95dvh] md:max-h-[80dvh] shadow-2xl shadow-neutral-200 border border-stroke-light bg-background md:rounded-2xl overflow-hidden'
         >
-            <ChatSidebar />
+            <ChatSidebar 
+                isSidebarOpen={isSidebarOpen}
+                setIsSidebarOpen={setIsSidebarOpen}
+            />
             <ChatInterface
                 onSubmit={onSubmit}
                 chatHistory={chatHistory}
@@ -35,6 +41,7 @@ const ChatBotLayout = ({
                 sending={sending}
                 replayContext={replayContext}
                 setReplayContext={setReplayContext}
+                setIsSidebarOpen={setIsSidebarOpen}
             />
         </div>
     )

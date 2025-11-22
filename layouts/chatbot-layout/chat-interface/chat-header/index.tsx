@@ -1,13 +1,15 @@
 import { handleCatchBlock } from '@/functions/common';
 import { ContactsModelInterface } from '@/models/contacts';
-import { RiLoader4Line } from '@remixicon/react';
+import { RiLoader4Line, RiMenuLine } from '@remixicon/react';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import SaveContactPopup from '../../chat-sidebar/save-contact-popup';
 import StatusSettings from './status-settings';
 
-const ChatHeader = () => {
+const ChatHeader = ({ setIsSidebarOpen }: {
+    setIsSidebarOpen: Dispatch<SetStateAction<boolean>>,
+}) => {
 
     const [currentChatDetails, setCurrentChatDetails] = useState<ContactsModelInterface | null>(null);
     const [inProgress, setInProgress] = useState<boolean>(false);
@@ -38,42 +40,57 @@ const ChatHeader = () => {
 
     return (
         <div
-            className='border-b border-stroke-light py-4 px-5 min-h-[60px] flex items-center justify-between bg-background'
+            className='border-b border-stroke-light py-4 px-5 min-h-[60px] flex gap-2 items-center justify-between bg-background'
         >
-            <div>
-                {
-                    inProgress ? (
-                        <div
-                            className='flex items-center gap-3'
-                        >
-                            <RiLoader4Line
-                                size={25}
-                                className='animate-spin'
-                            />
-                            <p>Loading Chat...</p>
-                        </div>
-                    ) : (
-                        <div>
-                            <button
-                                className='text-sm font-semibold capitalize cursor-pointer'
-                                onClick={() => setShowSettingsPopup(true)}
-                            >{currentChatDetails?.name}</button>
-                            <p
-                                className='text-xs'
-                            >{currentChatDetails?.phone}</p>
-                        </div>
-                    )
-                }
-
-                {
-                    showSettingsPopup && currentChatDetails ? (
-                        <SaveContactPopup
-                            defaultName={currentChatDetails.name}
-                            onClose={() => setShowSettingsPopup(false)}
-                            phone={currentChatDetails.phone}
+            <div
+                className='flex items-center gap-2'
+            >
+                <div
+                    className='flex md:hidden'
+                >
+                    <button
+                        onClick={() => setIsSidebarOpen(prev => !prev)}
+                    >
+                        <RiMenuLine
+                            size={20}
                         />
-                    ) : null
-                }
+                    </button>
+                </div>
+                <div>
+                    {
+                        inProgress ? (
+                            <div
+                                className='flex items-center gap-3'
+                            >
+                                <RiLoader4Line
+                                    size={25}
+                                    className='animate-spin'
+                                />
+                                <p>Loading Chat...</p>
+                            </div>
+                        ) : (
+                            <div>
+                                <button
+                                    className='text-sm font-semibold capitalize cursor-pointer line-clamp-1 text-left'
+                                    onClick={() => setShowSettingsPopup(true)}
+                                >{currentChatDetails?.name}</button>
+                                <p
+                                    className='text-xs'
+                                >{currentChatDetails?.phone}</p>
+                            </div>
+                        )
+                    }
+
+                    {
+                        showSettingsPopup && currentChatDetails ? (
+                            <SaveContactPopup
+                                defaultName={currentChatDetails.name}
+                                onClose={() => setShowSettingsPopup(false)}
+                                phone={currentChatDetails.phone}
+                            />
+                        ) : null
+                    }
+                </div>
             </div>
             {
                 !inProgress && currentChatDetails ? (

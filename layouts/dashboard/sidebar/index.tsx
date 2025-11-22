@@ -1,16 +1,44 @@
+'use client';
+
+import { useState } from 'react'
 import SidebarMenu from './menu'
 import UserInfo from './user-info'
+import { RiArrowLeftLine, RiArrowRightLine } from '@remixicon/react';
 
 const DashboardSidebar = () => {
+
+  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
+
   return (
     <div
-        className='min-w-[300px] overflow-auto bg-background min-h-[300px] py-6 px-4 shadow-lg shadow-neutral-200 z-40'
+      className={
+        `${openSidebar ? "max-w-[300px] py-6 px-4" : "max-w-0 py-6"} w-full transition-all shrink-0 overflow-auto bg-background min-h-screen max-h-screen md:min-h-[300px] shadow-lg shadow-neutral-200 z-40`
+        + ` fixed md:relative`
+      }
     >
-      <div
-        className='space-y-0'
+
+      <button
+        className={`fixed cursor-pointer transition-all ${openSidebar ? "left-[300px]" : "left-0"} bottom-10 bg-foreground text-white border border-stroke-light border-l-0 py-2 px-2 rounded-tr-2xl rounded-br-2xl`}
+        onClick={() => setOpenSidebar(prev => !prev)}
       >
-        <UserInfo/>
-        <SidebarMenu/>
+        {
+          openSidebar ? (
+            <RiArrowLeftLine
+              size={20}
+            />
+          ) : (
+            <RiArrowRightLine
+              size={20}
+            />
+          )
+        }
+      </button>
+
+      <div
+        className='space-y-0 min-w-max'
+      >
+        <UserInfo />
+        <SidebarMenu />
       </div>
     </div>
   )
