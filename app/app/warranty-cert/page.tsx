@@ -85,7 +85,6 @@ const WarrantyCertPage = async ({
                               <Link
                                 key={index}
                                 href={action.href}
-                                target='_blank'
                                 className='flex items-center py-2 px-3 bg-foreground text-background rounded-2xl'
                               >{action.label}</Link>
                             ))

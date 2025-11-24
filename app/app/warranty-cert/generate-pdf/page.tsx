@@ -1,8 +1,61 @@
-import React from 'react'
+import { getOneWarrantyCustomerData } from "@/functions/warranty/customers/get-one";
+import { fetchOneWarrantyBrand } from "@/functions/warranty/fetch-one-brand";
+import DashboardLayout from "@/layouts/dashboard";
+import { notFound } from "next/navigation";
+import PDFInterface from "./pdf";
 
-const GenarteWarrantyPDFPage = () => {
+type Props = {
+  searchParams: Promise<{
+    customerId?: string,
+  }>
+}
+
+const GenarteWarrantyPDFPage = async ({
+  searchParams,
+}: Props) => {
+
+  const customerId = (await searchParams).customerId;
+
+  if (!customerId) {
+    notFound();
+  }
+
+  const customerData = await getOneWarrantyCustomerData(customerId);
+  if (!customerData) {
+    notFound();
+  }
+
+  const brandData = await fetchOneWarrantyBrand(customerData.brand);
+  if (!brandData) {
+    notFound();
+  }
+
   return (
-    <div>GenarteWarrantyPDFPage</div>
+    <DashboardLayout
+      pageTitle="Generate Warranty PDF"
+    >
+      <PDFInterface
+        customerData={{
+          data: {
+            _id: `${customerData._id}`,
+            currentDate: customerData.currentDate instanceof Date ? customerData.currentDate.getTime() : customerData.currentDate,
+            customerName: customerData.customerName,
+            customerType: customerData.customerType,
+            dateOfSupply: customerData.dateOfSupply instanceof Date ? customerData.dateOfSupply.getTime() : customerData.dateOfSupply,
+            invoiceNo: customerData.invoiceNo,
+            location: customerData.location,
+            phone: customerData.phone,
+            productName: customerData.productName,
+            villaNo: customerData.villaNo,
+            warrantyPeriod: customerData.warrantyPeriod,
+
+            // Brand data
+            brandName: brandData.name,
+            brandContent: brandData.content,
+          }
+        }}
+      />
+    </DashboardLayout>
   )
 }
 
