@@ -1,5 +1,5 @@
 import { generatePDFComponents } from '@/PDF/generatePDFComponents';
-import { Text, View } from '@react-pdf/renderer'
+import { View } from '@react-pdf/renderer'
 import { DOMParser } from "xmldom";
 
 const PDFBrandBasedContent = ({ htmlContent }: {
@@ -7,9 +7,7 @@ const PDFBrandBasedContent = ({ htmlContent }: {
 }) => {
 
     const htmlJson = new DOMParser().parseFromString(htmlContent);
-    console.log(htmlJson)
-    console.log(htmlContent)
-    const pdfComponent = generatePDFComponents({ nodeJson: htmlJson as any })
+    const pdfComponent = generatePDFComponents({ nodeJson: htmlJson })
 
     console.log("PDF Components")
     console.log(pdfComponent)

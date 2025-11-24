@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Font } from "@react-pdf/renderer"
+import { View, Text } from "@react-pdf/renderer"
 import { v4 as v4uuid } from "uuid";
 
 export function generatePDFComponents({ nodeJson }: { nodeJson: HTMLDocument | ChildNode }): React.ReactNode {
