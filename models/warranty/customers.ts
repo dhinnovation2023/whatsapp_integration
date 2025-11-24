@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export interface WarrantyCustomersModelInterface {
+    _id: string,
     invoiceNo: string,
     brand: string,
     productName: string,
@@ -12,6 +13,10 @@ export interface WarrantyCustomersModelInterface {
     warrantyPeriod: string,
     currentDate: Date | number,
     villaNo: string,
+
+    // timestamp
+    createdAt?: Date,
+    updatedAt?: Date,
 }
 
 const defaultTextSchemaRequired = {
