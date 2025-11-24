@@ -2,7 +2,7 @@ import { dbConnect } from "@/config/dbConfig";
 import WarrantyBrandsModel from "@/models/warranty/brands";
 
 export interface AddNewWarrantyBrandRequestData {
-    name: String,
+    name: string,
     content: string,
 }
 

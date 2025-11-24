@@ -1,7 +1,7 @@
-import mongoose, { ObjectId } from "mongoose";
+import mongoose from "mongoose";
 
 export interface WarrantyCustomersModelInterface {
-    _id: string,
+    _id?: string,
     invoiceNo: string,
     brand: string,
     productName: string,

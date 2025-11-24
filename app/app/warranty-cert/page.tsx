@@ -79,7 +79,7 @@ const WarrantyCertPage = async ({
                               },
                               {
                                 label: "View PDF",
-                                href: `/app/warranty-cert/generate-pdf?customerId=${encodeURIComponent(customer._id)}`
+                                href: `/app/warranty-cert/generate-pdf?customerId=${encodeURIComponent(customer._id || '')}`
                               }
                             ].map((action, index) => (
                               <Link

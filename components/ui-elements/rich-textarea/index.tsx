@@ -38,7 +38,7 @@ export default function TiptapEditor({
         }
 
         editor?.commands.setContent(value ||'<p>Hello World!</p>');
-    }, [reset, editor, disableUseEffect])
+    }, [reset, editor, disableUseEffect, value])
 
     return (
         <div className="border border-stroke-light p-4 rounded-2xl bg-background">

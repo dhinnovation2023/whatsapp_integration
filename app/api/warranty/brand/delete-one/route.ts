@@ -1,4 +1,3 @@
-import { dbConnect } from "@/config/dbConfig";
 import { handleCatchBlock } from "@/functions/common";
 import { deleteOneWarrantyBrand } from "@/functions/warranty/delete-one-brand";
 import { getServerSession } from "next-auth";

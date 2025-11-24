@@ -2,7 +2,7 @@ import { getOneWarrantyCustomerData } from "@/functions/warranty/customers/get-o
 import { fetchOneWarrantyBrand } from "@/functions/warranty/fetch-one-brand";
 import DashboardLayout from "@/layouts/dashboard";
 import { notFound } from "next/navigation";
-import PDFInterface from "./pdf";
+import PDFViewerSection from "./pdf";
 
 type Props = {
   searchParams: Promise<{
@@ -33,26 +33,26 @@ const GenarteWarrantyPDFPage = async ({
   return (
     <DashboardLayout
       pageTitle="Generate Warranty PDF"
+      hidePageHeader
+      fullwidth
     >
-      <PDFInterface
+      <PDFViewerSection
         customerData={{
-          data: {
-            _id: `${customerData._id}`,
-            currentDate: customerData.currentDate instanceof Date ? customerData.currentDate.getTime() : customerData.currentDate,
-            customerName: customerData.customerName,
-            customerType: customerData.customerType,
-            dateOfSupply: customerData.dateOfSupply instanceof Date ? customerData.dateOfSupply.getTime() : customerData.dateOfSupply,
-            invoiceNo: customerData.invoiceNo,
-            location: customerData.location,
-            phone: customerData.phone,
-            productName: customerData.productName,
-            villaNo: customerData.villaNo,
-            warrantyPeriod: customerData.warrantyPeriod,
+          _id: `${customerData._id}`,
+          currentDate: customerData.currentDate instanceof Date ? customerData.currentDate.getTime() : customerData.currentDate,
+          customerName: customerData.customerName,
+          customerType: customerData.customerType,
+          dateOfSupply: customerData.dateOfSupply instanceof Date ? customerData.dateOfSupply.getTime() : customerData.dateOfSupply,
+          invoiceNo: customerData.invoiceNo,
+          location: customerData.location,
+          phone: customerData.phone,
+          productName: customerData.productName,
+          villaNo: customerData.villaNo,
+          warrantyPeriod: customerData.warrantyPeriod,
 
-            // Brand data
-            brandName: brandData.name,
-            brandContent: brandData.content,
-          }
+          // Brand data
+          brandName: brandData.name,
+          brandContent: brandData.content,
         }}
       />
     </DashboardLayout>

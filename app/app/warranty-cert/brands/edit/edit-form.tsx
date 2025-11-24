@@ -21,7 +21,7 @@ const EditWarrantyBrandPage = (data: {
     const [inProgress, setInProgress] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
 
-    const [clearContent, setClearContent] = useState<number>(0);
+    const [clearContent] = useState<number>(0);
     const [formData, setFormData] = useState<{
         name: string,
         content: string,
