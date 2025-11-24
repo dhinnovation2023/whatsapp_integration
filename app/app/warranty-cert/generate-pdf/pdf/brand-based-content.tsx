@@ -9,9 +9,6 @@ const PDFBrandBasedContent = ({ htmlContent }: {
     const htmlJson = new DOMParser().parseFromString(htmlContent);
     const pdfComponent = generatePDFComponents({ nodeJson: htmlJson })
 
-    console.log("PDF Components")
-    console.log(pdfComponent)
-
     return (
         <View>
             {pdfComponent}

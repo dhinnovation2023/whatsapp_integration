@@ -12,8 +12,6 @@ const PDFDetailsTable = ({ pdfContent }: {
         throw new Error("PDF Content is not loaded!")
     }
 
-    console.log(pdfContent)
-
     return (
         <View
             style={{

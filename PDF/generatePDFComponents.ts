@@ -74,7 +74,6 @@ function createListUlOlElement({ childrenNodes }: {
 }): React.ReactNode {
 
     const nodesArray = Array.from(childrenNodes)
-    console.log(nodesArray)
 
     return React.createElement(
         View,
