@@ -6,6 +6,7 @@ import { RiLoaderLine } from "@remixicon/react";
 import PDFDetailsTable from "./details-table";
 import { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
 import PDFBrandBasedContent from "./brand-based-content";
+import RenderDateInPDF from "./render-date";
 
 export type WarrantyPDFPagePDFContentInterface = Omit<WarrantyCustomersModelInterface, "brand"> & {
     brandName: string,
@@ -71,8 +72,21 @@ const PDFViewerSection = ({ customerData }: {
                                     htmlContent={customerData.brandContent}
                                 />
                             </View>
-                            <View>
-                                <Text>Signature</Text>
+                            <View
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "space-between"
+                                }}
+                            >
+                                <Text>
+                                    Authorized Signatory ___________________
+                                </Text>
+                                <Text>
+                                    <RenderDateInPDF
+                                        date={customerData.currentDate}
+                                    />
+                                </Text>
                             </View>
                         </View>
                     </PageTemplate>
