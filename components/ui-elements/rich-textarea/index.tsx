@@ -37,7 +37,7 @@ export default function TiptapEditor({
             return;
         }
 
-        editor?.commands.setContent('<p>Hello World!</p>');
+        editor?.commands.setContent(value ||'<p>Hello World!</p>');
     }, [reset, editor, disableUseEffect])
 
     return (

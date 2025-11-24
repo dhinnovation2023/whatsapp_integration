@@ -60,6 +60,13 @@ const AddWarrantyBrands = () => {
 
       await axios.post('/api/warranty/brand/add-one', requestData);
 
+      setFormData({
+        content: "",
+        name: "",
+      })
+
+      setClearContent(prev => ++prev);
+
     } catch (err) {
       const message = handleCatchBlock(err);
       setError(message);
@@ -104,7 +111,6 @@ const AddWarrantyBrands = () => {
                 }))
               }}
               reset={clearContent}
-              disableUseEffect={true}
               disableEmptyOnClick={true}
             />
           </div>
