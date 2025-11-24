@@ -1,11 +1,14 @@
-import DashboardLayout from '@/layouts/dashboard'
-import React from 'react'
+import { getAllWarrantyBrands } from "@/functions/warranty/fetch-all-brands"
+import WarrantyCertAddForm from "./add-form"
 
-const AddWarrentyDetails = () => {
+const AddWarrentyDetails = async () => {
+
+  const brands = await getAllWarrantyBrands({ currentPage: 1, customLimit: 0 })
+
   return (
-    <DashboardLayout
-      pageTitle='Add New Warranty'
-    ></DashboardLayout>
+    <WarrantyCertAddForm
+      brands={brands.map(brand => ({ name: brand.name, id: brand._id.toString() }))}
+    />
   )
 }
 

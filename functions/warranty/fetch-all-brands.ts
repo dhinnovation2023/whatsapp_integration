@@ -3,12 +3,13 @@ import WarrantyBrandsModel, { WarrantyBrandsModelInterface } from "@/models/warr
 
 export async function getAllWarrantyBrands (data: {
     currentPage: number,
+    customLimit?: number,
 }) {
     return new Promise<WarrantyBrandsModelInterface[]>(async (resolve, reject) => {
         try {
             await dbConnect();
 
-            const limit = 10;
+            const limit = data.customLimit || 10;
             const skip = (data.currentPage - 1) * limit;
 
             const brands = await WarrantyBrandsModel.find({}, null, {
