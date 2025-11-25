@@ -5,6 +5,8 @@ import InputGroup, { InputGroupDataInterface } from '@/components/ui/input-group
 import { handleCatchBlock } from '@/functions/common';
 import DashboardLayout from '@/layouts/dashboard';
 import { WarrantyCustomersModelInterface } from '@/models/warranty/customers';
+import { RiArrowLeftSLine } from '@remixicon/react';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from 'react'
 
@@ -170,7 +172,8 @@ const WarrantyCertAddForm = ({ brands, data }: {
                 }
             }
 
-
+            const requestData: WarrantyCustomersModelInterface = formData;
+            await axios.post('/api/warranty/customers/update-one', requestData);
 
             router.push('/app/warranty-cert');
 
@@ -187,8 +190,19 @@ const WarrantyCertAddForm = ({ brands, data }: {
             pageTitle='Add New Warranty'
         >
             <div
-                className='max-w-[800px] w-full mx-auto py-10 px-3'
+                className='max-w-[800px] w-full mx-auto py-10 px-3 space-y-10'
             >
+                <button
+                    className='flex items-center gap-1 cursor-pointer'
+                    onClick={() => {
+                        router.back();
+                    }}
+                >
+                    <RiArrowLeftSLine
+                        size={25}
+                    />
+                    <p>Go Back</p>
+                </button>
                 <form
                     className='space-y-3'
                     onSubmit={handleFormSubmit}
@@ -214,11 +228,18 @@ const WarrantyCertAddForm = ({ brands, data }: {
                         <button
                             className='py-3 px-4 bg-foreground text-background rounded-2xl cursor-pointer'
                         >
-                            Save Changes
+                            {inProgress ? "Loading..." : "Save Changes"}
                         </button>
                         <button
                             type='button'
                             className='py-3 px-4 bg-red-600 text-background rounded-2xl cursor-pointer'
+                            onClick={async () => {
+                                const confirm = window.confirm("Please confirm deletion");
+                                if (confirm) {
+                                    await axios.post('/api/warranty/customers/delete-one', { objectId: data._id });
+                                    router.push('/app/warranty-cert')
+                                }
+                            }}
                         >
                             Delete Warranty
                         </button>

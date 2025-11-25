@@ -35,6 +35,7 @@ const EditWarrantyCertPage = async ({ searchParams }: Props) => {
                 productName: customerData.productName,
                 villaNo: customerData.villaNo,
                 warrantyPeriod: customerData.warrantyPeriod,
+                _id: customerData._id?.toString(),
             }}
         />
     )
