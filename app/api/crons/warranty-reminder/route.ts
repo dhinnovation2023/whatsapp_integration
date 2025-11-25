@@ -1,11 +1,16 @@
+import { dbConnect } from "@/config/dbConfig";
 import { handleCatchBlock } from "@/functions/common";
 import { createNewContact } from "@/functions/whatsapp/create-new-contact";
+import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
 import { sendTextToWhatsapp } from "@/functions/whatsapp/sendToWhatsapp";
 import WarrantyCustomersModel, { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     try {
+
+        await dbConnect();
+
         const CRONS_SECRET = process.env.CRON_SECRET;
 
         if (!CRONS_SECRET) {
@@ -33,7 +38,7 @@ export async function GET(request: NextRequest) {
 
         for (const customer of customersData) {
 
-            const MARKETING_WARRANTY_REMINDER_TEXT = `Dear Mr. Abhilash,
+            const MARKETING_WARRANTY_REMINDER_TEXT = `Dear ${customer.customerName},
 
 This is a friendly reminder that your ${customer.productName}, installed on ${(customer.currentDate instanceof Date ? customer.currentDate : new Date(customer.currentDate)).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })} in ${customer.location}, is due for its 6-month service as per the warranty terms.
 
@@ -48,12 +53,23 @@ PROUDI TRADING FZE
 📍 Sharjah, United Arab Emirates`;
 
             await createNewContact({ name: "unknown", phone: customer.phone });
-            await sendTextToWhatsapp({
+            const { wamid } = await sendTextToWhatsapp({
                 phone: customer.phone,
                 text: MARKETING_WARRANTY_REMINDER_TEXT,
             })
 
-            WarrantyCustomersModel.findByIdAndUpdate(customer._id, 
+            await saveMessageToDB({
+                data: {
+                    phone: customer.phone,
+                    newMessage: true,
+                    role: "team",
+                    timestamp: new Date().getTime().toString(),
+                    wamid,
+                    message: MARKETING_WARRANTY_REMINDER_TEXT,
+                }
+            })
+
+            await WarrantyCustomersModel.findByIdAndUpdate(customer._id,
                 {
                     reminded: true,
                 }
