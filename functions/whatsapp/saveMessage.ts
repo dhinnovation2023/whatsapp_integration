@@ -26,8 +26,9 @@ export interface NewMessageDataInterface {
     },
 }
 
-export async function saveMessageToDB({ data }: {
+export async function saveMessageToDB({ data, customRole }: {
     data: NewMessageDataInterface,
+    customRole?: string,
 }) {
     return new Promise<void>(async (resolve, reject) => {
         try {
@@ -36,7 +37,9 @@ export async function saveMessageToDB({ data }: {
 
             if (data.role === "team") {
                 if (!session || !session.user?.name) {
-                    throw new Error("User not authorized!");
+                    if (!customRole) {
+                        throw new Error("User not authorized!");
+                    }
                 }
             }
 
