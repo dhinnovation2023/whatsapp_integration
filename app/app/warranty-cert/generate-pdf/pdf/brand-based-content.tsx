@@ -10,7 +10,13 @@ const PDFBrandBasedContent = ({ htmlContent }: {
     const pdfComponent = generatePDFComponents({ nodeJson: htmlJson })
 
     return (
-        <View>
+        <View
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "5px",
+            }}
+        >
             {pdfComponent}
         </View>
     )

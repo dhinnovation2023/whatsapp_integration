@@ -1,12 +1,14 @@
 'use client';
 
-import { Document, Font, PDFViewer, Text, View } from "@react-pdf/renderer";
+import { Document, Font, Image, PDFViewer, Text, View } from "@react-pdf/renderer";
 import PageTemplate from "./page-template";
 import { RiLoaderLine } from "@remixicon/react";
 import PDFDetailsTable from "./details-table";
 import { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
 import PDFBrandBasedContent from "./brand-based-content";
 import RenderDateInPDF from "./render-date";
+
+import StampImage from "./assets/transperant-stamp.png";
 
 export type WarrantyPDFPagePDFContentInterface = Omit<WarrantyCustomersModelInterface, "brand"> & {
     brandName: string,
@@ -76,12 +78,22 @@ const PDFViewerSection = ({ customerData }: {
                                 style={{
                                     display: "flex",
                                     flexDirection: "row",
-                                    justifyContent: "space-between"
+                                    justifyContent: "space-between",
+                                    alignItems: "flex-end"
                                 }}
                             >
-                                <Text>
-                                    Authorized Signatory ___________________
-                                </Text>
+                                <View>
+                                    {/* eslint-disable-next-line */}
+                                    <Image
+                                        src={StampImage.src}
+                                        style={{
+                                            width: "130px",
+                                        }}
+                                    />
+                                    <Text>
+                                        Authorized Signatory ___________________
+                                    </Text>
+                                </View>
                                 <Text>
                                     <RenderDateInPDF
                                         date={customerData.currentDate}
