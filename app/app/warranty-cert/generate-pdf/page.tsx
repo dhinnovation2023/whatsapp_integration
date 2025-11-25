@@ -3,6 +3,7 @@ import { fetchOneWarrantyBrand } from "@/functions/warranty/fetch-one-brand";
 import DashboardLayout from "@/layouts/dashboard";
 import { notFound } from "next/navigation";
 import PDFViewerSection from "./pdf";
+import ErrorTemplate from "@/components/ui-elements/error-template";
 
 type Props = {
   searchParams: Promise<{
@@ -27,7 +28,15 @@ const GenarteWarrantyPDFPage = async ({
 
   const brandData = await fetchOneWarrantyBrand(customerData.brand);
   if (!brandData) {
-    notFound();
+    return (
+      <DashboardLayout
+        pageTitle="Generate PDF"
+      >
+        <ErrorTemplate
+          error="Brand selected for this warranty has been deleted or not available."
+        />
+      </DashboardLayout>
+    )
   }
 
   return (

@@ -170,7 +170,7 @@ const WarrantyCertAddForm = ({ brands, data }: {
                 }
             }
 
-            
+
 
             router.push('/app/warranty-cert');
 
@@ -208,11 +208,21 @@ const WarrantyCertAddForm = ({ brands, data }: {
                         )
                     }
 
-                    <button
-                        className='py-3 px-4 bg-foreground text-background rounded-2xl cursor-pointer'
+                    <div
+                        className='flex items-center gap-3'
                     >
-                        Add Customer
-                    </button>
+                        <button
+                            className='py-3 px-4 bg-foreground text-background rounded-2xl cursor-pointer'
+                        >
+                            Save Changes
+                        </button>
+                        <button
+                            type='button'
+                            className='py-3 px-4 bg-red-600 text-background rounded-2xl cursor-pointer'
+                        >
+                            Delete Warranty
+                        </button>
+                    </div>
 
                 </form>
             </div>

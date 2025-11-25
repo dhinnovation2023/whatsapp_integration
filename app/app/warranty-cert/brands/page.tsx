@@ -6,6 +6,8 @@ import { getAllWarrantyBrands } from '@/functions/warranty/fetch-all-brands';
 import DashboardLayout from '@/layouts/dashboard'
 import { WarrantyBrandsModelInterface } from '@/models/warranty/brands';
 import Link from 'next/link'
+import ActionsButtons from './actions-buttons';
+import { RiErrorWarningLine } from '@remixicon/react';
 
 const ViewWarrantyBrands = async () => {
 
@@ -33,7 +35,7 @@ const ViewWarrantyBrands = async () => {
       pageTitle='View Warranty Brands'
     >
       <div
-        className='max-w-[800px] w-full mx-auto py-10 space-y-10'
+        className='max-w-[800px] w-full mx-auto py-10 space-y-7'
       >
         <div>
           <Link
@@ -47,9 +49,19 @@ const ViewWarrantyBrands = async () => {
         <div
           className='space-y-2'
         >
-          {brands.map((brand, index) => (
+          {brands.length === 0 && (
             <div
-              key={index}
+              className='py-3 px-5 bg-background flex items-center gap-3 rounded-2xl'
+            >
+              <RiErrorWarningLine
+                size={20}
+              />
+              <p>No results found!</p>
+            </div>
+          )}
+          {brands.map((brand) => (
+            <div
+              key={brand._id.toString()}
               className='w-full flex items-center justify-between bg-background py-3 px-5 rounded-2xl'
             >
               <div>
@@ -71,13 +83,10 @@ const ViewWarrantyBrands = async () => {
                       href: `/api/warranty/brand/delete-one?id=${brand._id}`,
                     },
                   ].map((item, index) => (
-                    <Link
-                      href={item.href}
-                      className='py-2 px-4 bg-foreground text-background rounded-2xl'
+                    <ActionsButtons
+                      {...item}
                       key={index}
-                    >
-                      {item.label}
-                    </Link>
+                    />
                   ))
                 }
               </div>

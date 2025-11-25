@@ -16,6 +16,7 @@ const warrantyBrandsSchema = new mongoose.Schema<WarrantyBrandsModelInterface>({
     content: {
         type: String,
         required: true,
+        unique: false,
     },
 }, { timestamps: true });
 

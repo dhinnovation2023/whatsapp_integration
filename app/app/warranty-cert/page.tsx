@@ -75,7 +75,7 @@ const WarrantyCertPage = async ({
                             [
                               {
                                 label: "Edit",
-                                href: "#",
+                                href: `/app/warranty-cert/edit?id=${encodeURIComponent(customer._id || '')}`,
                               },
                               {
                                 label: "View PDF",
