@@ -13,6 +13,7 @@ export interface WarrantyCustomersModelInterface {
     warrantyPeriod: string,
     currentDate: Date | number,
     villaNo: string,
+    reminded?: boolean,
 
     // timestamp
     createdAt?: Date,
@@ -41,6 +42,10 @@ const warrantyCustomersSchema = new mongoose.Schema<WarrantyCustomersModelInterf
     productName: defaultTextSchemaRequired,
     villaNo: defaultTextSchemaRequired,
     warrantyPeriod: defaultTextSchemaRequired,
+    reminded: {
+        type: Boolean,
+        required: false,
+    }
 }, { timestamps: true });
 
 const WarrantyCustomersModel = mongoose.models.WarrantyCustomers || mongoose.model('WarrantyCustomers', warrantyCustomersSchema);
