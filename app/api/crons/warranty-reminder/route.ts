@@ -1,6 +1,7 @@
 import { dbConnect } from "@/config/dbConfig";
 import { handleCatchBlock } from "@/functions/common";
 import { createNewContact } from "@/functions/whatsapp/create-new-contact";
+import { makeContactUnread } from "@/functions/whatsapp/makeContactUnread";
 import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
 import { sendTextToWhatsapp } from "@/functions/whatsapp/sendToWhatsapp";
 import WarrantyCustomersModel, { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
@@ -69,6 +70,10 @@ PROUDI TRADING FZE
                     message: MARKETING_WARRANTY_REMINDER_TEXT,
                 }
             })
+
+            await makeContactUnread({
+                phone: customer.phone,
+            });
 
             await WarrantyCustomersModel.findByIdAndUpdate(customer._id,
                 {
