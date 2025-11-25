@@ -17,6 +17,8 @@ export async function GET(request: NextRequest) {
             throw new Error("Please provide CRON_SECRET in .env file.");
         }
 
+        console.log("Request Header", request.headers.get('Authorization'))
+
         if (request.headers.get('Authorization') !== `Bearer ${CRONS_SECRET}`) {
             return NextResponse.json("Unauthorized", { status: 401 });
         }
@@ -79,6 +81,7 @@ PROUDI TRADING FZE
         return NextResponse.json({ ok: true })
 
     } catch (err) {
+        console.log("Error testing:", err);
         const message = handleCatchBlock(err);
         return NextResponse.json(message, { status: 500 });
     }
