@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { handleCatchBlock } from '@/functions/common'
 import { getAllWarrantyBrands } from '@/functions/warranty/fetch-all-brands';
