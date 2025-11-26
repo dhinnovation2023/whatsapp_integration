@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getAllWarrantyBrands } from "@/functions/warranty/fetch-all-brands"
 import WarrantyCertAddForm from "./add-form"
 
