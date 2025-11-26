@@ -8,7 +8,7 @@ import { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
 import PDFBrandBasedContent from "./brand-based-content";
 import RenderDateInPDF from "./render-date";
 
-import StampImage from "./assets/transperant-stamp.png";
+import StampImage from "./assets/prodi-seal-with-sign.png";
 
 export type WarrantyPDFPagePDFContentInterface = Omit<WarrantyCustomersModelInterface, "brand"> & {
     brandName: string,
@@ -87,7 +87,7 @@ const PDFViewerSection = ({ customerData }: {
                                     <Image
                                         src={StampImage.src}
                                         style={{
-                                            width: "130px",
+                                            width: "160px",
                                         }}
                                     />
                                     <Text>

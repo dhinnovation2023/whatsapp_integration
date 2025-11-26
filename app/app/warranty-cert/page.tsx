@@ -85,7 +85,7 @@ const WarrantyCertPage = async ({
                               <Link
                                 key={index}
                                 href={action.href}
-                                className='flex items-center py-2 px-3 bg-foreground text-background rounded-2xl'
+                                className='flex items-center py-2 px-3 bg-foreground text-background rounded-2xl min-w-max'
                               >{action.label}</Link>
                             ))
                           }
@@ -97,8 +97,13 @@ const WarrantyCertPage = async ({
                       return (
                         <td
                           key={index}
-                          className='py-4 px-6'
-                        >{ElementItem}</td>
+                          className='py-4 px-6 line'
+                        >
+                          <p
+                            className='line-clamp-1'
+                            title={ElementItem}
+                          >{ElementItem}</p>
+                        </td>
                       )
                     } else {
                       if (ElementItem) {

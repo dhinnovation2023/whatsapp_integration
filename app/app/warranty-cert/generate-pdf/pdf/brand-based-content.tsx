@@ -15,6 +15,7 @@ const PDFBrandBasedContent = ({ htmlContent }: {
                 display: "flex",
                 flexDirection: "column",
                 gap: "5px",
+                textAlign: "justify"
             }}
         >
             {pdfComponent}
