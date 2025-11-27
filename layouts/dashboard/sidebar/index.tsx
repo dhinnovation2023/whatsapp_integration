@@ -18,7 +18,7 @@ const DashboardSidebar = () => {
   return (
     <div
       className={
-        `${openSidebar ? "max-w-[300px] py-6 px-4" : "max-w-0 py-6"} w-full transition-all duration-500 shrink-0 overflow-auto bg-background min-h-dvh max-h-dvh md:min-h-[300px] shadow-lg shadow-neutral-200 z-40`
+        `${openSidebar ? "max-w-[300px] py-6 px-4" : "max-w-0 py-6"} w-full transition-all md:duration-500 shrink-0 overflow-auto bg-background min-h-dvh max-h-dvh md:min-h-[300px] shadow-lg shadow-neutral-200 z-40`
         + ` fixed md:relative`
       }
     >

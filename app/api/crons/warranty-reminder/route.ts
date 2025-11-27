@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
                     { reminded: false },
                     { reminded: { $exists: false } },
                 ],
-                currentDate: {
+                dateOfSupply: {
                     $lt: sixMonthAgo,
                 },
             }
