@@ -1,7 +1,7 @@
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import { FormateDateInMessage, handleCatchBlock, isDifferentDay } from '@/functions/common';
 import { MessagesModelInterface } from '@/models/messages';
-import { RiWhatsappLine } from '@remixicon/react';
+import { RiArrowUpLine, RiLoader4Line, RiWhatsappLine } from '@remixicon/react';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react'
@@ -31,6 +31,19 @@ export interface ChatHistoryMessageInterface {
     wamid?: string,
 }
 
+function createChatHistoryMessage(message: MessagesModelInterface): ChatHistoryMessageInterface {
+    return ({
+        date: message.timestamp,
+        role: message.role,
+        message: message.message ? message.message : undefined,
+        attachments: message.attachments,
+        location: message.location,
+        chatBy: message.chatBy,
+        context: message.context,
+        wamid: message.wamid,
+    })
+}
+
 const ChatHistory = ({
     chatHistory,
     setChatHistory,
@@ -46,6 +59,10 @@ const ChatHistory = ({
     const searchparams = useSearchParams();
     const [error, setError] = useState<string | null>(null);
     const [notSelected, setNotSelected] = useState<boolean>(false);
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [paginationInProgress, setPaginationInProgress] = useState<boolean>(false);
 
     const lastMessageRef = useRef<HTMLDivElement>(null);
 
@@ -63,25 +80,16 @@ const ChatHistory = ({
             }
 
             try {
-                const response = await axios.post<MessagesModelInterface[]>('/api/whatsapp/fetch-message', { phone });
+                const response = await axios.post<MessagesModelInterface[]>('/api/whatsapp/fetch-message', { phone, currentPage: 1 });
                 const history: ChatHistoryMessageInterface[] = [];
 
                 for (const message of response.data) {
-                    const data: ChatHistoryMessageInterface = {
-                        date: message.timestamp,
-                        role: message.role,
-                        message: message.message ? message.message : undefined,
-                        attachments: message.attachments,
-                        location: message.location,
-                        chatBy: message.chatBy,
-                        context: message.context,
-                        wamid: message.wamid,
-                    }
-
-                    history.push(data);
+                    const data = createChatHistoryMessage(message);
+                    history.unshift(data);
                 }
 
                 setChatHistory(history)
+                setCurrentPage(1);
 
             } catch (err) {
                 const message = handleCatchBlock(err);
@@ -106,16 +114,7 @@ const ChatHistory = ({
             };
 
             setChatHistory(prev => (
-                [...prev, {
-                    date: data.fullDocument.timestamp,
-                    role: data.fullDocument.role,
-                    message: data.fullDocument.message ? data.fullDocument.message : undefined,
-                    attachments: data.fullDocument.attachments || undefined,
-                    location: data.fullDocument.location || undefined,
-                    chatBy: data.fullDocument.chatBy,
-                    context: data.fullDocument.context,
-                    wamid: data.fullDocument.wamid,
-                }]
+                [...prev, createChatHistoryMessage(data.fullDocument)]
             ))
         };
 
@@ -130,12 +129,50 @@ const ChatHistory = ({
 
     // Scroll to bottom
     useEffect(() => {
+
+        if (paginationInProgress) {
+            return;
+        }
+
         if (lastMessageRef.current) {
             lastMessageRef.current.scrollIntoView({
                 behavior: "smooth"
             });
         }
     }, [chatHistory])
+
+    async function handleChatHistoryPagination() {
+        try {
+            const phone = searchparams.get('phone');
+            if (!phone) {
+                throw new Error("Phone number not found!");
+            }
+
+            const nextPage = currentPage + 1;
+            const requestData = {
+                phone,
+                currentPage: nextPage,
+            }
+
+            const {
+                data: response,
+            } = await axios.post<MessagesModelInterface[]>('/api/whatsapp/fetch-message', requestData);
+
+            const messages: ChatHistoryMessageInterface[] = [];
+
+            for (const message of response) {
+                const data = createChatHistoryMessage(message);
+                messages.unshift(data);
+            }
+
+            setChatHistory(prev => (
+                [...messages, ...prev]
+            ))
+        } catch (err) {
+            const message = handleCatchBlock(err);
+            setError(message);
+        }
+    }
 
     if (error) {
         return (
@@ -178,6 +215,29 @@ const ChatHistory = ({
         <div
             className='flex flex-col w-full gap-3 min-h-max'
         >
+            <button
+                className='py-1 px-3 bg-theme-primary rounded-full max-w-max mx-auto my-3 flex items-center gap-2 text-white font-semibold cursor-pointer'
+                onClick={async () => {
+                    setPaginationInProgress(true);
+                    await handleChatHistoryPagination();
+                    await new Promise(resolve => setTimeout(resolve, 500))
+                    setPaginationInProgress(false);
+                }}
+            >
+                {
+                    paginationInProgress ? (
+                        <RiLoader4Line
+                            size={20}
+                            className='animate-spin'
+                        />
+                    ) : (
+                        <RiArrowUpLine
+                            size={20}
+                        />
+                    )
+                }
+                <p>{paginationInProgress ? "Loading..." : "Load more"}</p>
+            </button>
             {chatHistory.map((chat, index, chats) => {
 
                 const prevDay = chats[index - 1];
