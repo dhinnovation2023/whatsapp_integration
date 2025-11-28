@@ -12,6 +12,7 @@ import ContactInplaceFilter from './contacts-inplace-filter';
 import { AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
+import { ContactReferSource } from '@/models/contacts';
 
 const ChatSidebar = ({
     isSidebarOpen,
@@ -37,6 +38,7 @@ const ChatSidebar = ({
     const [searchInput, setSearchInput] = useState<string>('');
     const [teamMember, setTeamMember] = useState<string>('');
     const [statusId, setStatusId] = useState<string>('');
+    const [referSource, setReferSource] = useState<ContactReferSource | null>(null);
     const [enableNoStatus, setEnableNoStatus] = useState<boolean>(false);
     const [unreaded, setUnreaded] = useState<boolean>(false);
     const [enableDateFilter, setEnableDateFilter] = useState<boolean>(false);
@@ -68,6 +70,7 @@ const ChatSidebar = ({
                     currentPage: 1,
                     statusId: statusId || undefined,
                     noStatus: noStatus === "true" || enableNoStatus ? true : false,
+                    referSource: referSource || undefined,
                 })
                 setContacts(contacts);
                 setInitialLoading(false)
@@ -172,6 +175,7 @@ const ChatSidebar = ({
                 statusId,
                 unread: unreaded,
                 noStatus: enableNoStatus,
+                referSource: referSource || undefined,
             })
 
             setContacts(prev => target ? contacts : [...prev, ...contacts]);
@@ -264,6 +268,8 @@ const ChatSidebar = ({
                                     setShowFilter(false);
                                 }}
                                 setEnableNoStatus={setEnableNoStatus}
+                                referSource={referSource}
+                                setReferSource={setReferSource}
                             />
                         )
                     }
