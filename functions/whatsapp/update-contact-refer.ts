@@ -37,7 +37,6 @@ export async function updateContactRefer({
                 { new: true }
             );
 
-            console.log(updatedContact);
             return resolve();
 
         } catch (err) {
