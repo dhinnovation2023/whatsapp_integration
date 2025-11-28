@@ -8,7 +8,7 @@ export interface ContactsModelInterface {
     statusId?: string,
     createdAt: Date,
     updatedAt: Date,
-    referSource: ContactReferSource,
+    referSource?: ContactReferSource,
 }
 
 export type ContactReferSource = "warranty-reminder";
