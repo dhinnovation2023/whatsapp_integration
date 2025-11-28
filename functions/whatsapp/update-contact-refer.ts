@@ -18,23 +18,23 @@ export async function updateContactRefer({
                     {
                         $set: {
                             referSource: {
-                                $cond: [
-                                    {
-                                        $or: [
-                                            { $eq: ["$referSource", []] },
-                                            { $eq: ["$referSource", null] }
-                                        ]
+                                $let: {
+                                    vars: {
+                                        current: { $ifNull: ["$referSource", []] }
                                     },
-                                    [referSource],
-                                    { $setUnion: ["$referSource", [referSource]] },
-                                ]
+                                    in: {
+                                        $cond: [
+                                            { $eq: ["$$current", []] },
+                                            [referSource],
+                                            { $setUnion: ["$$current", [referSource]] }
+                                        ]
+                                    }
+                                }
                             }
                         }
                     }
                 ],
-                {
-                    new: true,
-                }
+                { new: true }
             );
 
             console.log(updatedContact);

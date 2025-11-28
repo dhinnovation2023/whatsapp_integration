@@ -12,7 +12,7 @@ const DashboardSidebar = () => {
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
 
   useEffect(() => {
-    setOpenSidebar(deviceType === "desktop" ? true : false)
+    (() => setOpenSidebar(deviceType === "desktop" ? true : false))()
   }, [deviceType])
 
   return (
