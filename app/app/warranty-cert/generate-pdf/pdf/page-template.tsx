@@ -16,7 +16,7 @@ function PageTemplate({ children }: Readonly<{
         },
         contentWrapper: {
             padding: '15px 25px',
-            fontSize: '9px',
+            fontSize: '11px',
             display: "flex",
             flexDirection: "column",
             gap: "30px",
@@ -76,10 +76,11 @@ function PageFooter() {
         footerContainer: {
             width: '100%',
             padding: '10px 20px',
-            backgroundColor: "#fccc00"
+            backgroundColor: "#555e59"
         },
         footerText: {
-            fontSize: '10px'
+            fontSize: '10px',
+            color: "#ffffff"
         }
     })
 
