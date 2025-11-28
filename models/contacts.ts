@@ -8,7 +8,14 @@ export interface ContactsModelInterface {
     statusId?: string,
     createdAt: Date,
     updatedAt: Date,
-} 
+    referSource?: ContactReferSource,
+}
+
+export type ContactReferSource = "warranty-reminder";
+const ContactReferSourceSchema = {
+    type: [String],
+    enum: ["warranty-reminder", "service-reminder"],
+}
 
 const contactsSchema = new mongoose.Schema({
     name: {
@@ -28,7 +35,8 @@ const contactsSchema = new mongoose.Schema({
     },
     statusId: {
         type: String,
-    }
+    },
+    referSource: ContactReferSourceSchema,
 }, { timestamps: true })
 
 const ContactsModel = mongoose.models.Contacts || mongoose.model("Contacts", contactsSchema);

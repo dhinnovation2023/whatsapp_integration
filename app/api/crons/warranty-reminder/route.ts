@@ -4,6 +4,7 @@ import { createNewContact } from "@/functions/whatsapp/create-new-contact";
 import { makeContactUnread } from "@/functions/whatsapp/makeContactUnread";
 import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
 import { sendTextToWhatsapp } from "@/functions/whatsapp/sendToWhatsapp";
+import { updateContactRefer } from "@/functions/whatsapp/update-contact-refer";
 import WarrantyCustomersModel, { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -31,7 +32,7 @@ export async function GET(request: NextRequest) {
                     { reminded: false },
                     { reminded: { $exists: false } },
                 ],
-                currentDate: {
+                dateOfSupply: {
                     $lt: sixMonthAgo,
                 },
             }
@@ -74,6 +75,11 @@ PROUDI TRADING FZE
             await makeContactUnread({
                 phone: customer.phone,
             });
+
+            await updateContactRefer({
+                phone: customer.phone,
+                referSource: "warranty-reminder",
+            })
 
             await WarrantyCustomersModel.findByIdAndUpdate(customer._id,
                 {

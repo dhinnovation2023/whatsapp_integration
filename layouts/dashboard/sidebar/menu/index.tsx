@@ -4,10 +4,15 @@ import Link from "next/link"
 import menuItems from "./menu-items"
 import { usePathname } from "next/navigation";
 import SubmenuItem from "./submenu-item";
+import { useState } from "react";
+import { RiLoader4Line } from "@remixicon/react";
 
 const SidebarMenu = () => {
 
   const pathname = usePathname();
+  const [inProgress, setInProgress] = useState<{
+    [key: string]: boolean,
+  }>({});
 
   return (
     <div
@@ -38,11 +43,30 @@ const SidebarMenu = () => {
             key={index}
             href={menu.href}
             className={"flex items-center gap-3 py-3 px-5 rounded-full shadow-md shadow-theme-primary/20" + ` ${pathname === menu.href ? "bg-theme-primary text-white" : "bg-theme-primary/10"}`}
+            onClick={() => {
+
+              if (pathname === menu.href) {
+                return;
+              }
+
+              setInProgress({
+                [menu.href]: true,
+              })
+            }}
           >
-            <menu.icon
-              size={20}
-              className={`${pathname !== menu.href ? "text-theme-primary" : ""}`}
-            />
+            {
+              inProgress[menu.href] ? (
+                <RiLoader4Line
+                  size={20}
+                  className="text-theme-primary animate-spin"
+                />
+              ) : (
+                <menu.icon
+                  size={20}
+                  className={`${pathname !== menu.href ? "text-theme-primary" : ""}`}
+                />
+              )
+            }
             <p>{menu.label}</p>
           </Link>
         )

@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { handleCatchBlock } from '@/functions/common';
 import axios from 'axios';
 import { StatusModelInterface } from '@/models/status';
+import { ContactReferSource } from '@/models/contacts';
 
 const ContactInplaceFilter = ({
     date,
@@ -21,6 +22,8 @@ const ContactInplaceFilter = ({
     setUnreaded,
     unreaded,
     setEnableNoStatus,
+    referSource,
+    setReferSource,
 }: {
     date: { start: Date, end: Date },
     setDate: Dispatch<SetStateAction<{ start: Date, end: Date }>>,
@@ -33,6 +36,8 @@ const ContactInplaceFilter = ({
     unreaded: boolean,
     setUnreaded: Dispatch<SetStateAction<boolean>>,
     setEnableNoStatus: Dispatch<SetStateAction<boolean>>,
+    referSource: ContactReferSource | null,
+    setReferSource: Dispatch<SetStateAction<ContactReferSource | null>>
 
     // formSubmit
     onFilterSubmit: (event?: FormEvent) => void | Promise<void>,
@@ -101,7 +106,7 @@ const ContactInplaceFilter = ({
             animate={{
                 opacity: 1,
                 padding: "12px 16px",
-                maxHeight: 300,
+                maxHeight: 500,
             }}
             exit={{
                 opacity: 0,
@@ -158,6 +163,33 @@ const ContactInplaceFilter = ({
                                 value={status.statusId}
                                 key={index}
                             >{status.name}</option>
+                        ))}
+                    </select>
+                </div>
+                
+                <div
+                    className="bg-background py-2 px-3 rounded-xl"
+                >
+                    <select
+                        className="w-full block outline-none"
+                        name="refer-source" 
+                        id="referSource"
+                        value={referSource || undefined}
+                        onChange={(event) => {
+                            setReferSource(event.target.value as ContactReferSource)
+                        }}
+                    >
+                        <option value="">-- Select Refer Source --</option>
+                        {[
+                            {
+                                label: "Warranty Reminder",
+                                value: "warranty-reminder",
+                            }
+                        ].map((value, index) => (
+                            <option
+                                key={value.value + index}
+                                value={value.value}
+                            >{value.label}</option>
                         ))}
                     </select>
                 </div>
@@ -249,6 +281,7 @@ const ContactInplaceFilter = ({
                                 setUnreaded(false)
                                 setEnableNoStatus(false);
                                 setResetType("reset");
+                                setReferSource(null);
                             } else {
                                 onFilterSubmit();
                                 setResetType("clear");

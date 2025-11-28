@@ -1,6 +1,6 @@
 import { dbConnect } from "@/config/dbConfig";
 import { handleCatchBlock } from "../common"
-import ContactsModel, { ContactsModelInterface } from "@/models/contacts";
+import ContactsModel, { ContactReferSource, ContactsModelInterface } from "@/models/contacts";
 import { getServerSession } from "next-auth";
 import TeamMemberModel, { TeamMembersModelInterface } from "@/models/team-member";
 
@@ -15,6 +15,7 @@ export interface FetchContactsFilterOptions {
     statusId?: string,
     unread?: boolean,
     noStatus?: boolean,
+    referSource?: ContactReferSource,
 }
 
 export async function fetchAllContacts(data: FetchContactsFilterOptions) {
@@ -84,6 +85,12 @@ export async function fetchAllContacts(data: FetchContactsFilterOptions) {
                     { statusId: null },
                     { statusId: { $exists: false } },
                 ]
+            }
+
+            if (data.referSource) {
+                findQuery["referSource"] = {
+                    $in: [data.referSource],
+                }
             }
 
             const contacts = await ContactsModel.find(findQuery, null, {
