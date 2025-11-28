@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Jost, DM_Sans } from "next/font/google";
 import "./globals.css";
+import NextTopLoader from "nextjs-toploader";
 
 const jost = Jost({
   variable: "--font-jost"
@@ -23,6 +24,10 @@ export default function RootLayout({
       <body
         className={`${jost.variable} ${dmSans.className} antialiased`}
       >
+        <NextTopLoader
+          color="#25D366"
+          showSpinner={false}
+        />
         {children}
       </body>
     </html>

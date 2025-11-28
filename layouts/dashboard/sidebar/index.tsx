@@ -18,13 +18,13 @@ const DashboardSidebar = () => {
   return (
     <div
       className={
-        `${openSidebar ? "max-w-[300px] py-6 px-4" : "max-w-0 py-6"} w-full transition-all md:duration-500 shrink-0 overflow-auto bg-background min-h-dvh max-h-dvh md:min-h-[300px] shadow-lg shadow-neutral-200 z-40`
+        `${openSidebar ? "max-w-[300px] py-6 px-4" : "max-w-0 py-6"} w-full transition-all md:transition-none shrink-0 overflow-auto bg-background min-h-dvh max-h-dvh md:min-h-[300px] shadow-lg shadow-neutral-200 z-40`
         + ` fixed md:relative`
       }
     >
 
       <button
-        className={`fixed cursor-pointer transition-all ${openSidebar ? "left-[300px]" : "left-0"} bottom-10 bg-foreground text-white border border-stroke-light border-l-0 py-2 px-2 rounded-tr-2xl rounded-br-2xl`}
+        className={`fixed cursor-pointer transition-all md:transition-none ${openSidebar ? "left-[300px]" : "left-0"} bottom-10 bg-foreground text-white border border-stroke-light border-l-0 py-2 px-2 rounded-tr-2xl rounded-br-2xl`}
         onClick={() => setOpenSidebar(prev => !prev)}
       >
         {
