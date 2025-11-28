@@ -12,7 +12,7 @@ export async function updateContactRefer({
         try {
             await dbConnect();
 
-            const updatedContact = await ContactsModel.findOneAndUpdate(
+            await ContactsModel.findOneAndUpdate(
                 { phone },
                 [
                     {
