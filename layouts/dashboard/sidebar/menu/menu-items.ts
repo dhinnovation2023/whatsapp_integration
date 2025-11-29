@@ -1,4 +1,4 @@
-import { RemixiconComponentType, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiShieldCheckFill } from "@remixicon/react"
+import { RemixiconComponentType, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiShieldCheckFill, RiWrenchFill } from "@remixicon/react"
 
 export interface DashboardMenuItemsInterface {
     label: string,
@@ -28,12 +28,12 @@ const menuItems: (DashboardMenuItemsInterface | string)[] = [
         href: "/app/status-settings",
         icon: RiFlagFill,
     },
-    "Others Use Cases",
     {
         label: "Generate Reports",
         href: "/app/generate-reports",
         icon: RiFileChartFill,
     },
+    "Others Use Cases",
     {
         label: "Warranty",
         href: "#",
@@ -55,6 +55,29 @@ const menuItems: (DashboardMenuItemsInterface | string)[] = [
                 label: "Add Brands",
                 href: "/app/warranty-cert/brands/add",
             },
+        ]
+    },
+    {
+        label: "Service",
+        href: "#",
+        icon: RiWrenchFill,
+        submenu: [
+            {
+                label: "View All",
+                href: "#",
+            },
+            {
+                label: "Add New",
+                href: "#",
+            },
+            {
+                label: "View Brands",
+                href: "/app/service-cert/brands",
+            },
+            {
+                label: "Add Brand",
+                href: "/app/service-cert/brands/add",
+            }
         ]
     },
     "Google",
