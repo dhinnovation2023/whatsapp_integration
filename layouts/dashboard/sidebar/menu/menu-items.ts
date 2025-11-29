@@ -64,11 +64,11 @@ const menuItems: (DashboardMenuItemsInterface | string)[] = [
         submenu: [
             {
                 label: "View All",
-                href: "#",
+                href: "/app/service-cert",
             },
             {
                 label: "Add New",
-                href: "#",
+                href: "/app/service-cert/add",
             },
             {
                 label: "View Brands",
