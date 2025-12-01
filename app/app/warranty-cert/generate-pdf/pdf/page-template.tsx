@@ -84,17 +84,19 @@ function PageFooter() {
             backgroundColor: "#555e59"
         },
         footerText: {
-            fontSize: '10px',
-            color: "#ffffff"
+            fontSize: '8px',
+            color: "#ffffff",
+            textAlign: "center"
         }
     })
 
     return (
         <View style={styleSheet.footerContainer}>
             <Text style={styleSheet.footerText}>
-                Issued by: Proudi Trading FZE Al Sajaa Industrial, Sharjah – Behind Emirates Road,
-                Office/Warehouse No. 1 Phone: +971 56 43 05 251 | Email: info@proudi.ae Office: SRTI Freezone,
-                Sharjah, United Arab Emirates Phone: +971 67 15 0164 | Email: proudisolarsolution@gmail.com
+{
+    `Proudi Trading FZE | Al Sajaa Industrial, Sharjah – Behind Emirates Road, Office / Warehouse No. 1 Sharjah, United Arab Emirates
+Phone: +971 56 43 05 251 | Ph: Phone: +971 67 15 0164 | Web mail: info@proudi.ae | Email: proudisolarsolution@gmail.com`
+}
             </Text>
         </View>
     )
