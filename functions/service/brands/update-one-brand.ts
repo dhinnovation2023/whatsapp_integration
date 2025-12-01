@@ -1,5 +1,5 @@
 import { dbConnect } from "@/config/dbConfig";
-import ServiceBrandsModel, { ServiceBrandsModelinterface } from "@/models/service/brand";
+import ServiceBrandsModel from "@/models/service/brand";
 import { AddNewServiceBrandRequestData } from "./add-new-brand";
 
 export interface UpdateServiceBrandRequestData extends AddNewServiceBrandRequestData {

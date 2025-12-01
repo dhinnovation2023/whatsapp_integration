@@ -3,8 +3,9 @@
 import { Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import ProudiLogo from "./assets/logo.png";
 
-function PageTemplate({ children }: Readonly<{
+function PageTemplate({ children, title }: Readonly<{
     children: React.ReactNode,
+    title: string,
 }>) {
 
     const styleSheet = StyleSheet.create({
@@ -29,7 +30,9 @@ function PageTemplate({ children }: Readonly<{
             size="A4"
             orientation="portrait"
             style={styleSheet.pageStyle}>
-            <PageHeader />
+            <PageHeader
+                title={title}
+            />
             <View style={styleSheet.contentWrapper}>
                 {children}
             </View>
@@ -38,7 +41,9 @@ function PageTemplate({ children }: Readonly<{
     )
 }
 
-function PageHeader() {
+function PageHeader({ title }: {
+    title: string
+}) {
 
     const styleSheet = StyleSheet.create({
         headerContainer: {
@@ -65,7 +70,7 @@ function PageHeader() {
                 style={{
                     fontWeight: "900"
                 }}
-            >Warranty Certificate</Text>
+            >{title}</Text>
         </View>
     )
 }

@@ -1,6 +1,3 @@
-import ErrorTemplate from '@/components/ui-elements/error-template';
-import InputGroup, { InputGroupDataInterface } from '@/components/ui/input-group'
-import DashboardLayout from '@/layouts/dashboard'
 import AddServiceCustomerPageForm from './add-form';
 import { fetchAllServiceBrands } from '@/functions/service/brands/fetch-all-brands';
 

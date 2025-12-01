@@ -1,22 +1,20 @@
 'use client';
 
-import { Document, Font, Image, PDFViewer, Text, View } from "@react-pdf/renderer";
-import PageTemplate from "./page-template";
-import { RiLoaderLine } from "@remixicon/react";
-import PDFDetailsTable from "./details-table";
-import { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
-import PDFBrandBasedContent from "./brand-based-content";
-import RenderDateInPDF from "./render-date";
+import PageTemplate from '@/app/app/warranty-cert/generate-pdf/pdf/page-template'
+import RenderDateInPDF from '@/app/app/warranty-cert/generate-pdf/pdf/render-date';
+import { ServiceCustomersModelInterface } from '@/models/service/customers'
+import { Document, Font, Image, PDFViewer, Text, View } from '@react-pdf/renderer'
+import StampImage from "@/app/app/warranty-cert/generate-pdf/pdf/assets/prodi-seal-with-sign.png"
+import PDFDetailsTable from './pdf-details-table';
+import PDFBrandBasedContent from './brand-based-content';
 
-import StampImage from "./assets/prodi-seal-with-sign.png";
-
-export type WarrantyPDFPagePDFContentInterface = Omit<WarrantyCustomersModelInterface, "brand"> & {
+export type ServiceCustomerPDFGenerateInterface = Omit<ServiceCustomersModelInterface, "brand"> & {
     brandName: string,
     brandContent: string,
 }
 
-const PDFViewerSection = ({ customerData }: {
-    customerData: WarrantyPDFPagePDFContentInterface,
+const ServiceCustomerPDF = (data: {
+    customerData: ServiceCustomerPDFGenerateInterface,
 }) => {
 
     // React-PDF Configs
@@ -27,33 +25,21 @@ const PDFViewerSection = ({ customerData }: {
         ]
     })
 
-
-    if (!customerData) {
-        return (
-            <div
-                className="py-10 px-5"
-            >
-                <RiLoaderLine
-                    size={20}
-                    className="animate-spin"
-                />
-                <p>Loading PDF Viewer</p>
-            </div>
-        )
-    }
-
     return (
-        <div>
+        <div
+            className='w-full h-screen'
+        >
             <PDFViewer
-                className="w-full min-h-screen"
+                className='w-full min-h-screen'
             >
                 <Document
                     style={{ fontFamily: 'Open Sans' }}
-                    title="Warranty Certificate"
+                    title="Service Certificate"
                 >
                     <PageTemplate
-                        title="Warranty Certificate"
+                        title='Service Certificate'
                     >
+
                         <View
                             style={{
                                 display: "flex",
@@ -70,10 +56,10 @@ const PDFViewerSection = ({ customerData }: {
                                 }}
                             >
                                 <PDFDetailsTable
-                                    pdfContent={customerData}
+                                    pdfContent={data.customerData}
                                 />
                                 <PDFBrandBasedContent
-                                    htmlContent={customerData.brandContent}
+                                    htmlContent={data.customerData.brandContent}
                                 />
                             </View>
                             <View
@@ -98,10 +84,42 @@ const PDFViewerSection = ({ customerData }: {
                                 </View>
                                 <Text>
                                     <RenderDateInPDF
-                                        date={customerData.currentDate}
+                                        date={data.customerData.createdAt || 0}
                                     />
                                 </Text>
                             </View>
+                        </View>
+
+                    </PageTemplate>
+                    <PageTemplate
+                        title='Service Certificate'
+                    >
+                        <Text
+                            style={{
+                                fontSize: 20,
+                                fontWeight: 700,
+                            }}
+                        >Attachment</Text>
+                        <View
+                            style={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 10,
+                                width: "100%",
+                                flexDirection: "row",
+                            }}
+                        >
+                            {data.customerData.uploads.map((filepath, index) => (
+                                // eslint-disable-next-line
+                                <Image
+                                    key={index}
+                                    src={`/api/whatsapp/fetch-files/${encodeURIComponent(filepath)}`}
+                                    style={{
+                                        flexShrink: 0,
+                                        width: "49%",
+                                    }}
+                                />
+                            ))}
                         </View>
                     </PageTemplate>
                 </Document>
@@ -110,4 +128,4 @@ const PDFViewerSection = ({ customerData }: {
     )
 }
 
-export default PDFViewerSection
+export default ServiceCustomerPDF

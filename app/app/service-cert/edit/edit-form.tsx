@@ -1,41 +1,39 @@
 'use client';
 
-import { AddNewServiceCustomerRequestDataInterface } from '@/app/api/service/customers/add-one/route';
+import { UpdateServiceCustomersRequestData } from '@/app/api/service/customers/update-one/route';
 import ErrorTemplate from '@/components/ui-elements/error-template';
 import InputGroup, { InputGroupDataInterface } from '@/components/ui/input-group';
 import { handleCatchBlock } from '@/functions/common';
 import DashboardLayout from '@/layouts/dashboard';
-import { RiCloseLine, RiLoader4Line, RiUploadLine } from '@remixicon/react';
+import { ServiceCustomersModelInterface } from '@/models/service/customers';
+import { RiArrowLeftSLine, RiCloseLine, RiLoader4Line, RiUploadLine } from '@remixicon/react';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, FormEvent, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
+import { v4 as uuid } from 'uuid';
 
-const AddServiceCustomerPageForm = ({ brands }: {
+const EditServiceCustomerForm = ({ data, brands }: {
+    data: ServiceCustomersModelInterface,
     brands: {
         name: string,
         id: string,
     }[]
 }) => {
-    const [inProgress, setInProgress] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+
     const router = useRouter();
 
-    const fileUploadInputRef = useRef<HTMLInputElement>(null);
+    const [inProgress, setInProgress] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+    const [filesLoading, setFilesLoading] = useState<boolean>(false);
 
-    const [formData, setFormData] = useState<AddNewServiceCustomerRequestDataInterface>({
-        brand: '',
-        customerName: '',
-        customerType: '',
-        dateOfService: new Date(),
-        invoiceNo: '',
-        location: '',
-        nthService: 1,
-        phone: '',
-        productName: '',
-        uploads: [],
-        villaNo: '',
-    })
+    const [formData, setFormData] = useState<UpdateServiceCustomersRequestData>(() => {
+        return ({
+            ...data,
+            uploads: [],
+        })
+    });
+    const fileUploadInputRef = useRef<HTMLInputElement>(null);
 
     const fieldsData: InputGroupDataInterface[] = [
         {
@@ -144,33 +142,72 @@ const AddServiceCustomerPageForm = ({ brands }: {
         },
     ]
 
+    useEffect(() => {
+        (async () => {
+            setFilesLoading(true);
+            try {
+                for (const path of data.uploads) {
+                    const response = await axios.get<ArrayBuffer>(`/api/whatsapp/fetch-files/${encodeURIComponent(path)}`, {
+                        responseType: "arraybuffer",
+                    });
+
+                    if (!response.data) {
+                        throw new Error("Image data not found!");
+                    }
+
+                    const mimeType = response.headers["Content-Type"]?.toString();
+                    const filename = uuid();
+                    const buffer = Buffer.from(response.data);
+
+                    const newFile = new File(
+                        [buffer],
+                        filename,
+                        {
+                            type: mimeType,
+                        }
+                    )
+
+                    setFormData(prev => ({
+                        ...prev,
+                        uploads: [...prev.uploads, newFile]
+                    }))
+
+                }
+
+            } catch (err) {
+                const message = handleCatchBlock(err);
+                console.error(message);
+            }
+            setFilesLoading(false);
+        })()
+    }, [data])
+
     function handleInputOnchange(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
 
-        let value;
-
-        if (event.target.type === "date") {
-            value = event.target.valueAsDate;
-        } else if (event.target.type === "number") {
-            value = event.target.valueAsNumber;
-        } else {
-            value = event.target.value;
+        if (event.target instanceof HTMLInputElement && event.target.type === "date" && event.target.valueAsDate) {
+            setFormData(prev => ({
+                ...prev,
+                [event.target.name]: event.target.type === "date" ? event.target.valueAsDate : new Date(),
+            }))
+            return;
         }
 
         setFormData(prev => ({
             ...prev,
-            [event.target.name]: value,
+            [event.target.name]: event.target.value,
         }))
     }
 
     async function handleFormSubmit(event: FormEvent) {
         event.preventDefault();
-        setError(null)
+        setError(null);
         setInProgress(true);
+
         try {
 
             for (const field of fieldsData) {
-                if (field.required === true && !field.value) {
-                    throw new Error(`Field ${field.label} is required.`);
+                if (field.required && !field.value) {
+                    throw new Error(`Required field ${field.label} is empty`);
                 }
             }
 
@@ -198,15 +235,11 @@ const AddServiceCustomerPageForm = ({ brands }: {
                 }
             }
 
-            const { data } = await axios.post<{ ok: boolean }>('/api/service/customers/add-one', requestData, {
+            await axios.post('/api/service/customers/update-one', requestData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                },
-            })
-
-            if (!data.ok) {
-                throw new Error("Something went wrong!");
-            }
+                }
+            });
 
             router.push('/app/service-cert');
 
@@ -214,16 +247,28 @@ const AddServiceCustomerPageForm = ({ brands }: {
             const message = handleCatchBlock(err);
             setError(message);
         }
+
         setInProgress(false);
     }
 
     return (
         <DashboardLayout
-            pageTitle='Add New Service'
+            pageTitle='Edit Service'
         >
             <div
-                className='max-w-[800px] w-full mx-auto py-10 px-3'
+                className='max-w-[800px] w-full mx-auto py-10 px-3 space-y-10'
             >
+                <button
+                    className='flex items-center gap-1 cursor-pointer'
+                    onClick={() => {
+                        router.back();
+                    }}
+                >
+                    <RiArrowLeftSLine
+                        size={25}
+                    />
+                    <p>Go Back</p>
+                </button>
                 <form
                     className='space-y-3'
                     onSubmit={handleFormSubmit}
@@ -235,7 +280,9 @@ const AddServiceCustomerPageForm = ({ brands }: {
                         />
                     ))}
 
-                    <div>
+                    <div
+                        className='space-y-2'
+                    >
                         <input
                             type="file"
                             accept='image/*'
@@ -309,6 +356,20 @@ const AddServiceCustomerPageForm = ({ brands }: {
                             ))}
                         </div>
 
+                        {
+                            filesLoading && (
+                                <div
+                                    className='flex items-center gap-2'
+                                >
+                                    <RiLoader4Line
+                                        size={20}
+                                        className='animate-spin'
+                                    />
+                                    <p>Loading Images</p>
+                                </div>
+                            )
+                        }
+
                     </div>
 
                     {
@@ -319,19 +380,28 @@ const AddServiceCustomerPageForm = ({ brands }: {
                         )
                     }
 
-                    <button
-                        className='py-3 px-4 bg-foreground text-background rounded-2xl cursor-pointer flex items-center gap-2'
+                    <div
+                        className='flex items-center gap-3'
                     >
-                        {
-                            inProgress && (
-                                <RiLoader4Line
-                                    size={20}
-                                    className='animate-spin'
-                                />
-                            )
-                        }
-                        Add Customer
-                    </button>
+                        <button
+                            className='py-3 px-4 bg-foreground text-background rounded-2xl cursor-pointer'
+                        >
+                            {inProgress ? "Loading..." : "Save Changes"}
+                        </button>
+                        <button
+                            type='button'
+                            className='py-3 px-4 bg-red-600 text-background rounded-2xl cursor-pointer'
+                            onClick={async () => {
+                                const confirm = window.confirm("Please confirm deletion");
+                                if (confirm) {
+                                    await axios.post('/api/service/customers/delete-one', { objectId: data._id });
+                                    router.push('/app/service-cert')
+                                }
+                            }}
+                        >
+                            Delete Warranty
+                        </button>
+                    </div>
 
                 </form>
             </div>
@@ -339,4 +409,4 @@ const AddServiceCustomerPageForm = ({ brands }: {
     )
 }
 
-export default AddServiceCustomerPageForm
+export default EditServiceCustomerForm

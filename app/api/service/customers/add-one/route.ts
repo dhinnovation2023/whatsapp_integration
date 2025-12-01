@@ -1,6 +1,7 @@
 import { handleCatchBlock } from "@/functions/common";
 import { uploadOneFile } from "@/functions/firebase/upload";
 import { addOneServiceCustomer } from "@/functions/service/customers/add-one";
+import serviceCustomerConfigs from "@/functions/service/customers/configs";
 import { ServiceCustomersModelInterface } from "@/models/service/customers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
             const filePathname = await uploadOneFile({
                 buffer,
                 mime_type: file.type,
-                folders: ['others'],
+                folders: serviceCustomerConfigs.imagesFolder,
             });
             uploadsUrls.push(filePathname);
         }

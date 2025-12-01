@@ -1,6 +1,5 @@
 import { handleCatchBlock } from "@/functions/common";
 import { updateOneServiceBrand, UpdateServiceBrandRequestData } from "@/functions/service/brands/update-one-brand";
-import { ServiceBrandsModelinterface } from "@/models/service/brand";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {

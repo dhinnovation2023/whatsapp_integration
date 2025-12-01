@@ -139,7 +139,7 @@ const ChatHistory = ({
                 behavior: "smooth"
             });
         }
-    }, [chatHistory])
+    }, [chatHistory, paginationInProgress])
 
     async function handleChatHistoryPagination() {
         try {

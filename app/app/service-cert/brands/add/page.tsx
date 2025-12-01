@@ -7,7 +7,6 @@ import InputGroup, { InputGroupDataInterface } from "@/components/ui/input-group
 import { handleCatchBlock } from "@/functions/common";
 import { AddNewServiceBrandRequestData } from "@/functions/service/brands/add-new-brand";
 import DashboardLayout from "@/layouts/dashboard"
-import { ServiceBrandsModelinterface } from "@/models/service/brand";
 import { RiLoader4Line } from "@remixicon/react";
 import axios from "axios";
 import { ChangeEvent, FormEvent, useState } from "react"

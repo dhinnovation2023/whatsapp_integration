@@ -4,7 +4,6 @@ import TiptapEditor from '@/components/ui-elements/rich-textarea'
 import InputGroup, { InputGroupDataInterface } from '@/components/ui/input-group'
 import { handleCatchBlock } from '@/functions/common';
 import { UpdateServiceBrandRequestData } from '@/functions/service/brands/update-one-brand';
-import { UpdateWarrantyBrandRequestData } from '@/functions/warranty/update-one-brand';
 import DashboardLayout from '@/layouts/dashboard'
 import { RiLoader4Line } from '@remixicon/react'
 import axios from 'axios';
