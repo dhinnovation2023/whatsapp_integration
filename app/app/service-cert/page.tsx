@@ -1,0 +1,125 @@
+import { getAllServiceCustomers } from '@/functions/service/customers/get-all';
+import DashboardLayout from '@/layouts/dashboard';
+import Link from 'next/link';
+import React from 'react'
+
+type Props = {
+    searchParams: Promise<{
+        page: number,
+    }>
+}
+
+const ServicesCustomersListPage = async ({ searchParams }: Props) => {
+    const currentPage = (await searchParams).page;
+    const customersData = await getAllServiceCustomers({ currentPage: currentPage || 1 })
+
+    return (
+        <DashboardLayout
+            pageTitle='View Service Cert'
+        >
+            <div
+                className='max-w-[1000px] w-full mx-auto py-10 px-3 space-y-3'
+            >
+                <Link
+                    href={'/app/service-cert/add'}
+                    className='py-3 px-5 bg-foreground text-background rounded-2xl flex max-w-max'
+                >
+                    Add New Customer
+                </Link>
+                <table
+                    className='w-full text-left bg-background rounded-2xl'
+                >
+                    <thead>
+                        <tr>
+                            {[
+                                "Invoice No.",
+                                "Name",
+                                "Phone",
+                                "Product",
+                                "Created At",
+                                "Actions",
+                            ].map((data, index) => (
+                                <th
+                                    key={index}
+                                    className='py-4 px-6 min-w-max'
+                                >
+                                    {data}
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {customersData.map((customer, index) => (
+                            <tr
+                                key={index}
+                                className='hover:bg-background-2/50 odd:bg-background-2/50'
+                            >
+                                {
+                                    [
+                                        customer.invoiceNo,
+                                        customer.customerName,
+                                        customer.phone,
+                                        customer.productName,
+                                        customer.createdAt?.toISOString().split('T')[0].split('-').join('/'),
+                                        () => (
+                                            <td
+                                                className='py-4 px-6'
+                                            >
+                                                <div
+                                                    className='flex items-center gap-2'
+                                                >
+                                                    {
+                                                        [
+                                                            {
+                                                                label: "Edit",
+                                                                href: `/app/service-cert/edit?id=${encodeURIComponent(customer._id || '')}`,
+                                                            },
+                                                            {
+                                                                label: "View PDF",
+                                                                href: `/app/service-cert/generate-pdf?customerId=${encodeURIComponent(customer._id || '')}`
+                                                            }
+                                                        ].map((action, index) => (
+                                                            <Link
+                                                                key={index}
+                                                                href={action.href}
+                                                                className='flex items-center py-2 px-3 bg-foreground text-background rounded-2xl min-w-max'
+                                                            >{action.label}</Link>
+                                                        ))
+                                                    }
+                                                </div>
+                                            </td>
+                                        )
+                                    ].map((ElementItem, index) => {
+                                        if (typeof ElementItem === "string") {
+                                            return (
+                                                <td
+                                                    key={index}
+                                                    className='py-4 px-6 line'
+                                                >
+                                                    <p
+                                                        className='line-clamp-1'
+                                                        title={ElementItem}
+                                                    >{ElementItem}</p>
+                                                </td>
+                                            )
+                                        } else {
+                                            if (ElementItem) {
+                                                return (
+                                                    <ElementItem
+                                                        key={index}
+                                                    />
+                                                )
+                                            }
+                                        }
+                                    })
+                                }
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </DashboardLayout>
+    )
+}
+
+export default ServicesCustomersListPage

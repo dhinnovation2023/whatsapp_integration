@@ -187,7 +187,7 @@ const WarrantyCertAddForm = ({ brands, data }: {
 
     return (
         <DashboardLayout
-            pageTitle='Add New Warranty'
+            pageTitle='Edit Warranty'
         >
             <div
                 className='max-w-[800px] w-full mx-auto py-10 px-3 space-y-10'

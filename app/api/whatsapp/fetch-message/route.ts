@@ -7,15 +7,21 @@ export async function POST(request: NextRequest) {
 
         const {
             phone,
+            currentPage,
         } = await request.json() as {
             phone: string,
+            currentPage?: number,
         }
 
         if (!phone) {
             throw new Error("Phone number is required!");
         }
 
-        const message = await fetchMessageByPhone({ phone });
+        if (!currentPage) {
+            throw new Error("currentPage is required.");
+        }
+
+        const message = await fetchMessageByPhone({ phone, currentPage });
 
         return NextResponse.json(message)
 
