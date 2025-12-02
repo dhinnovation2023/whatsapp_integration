@@ -1,4 +1,4 @@
-import { RemixiconComponentType, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiShieldCheckFill, RiWrenchFill } from "@remixicon/react"
+import { RemixiconComponentType, RiBox2Fill, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiShieldCheckFill, RiWrenchFill } from "@remixicon/react"
 
 export interface DashboardMenuItemsInterface {
     label: string,
@@ -86,6 +86,22 @@ const menuItems: (DashboardMenuItemsInterface | string)[] = [
         href: "/app/google-oauth",
         icon: RiGoogleFill,
     },
+    "Accounting",
+    {
+        label: "Products",
+        href: "#",
+        icon: RiBox2Fill,
+        submenu: [
+            {
+                label: "View All",
+                href: "/app/accounting/products",
+            },
+            {
+                label: "Add New",
+                href: "/app/accounting/products/add"
+            },
+        ]
+    }
 ]
 
 export default menuItems
