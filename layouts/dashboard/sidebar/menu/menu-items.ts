@@ -1,4 +1,4 @@
-import { RemixiconComponentType, RiBox2Fill, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiShieldCheckFill, RiWrenchFill } from "@remixicon/react"
+import { RemixiconComponentType, RiBox2Fill, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiMessage3Fill, RiShieldCheckFill, RiWrenchFill } from "@remixicon/react"
 
 export interface DashboardMenuItemsInterface {
     label: string,
@@ -101,6 +101,21 @@ const menuItems: (DashboardMenuItemsInterface | string)[] = [
                 href: "/app/accounting/products/add"
             },
         ]
+    },
+    {
+        label: "Quotation",
+        href: "#",
+        icon: RiMessage3Fill,
+        submenu: [
+            {
+                label: "View All",
+                href: "/app/accounting/quotations",
+            },
+            {
+                label: "Add New",
+                href: "/app/accounting/quotations/add",
+            }
+        ],
     }
 ]
 

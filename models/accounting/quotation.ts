@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Model, ObjectId } from "mongoose";
 
 export interface QuotationsModelInterface {
+    _id?: ObjectId | string,
     customerName: string,
     phone: string,
     location: string,
@@ -8,8 +9,10 @@ export interface QuotationsModelInterface {
         productId: string,
         price: number,
         tax: boolean,
+        qty: number,
     }[],
     note: string,
+    invoiceNo?: string,
 }
 
 const quotationsSchema = new mongoose.Schema<QuotationsModelInterface>({
@@ -39,12 +42,41 @@ const quotationsSchema = new mongoose.Schema<QuotationsModelInterface>({
                 required: true,
             },
             tax: {
-                type: String,
+                type: Boolean,
+                required: true,
+            },
+            qty: {
+                type: Number,
                 required: true,
             }
         }
-    ]
+    ],
+    invoiceNo: {
+        type: String,
+        unique: true,
+    }
 }, { timestamps: true })
+
+quotationsSchema.pre('save', async function (next) {
+    if (this.invoiceNo) {
+        return next();
+    }
+
+    const Model = this.constructor as Model<QuotationsModelInterface>;
+
+    const lastDoc = await Model.findOne({}, { invoiceNo: 1 })
+        .sort({ invoiceNo: -1 })
+
+    let nextNumber = 1;
+
+    if (lastDoc && lastDoc.invoiceNo) {
+        const lastNum = parseInt(lastDoc.invoiceNo.replace("QT", ""));
+        nextNumber = lastNum + 1;
+    }
+
+    this.invoiceNo = `QT${String(nextNumber).padStart(4, "0")}`;
+    return next();
+})
 
 const QuotationsModel = mongoose.models.Quotations || mongoose.model("Quotations", quotationsSchema);
 export default QuotationsModel;
