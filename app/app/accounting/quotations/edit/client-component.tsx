@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { GetOneQuotationRequestData } from "@/app/api/accounting/quotations/get-one/route";
 import { DeleteOneQuotationRequestData } from "@/app/api/accounting/quotations/delete-one/route";
 import { UpdateQuotationRequestData } from "@/functions/accounting/quotations/update-one";
+import NotesFields from "../(components)/notes-field";
 
 const EditQuotationPageClient = () => {
 
@@ -32,7 +33,7 @@ const EditQuotationPageClient = () => {
         location: '',
         phone: '',
         products: [],
-        note: '',
+        note: [],
     });
 
     function handleInnerProductDataChange(value: string | number | boolean, index: number, name: string) {
@@ -125,15 +126,6 @@ const EditQuotationPageClient = () => {
                 }
             },
             "Other Data",
-            {
-                textareaLabel: "Note",
-                placeholder: "Quotation Note",
-                value: formData["note"],
-                textarea: true,
-                textareaChange: handleInputChange,
-                name: "note"
-            },
-
         ]
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
@@ -234,7 +226,7 @@ const EditQuotationPageClient = () => {
 
     return (
         <DashboardLayout
-            pageTitle="Add Quotation"
+            pageTitle="Edit Quotation"
         >
             <div
                 className="max-w-[1000px] w-full mx-auto py-10"
@@ -395,6 +387,11 @@ const EditQuotationPageClient = () => {
                         }
 
                     })}
+
+                    <NotesFields
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
 
                     <div
                         className="flex items-center gap-3"

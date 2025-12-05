@@ -12,6 +12,7 @@ import ProductsTotalTableLast from "../products-total";
 import ErrorTemplate from "@/components/ui-elements/error-template";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import NotesFields from "../(components)/notes-field";
 
 const AddQuotationPage = () => {
 
@@ -25,7 +26,7 @@ const AddQuotationPage = () => {
         location: '',
         phone: '',
         products: [],
-        note: '',
+        note: [],
     });
 
     function handleInnerProductDataChange(value: string | number | boolean, index: number, name: string) {
@@ -109,14 +110,6 @@ const AddQuotationPage = () => {
                 }
             },
             "Other Data",
-            {
-                textareaLabel: "Note",
-                placeholder: "Quotation Note",
-                value: formData["note"],
-                textarea: true,
-                textareaChange: handleInputChange,
-                name: "note"
-            },
 
         ]
 
@@ -325,6 +318,15 @@ const AddQuotationPage = () => {
                         }
 
                     })}
+
+                    <NotesFields
+                        formData={formData}
+                        setFormData={setFormData}
+                    />
+
+                    <hr
+                        className="border-stroke-light"
+                    />
 
                     <button
                         className="flex items-center gap-2 py-3 px-5 rounded-2xl bg-foreground text-background cursor-pointer"

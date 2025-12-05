@@ -11,9 +11,19 @@ export interface QuotationsModelInterface {
         tax: boolean,
         qty: number,
     }[],
-    note: string,
+    note?: {
+        heading: string,
+        content: string,
+    }[],
     invoiceNo?: string,
+    createdAt?: Date | number | string,
+    updatedAt?: Date | number | string,
 }
+
+const NoteSchema = new mongoose.Schema({
+    heading: { type: String },
+    content: { type: String },
+});
 
 const quotationsSchema = new mongoose.Schema<QuotationsModelInterface>({
     customerName: {
@@ -24,9 +34,7 @@ const quotationsSchema = new mongoose.Schema<QuotationsModelInterface>({
         type: String,
         required: true,
     },
-    note: {
-        type: String,
-    },
+    note: [NoteSchema],
     phone: {
         type: String,
         required: true,

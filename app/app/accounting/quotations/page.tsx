@@ -87,7 +87,7 @@ const ViewAllQuotationsPage = () => {
                                     ].map((action, index) => (
                                         <Link
                                             key={index}
-                                            className="py-2 px-4 rounded-2xl bg-foreground text-background"
+                                            className="py-2 px-4 rounded-2xl bg-foreground text-background text-nowrap min-w-max"
                                             href={action.href}
                                         >
                                             {action.label}
