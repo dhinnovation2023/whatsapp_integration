@@ -1,6 +1,6 @@
 import { generatePDFComponents } from '@/PDF/generatePDFComponents';
 import { View } from '@react-pdf/renderer'
-import { DOMParser } from "xmldom";
+import { DOMParser } from "@xmldom/xmldom";
 
 const PDFBrandBasedContent = ({ htmlContent }: {
     htmlContent: string,
