@@ -140,7 +140,9 @@ const ViewAllQuotationsPage = () => {
                             quotation.invoiceNo,
                             quotation.customerName,
                             quotation.phone,
-                            <div>
+                            <div
+                                key={index}
+                            >
                                 <p
                                     className={`py-1 px-2 text-xs rounded-lg capitalize ${statusColorSchema[quotation.status || 'quoted']}`}
                                 >{quotation.status}</p>
