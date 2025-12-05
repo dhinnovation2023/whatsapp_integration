@@ -30,13 +30,14 @@ const InputGroup = (data: InputGroupDataInterface) => {
                     name={data.name}
                     value={data.value}
                     onChange={data.onChange}
-                    className='w-full py-2 px-4 border border-stroke-light rounded-lg bg-background'
+                    className='w-full py-2 px-4 border capitalize border-stroke-light rounded-lg bg-background'
                 >
                     <option value="">-- {data.placeholder} --</option>
                     {data.options?.map((option, index) => (
                         <option
                             key={index}
                             value={option.value}
+                            className='capitalize'
                         >{option.label}</option>
                     ))}
                 </select>

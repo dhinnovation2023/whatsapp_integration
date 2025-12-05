@@ -11,7 +11,12 @@ export async function POST(request: NextRequest) {
             throw new Error("Required fields are missing.");
         }
 
-        await addOneQuotation(body);
+        const requestData: typeof body = {
+            ...body,
+            status: "quoted",
+        }
+
+        await addOneQuotation(requestData);
 
         return NextResponse.json({ ok: true })
 

@@ -11,6 +11,7 @@ export interface QuotationsModelInterface {
         tax: boolean,
         qty: number,
     }[],
+    status?: "quoted" | "pending" | "invoiced",
     note?: {
         heading: string,
         content: string,
@@ -62,7 +63,12 @@ const quotationsSchema = new mongoose.Schema<QuotationsModelInterface>({
     invoiceNo: {
         type: String,
         unique: true,
-    }
+    },
+    status: {
+        type: String,
+        enum: ["quoted", "pending", "invoiced"],
+        required: true,
+    },
 }, { timestamps: true })
 
 quotationsSchema.pre('save', async function (next) {

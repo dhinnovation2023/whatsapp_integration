@@ -4,6 +4,7 @@ import QuotationsModel, { QuotationsModelInterface } from "@/models/accounting/q
 export interface GetAllQuotationsRequestData {
     currentPage: number,
     searchText?: string,
+    status?: QuotationsModelInterface["status"],
 }
 
 export async function getAllQuotations(data: GetAllQuotationsRequestData) {
@@ -23,9 +24,16 @@ export async function getAllQuotations(data: GetAllQuotationsRequestData) {
                 findQuery["invoiceNo"] = { $regex: data.searchText, $options: "i" }
             }
 
+            if (data.status) {
+                findQuery["status"] = data.status;
+            }
+
             const quotations = await QuotationsModel.find(findQuery, null, {
                 limit,
                 skip,
+                sort: {
+                    createdAt: -1,
+                }
             })
 
             return resolve(quotations);

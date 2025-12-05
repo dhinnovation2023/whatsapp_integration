@@ -73,6 +73,16 @@ const EditQuotationPageClient = () => {
         name: string,
     })[] = [
             {
+                label: "Quotation Status",
+                name: "status",
+                onChange: handleInputChange,
+                placeholder: "Select Status",
+                value: formData['status'],
+                required: true,
+                type: "select",
+                options: ["quoted", "pending", "invoiced"].map((item) => ({ label: item, value: item }))
+            },
+            {
                 label: "Invoice No.",
                 name: "invoiceNo",
                 onChange: () => window.alert("Can't edit invoice No."),
@@ -196,7 +206,6 @@ const EditQuotationPageClient = () => {
                 }
 
                 const { data } = await axios.post<QuotationsModelInterface>('/api/accounting/quotations/get-one', requestData);
-                console.log(data);
                 setFormData(data);
 
             } catch (err) {
