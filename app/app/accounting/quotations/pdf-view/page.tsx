@@ -1,14 +1,10 @@
 'use client';
 
 import DashboardLayout from "@/layouts/dashboard";
-import { QuotationsModelInterface } from "@/models/accounting/quotation";
-import { Font } from "@react-pdf/renderer";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import QuotationPDFViewTemplate from "./pdf";
 
 const QuotationPDFViewPage = () => {
-
-    const [quotation, setQuotation] = useState<QuotationsModelInterface | null>(null);
 
     return (
         <DashboardLayout

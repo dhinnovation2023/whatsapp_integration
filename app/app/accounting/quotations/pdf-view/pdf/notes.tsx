@@ -2,7 +2,6 @@
 
 import { QuotationsModelInterface } from "@/models/accounting/quotation";
 import { Text, View } from "@react-pdf/renderer";
-import { quotationPDFHeadingsStyle } from "./meta-data";
 
 const QuotationPDFNotes = ({ notes }: {
     notes: QuotationsModelInterface["note"],

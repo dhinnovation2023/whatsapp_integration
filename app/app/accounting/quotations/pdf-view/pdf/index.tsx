@@ -1,6 +1,6 @@
 'use client';
 
-import { Font, PDFViewer, Document, View, Text } from "@react-pdf/renderer";
+import { Font, PDFViewer, Document, View } from "@react-pdf/renderer";
 import QuotationPageTemplate from "./page-template"
 import PDFMetaData from "./meta-data";
 import { useEffect, useState } from "react";
@@ -103,7 +103,7 @@ const QuotationPDFViewTemplate = () => {
                 setError(message);
             }
         })()
-    }, [])
+    }, [searchParams])
 
     if (error) {
         return (

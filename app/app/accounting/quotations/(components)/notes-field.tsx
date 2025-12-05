@@ -2,7 +2,7 @@
 
 import { QuotationsModelInterface } from '@/models/accounting/quotation'
 import { RiErrorWarningLine } from '@remixicon/react'
-import React, { ChangeEvent, Dispatch, Fragment, SetStateAction, useEffect } from 'react'
+import { ChangeEvent, Dispatch, Fragment, SetStateAction } from 'react'
 
 const NotesFields = ({ formData, setFormData }: {
     formData: QuotationsModelInterface,
@@ -29,8 +29,6 @@ const NotesFields = ({ formData, setFormData }: {
             })
         })
     }
-
-    useEffect(() => console.log(formData), [])
 
     function inputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) {
         setFormData(prev => {
@@ -62,7 +60,9 @@ const NotesFields = ({ formData, setFormData }: {
             className='space-y-5'
         >
             {formData.note ? formData.note.length > 0 ? formData.note.map((note, index) => (
-                <Fragment>
+                <Fragment
+                    key={index}
+                >
                     {
                         index !== 0 && (
                             <hr

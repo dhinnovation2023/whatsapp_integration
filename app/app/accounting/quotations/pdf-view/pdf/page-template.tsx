@@ -2,7 +2,6 @@
 
 import { Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import ProudiLogo from "./assets/logo.png";
-import { quotationPDFHeadingsStyle } from "./meta-data";
 import SealSignatureImage from "./assets/prodi-seal-with-sign.png";
 
 function QuotationPageTemplate({ children }: Readonly<{
@@ -196,6 +195,7 @@ function PageFooter() {
                 }}
             >
                 <View>
+                    {/* eslint-disable-next-line */}
                     <Image
                         src={SealSignatureImage.src}
                         style={{

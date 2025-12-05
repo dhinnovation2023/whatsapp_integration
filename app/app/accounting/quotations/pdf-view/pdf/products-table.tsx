@@ -1,4 +1,5 @@
-import { QuotationsModelInterface } from '@/models/accounting/quotation'
+'use client';
+
 import { StyleSheet, Text, View } from '@react-pdf/renderer';
 import { QuotationPDFCustomProductInterface } from '.';
 
