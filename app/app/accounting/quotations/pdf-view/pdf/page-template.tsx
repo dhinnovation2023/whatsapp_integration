@@ -3,7 +3,6 @@
 import { Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import ProudiLogo from "./assets/logo.png";
 import SealSignatureImage from "./assets/prodi-seal-with-sign.png";
-import { useSearchParams } from "next/navigation";
 
 function QuotationPageTemplate({ children, title }: Readonly<{
     children: React.ReactNode,
