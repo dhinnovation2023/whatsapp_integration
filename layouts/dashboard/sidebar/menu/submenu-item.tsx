@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { DashboardMenuItemsInterface } from './menu-items'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from "framer-motion";
@@ -12,7 +12,16 @@ const SubmenuItem = ({ menuItem }: {
     menuItem: DashboardMenuItemsInterface,
 }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const submenuRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+
+    useEffect(() => {
+        if (submenuRef.current) {
+            submenuRef.current.scrollIntoView({
+                behavior: "smooth",
+            });
+        }
+    }, [isOpen])
 
     if (!menuItem.submenu) {
         return (
@@ -53,17 +62,18 @@ const SubmenuItem = ({ menuItem }: {
                         <motion.div
                             className='pl-4'
                             initial={{
-                                x: 30,
+                                y: 30,
                                 opacity: 0,
                             }}
                             animate={{
-                                x: 0,
+                                y: 0,
                                 opacity: 1,
                             }}
                             exit={{
-                                x: 30,
+                                y: 30,
                                 opacity: 0,
                             }}
+                            ref={submenuRef}
                         >
                             {menuItem.submenu.map((item, index) => (
                                 <Fragment
