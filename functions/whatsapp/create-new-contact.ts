@@ -7,12 +7,12 @@ export async function createNewContact({
     phone: string,
     name: string,
 }) {
-    return new Promise<void>(async (resolve, reject) => {
+    return new Promise<boolean>(async (resolve, reject) => {
         try {
             const contactExist = await ContactsModel.findOne({ phone });
 
             if (contactExist) {
-                return resolve();
+                return resolve(false);
             }
 
             const newContact = new ContactsModel({
@@ -22,7 +22,7 @@ export async function createNewContact({
 
             await newContact.save();
 
-            return resolve();
+            return resolve(true);
 
         } catch (err) {
             return reject(err);

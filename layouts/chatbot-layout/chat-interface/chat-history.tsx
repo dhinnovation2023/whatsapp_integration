@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import { Dispatch, Fragment, SetStateAction, useEffect, useRef, useState } from 'react'
 import SingleChatMessage from './single-chat-message';
 import { ReplayContextDataInterface } from '@/app/app/client-component';
+import CreateNewContactElement from '@/components/ui-elements/create-new-contact';
 
 type ChatRole = "client" | "team";
 
@@ -205,6 +206,12 @@ const ChatHistory = ({
                         <p
                             className='text-foreground/50 max-w-[300px] text-sm'
                         >Choose a contact from your list to view messages and start a conversation.</p>
+
+                        <div
+                            className='pt-5 pb-3'
+                        >
+                            <CreateNewContactElement />
+                        </div>
                     </div>
                 </div>
             </div>
