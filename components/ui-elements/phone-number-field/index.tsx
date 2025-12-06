@@ -1,6 +1,6 @@
 'use client';
 
-const PhoneNumberField = ({ phone }: {
+const PhoneNumberField = ({}: {
     phone: string,
 }) => {
     return (
