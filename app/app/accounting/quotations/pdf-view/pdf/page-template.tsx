@@ -70,7 +70,7 @@ function PageHeader() {
             <View
                 style={{
                     width: "100%",
-                    backgroundColor: "#FFAD00",
+                    backgroundColor: "#555e59",
                     padding: "0 20px",
                     display: "flex",
                     flexDirection: "row",

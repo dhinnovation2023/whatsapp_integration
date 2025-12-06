@@ -49,12 +49,13 @@ const QuotationPDFSummary = ({ summary }: {
 
             <View
                 style={{
-                    backgroundColor: "#FFAD00",
+                    backgroundColor: "#555e59",
                     padding: "10px 15px",
                     display: "flex",
                     flexDirection: "row",
                     fontWeight: "800",
-                    borderRadius: "10px"
+                    borderRadius: "10px",
+                    color: "#ffffff"
                 }}
             >
                 <Text
