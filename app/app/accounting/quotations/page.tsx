@@ -158,9 +158,13 @@ const ViewAllQuotationsPage = () => {
                                             href: `/app/accounting/quotations/edit?id=${encodeURIComponent(typeof quotation._id === "string" ? quotation._id : "not-found")}`
                                         },
                                         {
-                                            label: "View Invoice",
+                                            label: "Quotation",
                                             href: `/app/accounting/quotations/pdf-view?id=${encodeURIComponent(typeof quotation._id === "string" ? quotation._id : "not-found")}`
-                                        }
+                                        },
+                                        {
+                                            label: "Proforma",
+                                            href: `/app/accounting/quotations/pdf-view?id=${encodeURIComponent(typeof quotation._id === "string" ? quotation._id : "not-found")}&title=proforma`
+                                        },
                                     ].map((action, index) => (
                                         <Link
                                             key={index}

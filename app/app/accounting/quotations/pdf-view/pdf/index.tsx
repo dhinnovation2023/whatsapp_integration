@@ -135,7 +135,9 @@ const QuotationPDFViewTemplate = () => {
                 style={{ fontFamily: 'Open Sans' }}
                 title="Quotation"
             >
-                <QuotationPageTemplate>
+                <QuotationPageTemplate
+                    title={searchParams.get('title') || "Quotation"}
+                >
                     <PDFMetaData
                         data={quotation}
                     />

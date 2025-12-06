@@ -3,9 +3,11 @@
 import { Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import ProudiLogo from "./assets/logo.png";
 import SealSignatureImage from "./assets/prodi-seal-with-sign.png";
+import { useSearchParams } from "next/navigation";
 
-function QuotationPageTemplate({ children }: Readonly<{
+function QuotationPageTemplate({ children, title }: Readonly<{
     children: React.ReactNode,
+    title?: string,
 }>) {
 
     const styleSheet = StyleSheet.create({
@@ -30,7 +32,9 @@ function QuotationPageTemplate({ children }: Readonly<{
             size="A4"
             orientation="portrait"
             style={styleSheet.pageStyle}>
-            <PageHeader />
+            <PageHeader
+                title={title}
+            />
             <View style={styleSheet.contentWrapper}>
                 {children}
             </View>
@@ -39,7 +43,9 @@ function QuotationPageTemplate({ children }: Readonly<{
     )
 }
 
-function PageHeader() {
+function PageHeader({ title }: {
+    title?: string,
+}) {
 
     const styleSheet = StyleSheet.create({
         headerContainer: {
@@ -87,7 +93,7 @@ function PageHeader() {
                         border: "1px solid white",
                         textTransform: "uppercase"
                     }}
-                >Quotation</Text>
+                >{title || "Quotation"}</Text>
             </View>
         </View>
     )
