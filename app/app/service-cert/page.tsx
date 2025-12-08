@@ -1,3 +1,4 @@
+import TableTemplate from '@/components/ui-elements/table-template';
 import { getAllServiceCustomers } from '@/functions/service/customers/get-all';
 import DashboardLayout from '@/layouts/dashboard';
 import Link from 'next/link';
@@ -26,97 +27,50 @@ const ServicesCustomersListPage = async ({ searchParams }: Props) => {
                 >
                     Add New Customer
                 </Link>
-                <table
-                    className='w-full text-left bg-background rounded-2xl'
-                >
-                    <thead>
-                        <tr>
-                            {[
-                                "Invoice No.",
-                                "Name",
-                                "Phone",
-                                "Product",
-                                "Created At",
-                                "Actions",
-                            ].map((data, index) => (
-                                <th
-                                    key={index}
-                                    className='py-4 px-6 min-w-max'
-                                >
-                                    {data}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {customersData.map((customer, index) => (
-                            <tr
+
+                <TableTemplate
+                    inProgress={false}
+                    headerRow={[
+                        "Invoice No.",
+                        "Name",
+                        "Phone",
+                        "Product",
+                        "Created At",
+                        "Actions",
+                    ]}
+                    dataRows={customersData.map((customer, index) => {
+                        return ([
+                            customer.invoiceNo,
+                            customer.customerName,
+                            customer.phone,
+                            customer.productName,
+                            customer.createdAt?.toISOString().split('T')[0].split('-').join('/'),
+                            <div
+                                className='flex items-center gap-2'
                                 key={index}
-                                className='hover:bg-background-2/50 odd:bg-background-2/50'
                             >
                                 {
                                     [
-                                        customer.invoiceNo,
-                                        customer.customerName,
-                                        customer.phone,
-                                        customer.productName,
-                                        customer.createdAt?.toISOString().split('T')[0].split('-').join('/'),
-                                        () => (
-                                            <td
-                                                className='py-4 px-6'
-                                            >
-                                                <div
-                                                    className='flex items-center gap-2'
-                                                >
-                                                    {
-                                                        [
-                                                            {
-                                                                label: "Edit",
-                                                                href: `/app/service-cert/edit?id=${encodeURIComponent(customer._id || '')}`,
-                                                            },
-                                                            {
-                                                                label: "View PDF",
-                                                                href: `/app/service-cert/generate-pdf?customerId=${encodeURIComponent(customer._id || '')}`
-                                                            }
-                                                        ].map((action, index) => (
-                                                            <Link
-                                                                key={index}
-                                                                href={action.href}
-                                                                className='flex items-center py-2 px-3 bg-foreground text-background rounded-2xl min-w-max'
-                                                            >{action.label}</Link>
-                                                        ))
-                                                    }
-                                                </div>
-                                            </td>
-                                        )
-                                    ].map((ElementItem, index) => {
-                                        if (typeof ElementItem === "string") {
-                                            return (
-                                                <td
-                                                    key={index}
-                                                    className='py-4 px-6 line'
-                                                >
-                                                    <p
-                                                        className='line-clamp-1'
-                                                        title={ElementItem}
-                                                    >{ElementItem}</p>
-                                                </td>
-                                            )
-                                        } else {
-                                            if (ElementItem) {
-                                                return (
-                                                    <ElementItem
-                                                        key={index}
-                                                    />
-                                                )
-                                            }
+                                        {
+                                            label: "Edit",
+                                            href: `/app/service-cert/edit?id=${encodeURIComponent(customer._id || '')}`,
+                                        },
+                                        {
+                                            label: "View PDF",
+                                            href: `/app/service-cert/generate-pdf?customerId=${encodeURIComponent(customer._id || '')}`
                                         }
-                                    })
+                                    ].map((action, index) => (
+                                        <Link
+                                            key={index}
+                                            href={action.href}
+                                            className='flex items-center py-2 px-3 bg-foreground text-background rounded-2xl min-w-max'
+                                        >{action.label}</Link>
+                                    ))
                                 }
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                            </div>
+                        ])
+                    })}
+                />
             </div>
         </DashboardLayout>
     )

@@ -35,7 +35,10 @@ const DashboardLayout = ({
                         fullwidth={fullwidth}
                     >
                         <div
-                            className='w-full'
+                            className={
+                                'w-full' +
+                                ` ${!hidePageHeader ? "py-5 px-4" : ""}`
+                            }
                         >
                             {children}
                         </div>

@@ -16,7 +16,9 @@ const TableTemplate = ({
         <table
             className='w-full text-left bg-background rounded-2xl'
         >
-            <thead>
+            <thead
+                className='hidden md:table-header-group'
+            >
                 <tr>
                     {headerRow.map((data, index) => (
                         <th
@@ -33,7 +35,7 @@ const TableTemplate = ({
                     !inProgress ? dataRows.map((row, index) => (
                         <tr
                             key={index}
-                            className='hover:bg-background-2/50 odd:bg-background-2/50'
+                            className='hover:bg-background-2/50 odd:bg-background-2/50 flex flex-col md:table-row'
                         >
                             {
                                 row.map((ElementItem, index) => {
@@ -47,7 +49,9 @@ const TableTemplate = ({
                                                     <p
                                                         className='line-clamp-1'
                                                         title={ElementItem?.toString()}
-                                                    >{ElementItem}</p>
+                                                    ><strong
+                                                        className='inline md:hidden'
+                                                    >{headerRow[index]}: </strong>{ElementItem}</p>
                                                 ) : (
                                                     ElementItem
                                                 )
