@@ -11,7 +11,7 @@ export interface ContactsModelInterface {
     referSource?: ContactReferSource,
 }
 
-export type ContactReferSource = "warranty-reminder";
+export type ContactReferSource = "warranty-reminder" | "service-reminder";
 const ContactReferSourceSchema = {
     type: [String],
     enum: ["warranty-reminder", "service-reminder"],

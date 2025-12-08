@@ -184,6 +184,10 @@ const ContactInplaceFilter = ({
                             {
                                 label: "Warranty Reminder",
                                 value: "warranty-reminder",
+                            },
+                            {
+                                label: "Service Reminder",
+                                value: "service-reminder",
                             }
                         ].map((value, index) => (
                             <option
