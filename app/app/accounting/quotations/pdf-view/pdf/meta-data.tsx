@@ -81,7 +81,7 @@ const PDFMetaData = ({ data }: {
             >
                 <Text
                     style={[quotationPDFHeadingsStyle.heading2]}
-                >Invoice to:</Text>
+                >Customer:</Text>
                 <Text
                     style={[quotationPDFHeadingsStyle.heading2]}
                 >{data.customerName}</Text>
@@ -114,7 +114,7 @@ const PDFMetaData = ({ data }: {
                 {
                     [
                         {
-                            label: "Invoice#",
+                            label: "Quote#",
                             value: data.invoiceNo,
                         },
                         {
