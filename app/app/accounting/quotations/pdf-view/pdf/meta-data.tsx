@@ -45,7 +45,7 @@ const PDFMetaData = ({ data }: {
                         fontSize: "12px",
                         fontWeight: "800",
                     }}
-                >PROUDI SOLAR SOLUTION</Text>
+                >PROUDI TRADING FZE</Text>
                 <Text
                     style={[quotationPDFHeadingsStyle.paragraph]}
                 >Proudi Trading FZE | Behind Emirates Road, Office – Warehouse No. 1, Al Sajaa Industrial, Sharjah, UAE</Text>

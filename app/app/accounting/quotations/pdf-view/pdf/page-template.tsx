@@ -213,7 +213,7 @@ function PageFooter() {
                             fontSize: "10px",
                             fontWeight: "800",
                         }}
-                    >For PROUDI SOLAR SOLUTION</Text>
+                    >For PROUDI TRADING FZE</Text>
                 </View>
 
                 <View>
