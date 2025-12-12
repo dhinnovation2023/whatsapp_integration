@@ -66,8 +66,8 @@ const QuotationPDFProductTable = ({ products }: {
                     } key={index}>
                         <Text style={[styles.cell, styles.cellFirst]}>{product.productName}</Text>
                         <Text style={styles.cell}>{product.qty}</Text>
-                        <Text style={styles.cell}>{product.price}</Text>
-                        <Text style={[styles.cell, styles.lastCell]}>{product.total}</Text>
+                        <Text style={styles.cell}>AED {product.price}</Text>
+                        <Text style={[styles.cell, styles.lastCell]}>AED {product.total}</Text>
                     </View>
                 ))}
 

@@ -13,7 +13,7 @@ export const quotationPDFHeadingsStyle = StyleSheet.create({
         fontWeight: "800",
     },
     paragraph: {
-        fontSize: "12px",
+        fontSize: "11px",
     },
 })
 
@@ -32,14 +32,55 @@ const PDFMetaData = ({ data }: {
         >
             <View
                 style={{
-                    width: "100%",
+                    width: "37%",
                     display: "flex",
                     flexDirection: "column",
-                    gap: "3px"
+                    gap: "3px",
+                    padding: "0 20px",
+                    borderRight: "1px solid #cecece"
                 }}
             >
                 <Text
-                    style={[quotationPDFHeadingsStyle.heading1]}
+                    style={{
+                        fontSize: "12px",
+                        fontWeight: "800",
+                    }}
+                >PROUDI SOLAR SOLUTION</Text>
+                <Text
+                    style={[quotationPDFHeadingsStyle.paragraph]}
+                >Proudi Trading FZE | Behind Emirates Road, Office – Warehouse No. 1, Al Sajaa Industrial, Sharjah, UAE</Text>
+
+                {
+                    [
+                        "Mail: info@proudi.ae",
+                        "Mob: +971 56 43 05 251",
+                        "Tel: +971 (06) 715 0164",
+                        "VAT TRN: 100489218600003",
+                    ].map((item, index) => (
+                        <Text
+                            key={index}
+                            style={[
+                                quotationPDFHeadingsStyle.paragraph,
+                            ]}
+                        >
+                            {item}
+                        </Text>
+                    ))
+                }
+
+            </View>
+
+            <View
+                style={{
+                    width: "37%",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "3px",
+                    padding: "0 20px",
+                }}
+            >
+                <Text
+                    style={[quotationPDFHeadingsStyle.heading2]}
                 >Invoice to:</Text>
                 <Text
                     style={[quotationPDFHeadingsStyle.heading2]}
@@ -52,11 +93,18 @@ const PDFMetaData = ({ data }: {
                 >
                     {data.location}
                 </Text>
+                <Text
+                    style={[
+                        quotationPDFHeadingsStyle.paragraph,
+                    ]}
+                >
+                    +{data.phone}
+                </Text>
 
             </View>
             <View
                 style={{
-                    width: "200px",
+                    width: "25%",
                     flexShrink: 0,
                     display: "flex",
                     flexDirection: "column",
