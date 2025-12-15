@@ -40,6 +40,8 @@ const QuotationPDFViewTemplate = () => {
     const [products, setProducts] = useState<QuotationPDFCustomProductInterface[]>([]);
     const [summary, setSummary] = useState<QuoteationPDFSummaryInterface | null>(null);
 
+    const [isNoteLengthy, setIsNoteLengthy] = useState<boolean>(false);
+
     const searchParams = useSearchParams();
 
     // React-PDF Configs
@@ -68,6 +70,17 @@ const QuotationPDFViewTemplate = () => {
 
                 const response = await axios.post<QuotationsModelInterface>('/api/accounting/quotations/get-one', requestData);
                 setQuotation(response.data);
+
+                if (response.data) {
+                    const contentItems: string[] = [];
+                    for (const note of response.data.note || []) {
+                        contentItems.push(note.content);
+                    }
+
+                    if (contentItems.join('').split(' ').length > 20) {
+                        setIsNoteLengthy(true);
+                    }
+                }
 
                 const productsList: QuotationPDFCustomProductInterface[] = [];
 
@@ -157,9 +170,11 @@ const QuotationPDFViewTemplate = () => {
                                 width: "100%"
                             }}
                         >
-                            <QuotationPDFNotes
-                                notes={quotation.note}
-                            />
+                            {!isNoteLengthy && (
+                                <QuotationPDFNotes
+                                    notes={quotation.note}
+                                />
+                            )}
                         </View>
                         <View
                             style={{
@@ -176,6 +191,15 @@ const QuotationPDFViewTemplate = () => {
                     </View>
 
                 </QuotationPageTemplate>
+
+                {isNoteLengthy && (
+                    <QuotationPageTemplate>
+                        <QuotationPDFNotes
+                            notes={quotation.note}
+                        />
+                    </QuotationPageTemplate>
+                )}
+
             </Document>
         </PDFViewer>
     )
