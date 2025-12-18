@@ -188,7 +188,11 @@ const ContactInplaceFilter = ({
                             {
                                 label: "Service Reminder",
                                 value: "service-reminder",
-                            }
+                            },
+                            {
+                                label: "Completion Reminder",
+                                value: "completion-reminder",
+                            },
                         ].map((value, index) => (
                             <option
                                 key={value.value + index}
