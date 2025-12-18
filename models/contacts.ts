@@ -11,10 +11,10 @@ export interface ContactsModelInterface {
     referSource?: ContactReferSource,
 }
 
-export type ContactReferSource = "warranty-reminder" | "service-reminder";
+export type ContactReferSource = "warranty-reminder" | "service-reminder" | "completion-reminder";
 const ContactReferSourceSchema = {
     type: [String],
-    enum: ["warranty-reminder", "service-reminder"],
+    enum: ["warranty-reminder", "service-reminder", "completion-reminder"],
 }
 
 const contactsSchema = new mongoose.Schema({

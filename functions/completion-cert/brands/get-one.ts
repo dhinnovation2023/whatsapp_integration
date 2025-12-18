@@ -13,7 +13,7 @@ export async function getOneCompletionCertBrand (objectId: string | undefined) {
             }
 
             const brand = await CompletionCertBrandsModel.findById(objectId);
-            return reject(brand);
+            return resolve(brand);
 
         } catch (err) {
             const message = handleCatchBlock(err);

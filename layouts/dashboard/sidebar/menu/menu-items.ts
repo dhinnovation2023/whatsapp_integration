@@ -1,4 +1,4 @@
-import { RemixiconComponentType, RiBox2Fill, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiMessage3Fill, RiShieldCheckFill, RiWrenchFill } from "@remixicon/react"
+import { RemixiconComponentType, RiBox2Fill, RiCheckboxCircleFill, RiFileChartFill, RiFlagFill, RiGoogleFill, RiGroupFill, RiMailFill, RiMessage3Fill, RiShieldCheckFill, RiWrenchFill } from "@remixicon/react"
 
 export interface DashboardMenuItemsInterface {
     label: string,
@@ -77,6 +77,29 @@ const menuItems: (DashboardMenuItemsInterface | string)[] = [
             {
                 label: "Add Brand",
                 href: "/app/service-cert/brands/add",
+            }
+        ]
+    },
+    {
+        label: "Completion",
+        href: "#",
+        icon: RiCheckboxCircleFill,
+        submenu: [
+            {
+                label: "View All",
+                href: "/app/completion-cert",
+            },
+            {
+                label: "Add New",
+                href: "/app/completion-cert/add",
+            },
+            {
+                label: "View Brands",
+                href: "/app/completion-cert/brands",
+            },
+            {
+                label: "Add Brand",
+                href: "/app/completion-cert/brands/add",
             }
         ]
     },

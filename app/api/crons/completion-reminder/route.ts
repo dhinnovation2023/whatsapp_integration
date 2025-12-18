@@ -5,7 +5,7 @@ import { makeContactUnread } from "@/functions/whatsapp/makeContactUnread";
 import { saveMessageToDB } from "@/functions/whatsapp/saveMessage";
 import { sendTextToWhatsapp } from "@/functions/whatsapp/sendToWhatsapp";
 import { updateContactRefer } from "@/functions/whatsapp/update-contact-refer";
-import ServiceCustomersModel, { ServiceCustomersModelInterface } from "@/models/service/customers";
+import CompletionCertCustomersModel, { CompletionCertCustomersModelInterface } from "@/models/completion-cert/customers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -26,21 +26,21 @@ export async function GET(request: NextRequest) {
         const sixMonthAgo = new Date();
         sixMonthAgo.setMonth(sixMonthAgo.getMonth() - 6);
 
-        const customersData = await ServiceCustomersModel.find(
+        const customersData = await CompletionCertCustomersModel.find(
             {
                 $or: [
                     { reminded: false },
                     { reminded: { $exists: false } },
                 ],
-                dateOfService: {
+                dateOfCompletion: {
                     $lt: sixMonthAgo,
                 },
             }
-        ) as ServiceCustomersModelInterface[];
+        ) as CompletionCertCustomersModelInterface[];
 
         for (const customer of customersData) {
 
-            const MARKETING_SERVICE_REMINDER_TEXT = `Dear ${customer.customerName},
+            const MARKETING_WARRANTY_REMINDER_TEXT = `Dear ${customer.customerName},
 
 This is a gentle reminder that your ${customer.productName} is now due for its scheduled service to ensure optimal performance and longevity.
 
@@ -57,7 +57,7 @@ PROUDI TRADING FZE
             await createNewContact({ name: "unknown", phone: customer.phone });
             const { wamid } = await sendTextToWhatsapp({
                 phone: customer.phone,
-                text: MARKETING_SERVICE_REMINDER_TEXT,
+                text: MARKETING_WARRANTY_REMINDER_TEXT,
             })
 
             await saveMessageToDB({
@@ -68,7 +68,7 @@ PROUDI TRADING FZE
                     role: "team",
                     timestamp: new Date().getTime().toString(),
                     wamid,
-                    message: MARKETING_SERVICE_REMINDER_TEXT,
+                    message: MARKETING_WARRANTY_REMINDER_TEXT,
                 }
             })
 
@@ -78,10 +78,10 @@ PROUDI TRADING FZE
 
             await updateContactRefer({
                 phone: customer.phone,
-                referSource: "service-reminder",
+                referSource: "completion-reminder",
             })
 
-            await ServiceCustomersModel.findByIdAndUpdate(customer._id,
+            await CompletionCertCustomersModel.findByIdAndUpdate(customer._id,
                 {
                     reminded: true,
                 }
