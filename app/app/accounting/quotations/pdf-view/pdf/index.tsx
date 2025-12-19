@@ -1,22 +1,18 @@
 'use client';
 
-import { Font, PDFViewer, Document, View } from "@react-pdf/renderer";
-import QuotationPageTemplate from "./page-template"
-import PDFMetaData from "./meta-data";
+import { Font, PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
 import { useEffect, useState } from "react";
 import { QuotationsModelInterface } from "@/models/accounting/quotation";
-import { RiLoader4Line } from "@remixicon/react";
+import { RiLoader4Line, RiLoaderLine } from "@remixicon/react";
 import { handleCatchBlock } from "@/functions/common";
 import { GetOneQuotationRequestData } from "@/app/api/accounting/quotations/get-one/route";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import ErrorTemplate from "@/components/ui-elements/error-template";
-import QuotationPDFProductTable from "./products-table";
 import { GetOneProductRequestData } from "@/app/api/accounting/products/get-one/route";
 import { ProductsModelInterface } from "@/models/accounting/products";
 import { calculateTax } from "@/functions/accounting/calculations";
-import QuotationPDFSummary from "./summary";
-import QuotationPDFNotes from "./notes";
+import QuotationPDFMain from "./main";
 
 export interface QuotationPDFCustomProductInterface {
     productName: string,
@@ -141,67 +137,53 @@ const QuotationPDFViewTemplate = () => {
     }
 
     return (
-        <PDFViewer
-            className='w-full min-h-screen'
+        <div
+            className="relative"
         >
-            <Document
-                style={{ fontFamily: 'Open Sans' }}
-                title="Quotation"
+            <PDFViewer
+                className='w-full min-h-screen'
             >
-                <QuotationPageTemplate
-                    title={searchParams.get('title') || "Quotation"}
+                <QuotationPDFMain
+                    isNoteLengthy={isNoteLengthy}
+                    products={products}
+                    quotation={quotation}
+                    summary={summary}
+                    searchParams={searchParams}
+                />
+            </PDFViewer>
+
+            {window.innerWidth < 600 && (
+                <div
+                    className="fixed top-0 left-0 w-full h-full flex items-center bg-white justify-center"
                 >
-                    <PDFMetaData
-                        data={quotation}
-                    />
-                    <QuotationPDFProductTable
-                        products={products}
-                    />
-
-                    <View
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "flex-start"
-                        }}
-                    >
-                        <View
-                            style={{
-                                width: "100%"
-                            }}
-                        >
-                            {!isNoteLengthy && (
-                                <QuotationPDFNotes
-                                    notes={quotation.note}
-                                />
-                            )}
-                        </View>
-                        <View
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-end"
-                            }}
-                        >
-                            <QuotationPDFSummary
+                    <PDFDownloadLink
+                        document={
+                            <QuotationPDFMain
+                                isNoteLengthy={isNoteLengthy}
+                                products={products}
+                                quotation={quotation}
                                 summary={summary}
+                                searchParams={searchParams}
                             />
-                        </View>
-                    </View>
+                        }
+                        className="bg-foreground text-background py-3 px-5 rounded-2xl flex items-center gap-2"
+                    >
+                        {({ loading }) => (
+                            loading ? (
+                                <>
+                                    <RiLoaderLine
+                                        size={20}
+                                        className="animate-spin"
+                                    />
+                                    Loading PDF
+                                </>
+                            ) : "Download PDF"
+                        )}
+                    </PDFDownloadLink>
+                </div>
+            )}
 
-                </QuotationPageTemplate>
-
-                {isNoteLengthy && (
-                    <QuotationPageTemplate>
-                        <QuotationPDFNotes
-                            notes={quotation.note}
-                        />
-                    </QuotationPageTemplate>
-                )}
-
-            </Document>
-        </PDFViewer>
+        </div>
     )
 }
 
