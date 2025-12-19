@@ -63,7 +63,7 @@ function PageHeader({ title }: {
             <Image
                 src={ProudiLogo.src}
                 style={{
-                    width: '80px'
+                    width: '110px'
                 }}
             />
             <Text
