@@ -30,6 +30,7 @@ export interface ChatHistoryMessageInterface {
         id: string,
     },
     wamid?: string,
+    messageType?: "notification",
 }
 
 function createChatHistoryMessage(message: MessagesModelInterface): ChatHistoryMessageInterface {
@@ -42,6 +43,7 @@ function createChatHistoryMessage(message: MessagesModelInterface): ChatHistoryM
         chatBy: message.chatBy,
         context: message.context,
         wamid: message.wamid,
+        messageType: message.messageType,
     })
 }
 

@@ -8,6 +8,7 @@ import { MessagesModelInterface } from '@/models/messages';
 import axios from 'axios';
 import { FetchReplayMessageApiRouteMessage } from '@/app/api/whatsapp/fetch-replay-message/route';
 import { ReplayContextDataInterface } from '@/app/app/client-component';
+import NotificationMessage from './notification-message';
 
 const SingleChatMessage = ({
     chat,
@@ -41,6 +42,14 @@ const SingleChatMessage = ({
             }
         })()
     }, [chat.context])
+
+    if (chat.messageType === "notification") {
+        return (
+            <NotificationMessage
+                chat={chat}
+            />
+        )
+    }
 
     return (
         <div

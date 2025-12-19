@@ -15,17 +15,18 @@ export interface MessagesModelInterface {
         latitude: number,
         longitude: number,
     },
-    chatBy: string,
-    updatedAt: string,
-    createdAt: string,
+    chatBy?: string,
+    updatedAt?: string,
+    createdAt?: string,
     wamid?: string,
     context?: {
         from: string,
         id: string,
-    }
+    },
+    messageType?: "notification", // for validating is it a normal message by user or custom notification by status change or assign change.
 }
 
-const messageSchema = new mongoose.Schema({
+const messageSchema = new mongoose.Schema<MessagesModelInterface>({
     role: {
         type: String,
         required: true,
@@ -67,6 +68,9 @@ const messageSchema = new mongoose.Schema({
     context: {
         from: { type: String },
         id: { type: String },
+    },
+    messageType: {
+        type: String,
     }
 }, { timestamps: true })
 

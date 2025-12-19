@@ -1,5 +1,7 @@
 import { handleCatchBlock } from "@/functions/common";
+import { fetchTeamMemberByUserId } from "@/functions/teams/fetch-team-by-id";
 import { updateAssigned } from "@/functions/whatsapp/update-assigned";
+import MessagesModel, { MessagesModelInterface } from "@/models/messages";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,6 +23,20 @@ export async function POST(request: NextRequest) {
             userId: string,
             phone: string,
         }
+
+        const teamMember = await fetchTeamMemberByUserId(body.userId);
+
+        const messageData: MessagesModelInterface = {
+            messageType: "notification",
+            newMessage: true,
+            phone: body.phone,
+            role: "team",
+            timestamp: new Date().getTime().toString(),
+            message: `Contact assigned to ${teamMember.name}`,
+        }
+
+        const message = new MessagesModel(messageData);
+        await message.save();
 
         await updateAssigned(body);
 
