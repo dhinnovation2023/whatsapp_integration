@@ -1,12 +1,9 @@
 'use client';
 
-import PageTemplate from '@/app/app/warranty-cert/generate-pdf/pdf/page-template'
-import RenderDateInPDF from '@/app/app/warranty-cert/generate-pdf/pdf/render-date';
 import { ServiceCustomersModelInterface } from '@/models/service/customers'
-import { Document, Font, Image, PDFViewer, Text, View } from '@react-pdf/renderer'
-import StampImage from "@/app/app/warranty-cert/generate-pdf/pdf/assets/prodi-seal-with-sign.png"
-import PDFDetailsTable from './pdf-details-table';
-import PDFBrandBasedContent from './brand-based-content';
+import { Font, PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
+import ServicePDFMain from './main';
+import { RiLoaderLine } from '@remixicon/react';
 
 export type ServiceCustomerPDFGenerateInterface = Omit<ServiceCustomersModelInterface, "brand"> & {
     brandName: string,
@@ -27,103 +24,43 @@ const ServiceCustomerPDF = (data: {
 
     return (
         <div
-            className='w-full h-screen'
+            className='w-full h-screen relative'
         >
             <PDFViewer
                 className='w-full min-h-screen'
             >
-                <Document
-                    style={{ fontFamily: 'Open Sans' }}
-                    title="Service Certificate"
-                >
-                    <PageTemplate
-                        title='Service Certificate'
-                    >
-
-                        <View
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                                height: "100%",
-                            }}
-                        >
-                            <View
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "30px"
-                                }}
-                            >
-                                <PDFDetailsTable
-                                    pdfContent={data.customerData}
-                                />
-                                <PDFBrandBasedContent
-                                    htmlContent={data.customerData.brandContent}
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "flex-end"
-                                }}
-                            >
-                                <View>
-                                    {/* eslint-disable-next-line */}
-                                    <Image
-                                        src={StampImage.src}
-                                        style={{
-                                            width: "160px",
-                                        }}
-                                    />
-                                    <Text>
-                                        Authorized Signatory ___________________
-                                    </Text>
-                                </View>
-                                <Text>
-                                    <RenderDateInPDF
-                                        date={data.customerData.createdAt || 0}
-                                    />
-                                </Text>
-                            </View>
-                        </View>
-
-                    </PageTemplate>
-                    <PageTemplate
-                        title='Service Certificate'
-                    >
-                        <Text
-                            style={{
-                                fontSize: 20,
-                                fontWeight: 700,
-                            }}
-                        >Attachment</Text>
-                        <View
-                            style={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                gap: 10,
-                                width: "100%",
-                                flexDirection: "row",
-                            }}
-                        >
-                            {data.customerData.uploads.map((filepath, index) => (
-                                // eslint-disable-next-line
-                                <Image
-                                    key={index}
-                                    src={`/api/whatsapp/fetch-files/${encodeURIComponent(filepath)}`}
-                                    style={{
-                                        flexShrink: 0,
-                                        width: "49%",
-                                    }}
-                                />
-                            ))}
-                        </View>
-                    </PageTemplate>
-                </Document>
+                <ServicePDFMain
+                    customerData={data.customerData}
+                />
             </PDFViewer>
+
+            {window.innerWidth < 600 && (
+                <div
+                    className="absolute top-0 left-0 w-full h-full flex items-center bg-white justify-center"
+                >
+                    <PDFDownloadLink
+                        document={
+                            <ServicePDFMain
+                                customerData={data.customerData}
+                            />
+                        }
+                        className="bg-foreground text-background py-3 px-5 rounded-2xl flex items-center gap-2"
+                    >
+                        {({ loading }) => (
+                            loading ? (
+                                <>
+                                    <RiLoaderLine
+                                        size={20}
+                                        className="animate-spin"
+                                    />
+                                    Loading PDF
+                                </>
+                            ) : "Download PDF"
+                        )}
+                    </PDFDownloadLink>
+                </div>
+            )}
+
         </div>
     )
 }

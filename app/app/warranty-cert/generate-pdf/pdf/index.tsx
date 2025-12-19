@@ -1,14 +1,9 @@
 'use client';
 
-import { Document, Font, Image, PDFViewer, Text, View } from "@react-pdf/renderer";
-import PageTemplate from "./page-template";
+import { Font, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { RiLoaderLine } from "@remixicon/react";
-import PDFDetailsTable from "./details-table";
 import { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
-import PDFBrandBasedContent from "./brand-based-content";
-import RenderDateInPDF from "./render-date";
-
-import StampImage from "./assets/prodi-seal-with-sign.png";
+import WarrantyPDFMain from "./main";
 
 export type WarrantyPDFPagePDFContentInterface = Omit<WarrantyCustomersModelInterface, "brand"> & {
     brandName: string,
@@ -18,6 +13,8 @@ export type WarrantyPDFPagePDFContentInterface = Omit<WarrantyCustomersModelInte
 const PDFViewerSection = ({ customerData }: {
     customerData: WarrantyPDFPagePDFContentInterface,
 }) => {
+
+    // const isMobile = useIsMobile();
 
     // React-PDF Configs
     Font.register({
@@ -43,69 +40,44 @@ const PDFViewerSection = ({ customerData }: {
     }
 
     return (
-        <div>
+        <div
+            className="relative"
+        >
             <PDFViewer
                 className="w-full min-h-screen"
             >
-                <Document
-                    style={{ fontFamily: 'Open Sans' }}
-                    title="Warranty Certificate"
-                >
-                    <PageTemplate
-                        title="Warranty Certificate"
-                    >
-                        <View
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "space-between",
-                                height: "100%",
-                            }}
-                        >
-                            <View
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "30px"
-                                }}
-                            >
-                                <PDFDetailsTable
-                                    pdfContent={customerData}
-                                />
-                                <PDFBrandBasedContent
-                                    htmlContent={customerData.brandContent}
-                                />
-                            </View>
-                            <View
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                    alignItems: "flex-end"
-                                }}
-                            >
-                                <View>
-                                    {/* eslint-disable-next-line */}
-                                    <Image
-                                        src={StampImage.src}
-                                        style={{
-                                            width: "160px",
-                                        }}
-                                    />
-                                    <Text>
-                                        Authorized Signatory ___________________
-                                    </Text>
-                                </View>
-                                <Text>
-                                    <RenderDateInPDF
-                                        date={customerData.currentDate}
-                                    />
-                                </Text>
-                            </View>
-                        </View>
-                    </PageTemplate>
-                </Document>
+                <WarrantyPDFMain
+                    customerData={customerData}
+                />
             </PDFViewer>
+
+            {window.innerWidth < 600 && (
+                <div
+                    className="absolute top-0 left-0 w-full h-full flex items-center bg-white justify-center"
+                >
+                    <PDFDownloadLink
+                        document={
+                            <WarrantyPDFMain
+                                customerData={customerData}
+                            />
+                        }
+                        className="bg-foreground text-background py-3 px-5 rounded-2xl flex items-center gap-2"
+                    >
+                        {({ loading }) => (
+                            loading ? (
+                                <>
+                                    <RiLoaderLine
+                                        size={20}
+                                        className="animate-spin"
+                                    />
+                                    Loading PDF
+                                </>
+                            ) : "Download PDF"
+                        )}
+                    </PDFDownloadLink>
+                </div>
+            )}
+
         </div>
     )
 }
