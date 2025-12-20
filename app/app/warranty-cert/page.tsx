@@ -48,32 +48,62 @@ const WarrantyCertPage = async ({
               customer.phone,
               customer.productName,
               customer.createdAt?.toISOString().split('T')[0].split('-').join('/'),
-                <div
-                  className='flex items-center gap-2'
-                  key={index}
-                >
-                  {
-                    [
-                      {
-                        label: "Edit",
-                        href: `/app/warranty-cert/edit?id=${encodeURIComponent(customer._id || '')}`,
-                      },
-                      {
-                        label: "View PDF",
-                        href: `/app/warranty-cert/generate-pdf?customerId=${encodeURIComponent(customer._id || '')}`
-                      }
-                    ].map((action, index) => (
-                      <Link
-                        key={index}
-                        href={action.href}
-                        className='flex items-center py-2 px-3 bg-foreground text-background rounded-2xl min-w-max'
-                      >{action.label}</Link>
-                    ))
-                  }
-                </div>
+              <div
+                className='flex items-center gap-2'
+                key={index}
+              >
+                {
+                  [
+                    {
+                      label: "Edit",
+                      href: `/app/warranty-cert/edit?id=${encodeURIComponent(customer._id || '')}`,
+                    },
+                    {
+                      label: "View PDF",
+                      href: `/app/warranty-cert/generate-pdf?customerId=${encodeURIComponent(customer._id || '')}`
+                    }
+                  ].map((action, index) => (
+                    <Link
+                      key={index}
+                      href={action.href}
+                      className='flex items-center py-2 px-3 bg-foreground text-background rounded-2xl min-w-max'
+                    >{action.label}</Link>
+                  ))
+                }
+              </div>
             ]
           ))}
         />
+
+        <div
+          className='space-x-3 mt-5'
+        >
+          {
+            [
+              {
+                label: "Prev",
+                href: `/app/warranty-cert?page=${(Number(currentPage) || 1) - 1}`,
+                condition: (currentPage || 1) !== 1,
+              },
+              {
+                label: "Next",
+                href: `/app/warranty-cert?page=${(Number(currentPage) || 1) + 1}`,
+                condition: true,
+              }
+            ].map((item, index) => (
+              item.condition && (
+                <Link
+                  href={item.href}
+                  key={index}
+                  className='py-3 px-4 bg-foreground text-background rounded-lg'
+                >
+                  {item.label} Page
+                </Link>
+              )
+            ))
+          }
+        </div>
+
       </div>
     </DashboardLayout>
   )

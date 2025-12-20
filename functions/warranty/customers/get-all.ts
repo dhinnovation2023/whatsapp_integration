@@ -16,6 +16,9 @@ export async function getAllWarrantyCustomers(data: GetAllWarrantyCustomersReque
             const customersData = await WarrantyCustomersModel.find({}, null, {
                 limit,
                 skip,
+                sort: {
+                    createdAt: -1,
+                }
             })
 
             return resolve(customersData);
