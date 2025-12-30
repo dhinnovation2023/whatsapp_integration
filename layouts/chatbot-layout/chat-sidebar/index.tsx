@@ -46,7 +46,7 @@ const ChatSidebar = ({
         start: Date,
         end: Date,
     }>(() => ({
-        start: new Date(Date.now() - (86400000 * 30)),
+        start: new Date(Date.now() - (86400000 * 1)),
         end: new Date(),
     }));
 
