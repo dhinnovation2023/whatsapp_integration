@@ -23,11 +23,12 @@ const QuotationPDFProductTable = ({ products }: {
         },
         cell: {
             width: "200px",
-            padding: 10,
+            padding: 5,
             fontSize: 10,
+            paddingBottom: 15,
         },
         cellFirst: {
-            minWidth: "50%",
+            minWidth: "60%",
         },
         lastCell: {
             borderRightWidth: 0,

@@ -29,7 +29,7 @@ const QuotationPDFSummary = ({ summary }: {
                         style={{
                             display: "flex",
                             flexDirection: "row",
-                            padding: "10px 15px"
+                            padding: "5px 15px"
                         }}
                     >
                         <Text
