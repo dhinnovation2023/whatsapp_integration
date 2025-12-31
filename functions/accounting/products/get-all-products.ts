@@ -35,6 +35,9 @@ export async function getAllProducts(data: GetAllProductsRequestData) {
             const products = await ProductsModel.find(findQuery, null, {
                 limit,
                 skip,
+                sort: {
+                    createdAt: -1,
+                }
             });
 
             return resolve(products);

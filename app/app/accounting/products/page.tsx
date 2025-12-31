@@ -8,9 +8,20 @@ import DashboardLayout from "@/layouts/dashboard"
 import { ProductsModelInterface } from "@/models/accounting/products"
 import axios from "axios"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
+import AllProductsPagination from "./pagination"
+import { useSearchParams } from "next/navigation"
 
 const ViewAllProducts = () => {
+    return (
+        <Suspense>
+            <ClientComponent />
+        </Suspense>
+    )
+}
+
+function ClientComponent() {
+    const searchParams = useSearchParams();
 
     const [inProgress, setInProgress] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -28,7 +39,7 @@ const ViewAllProducts = () => {
             setInProgress(true);
             try {
                 const requestData: GetAllProductsRequestData = {
-                    currentPage: 1,
+                    currentPage: Number(searchParams.get("page") || '1'),
                 }
 
                 const products = await _fetchProducts(requestData);
@@ -40,7 +51,7 @@ const ViewAllProducts = () => {
             }
             setInProgress(false);
         })()
-    }, []);
+    }, [searchParams]);
 
     return (
         <DashboardLayout
@@ -98,6 +109,9 @@ const ViewAllProducts = () => {
                         />
                     )
                 }
+
+                <AllProductsPagination />
+
             </div>
         </DashboardLayout>
     )
