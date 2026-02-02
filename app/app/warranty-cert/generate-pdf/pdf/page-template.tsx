@@ -1,11 +1,14 @@
 'use client';
 
 import { Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
-import ProudiLogo from "./assets/logo.png";
+import HomeDeluxelogo from "./assets/home-deluxe-logo.png";
+import DreamHomeLogo from "./assets/dream-home-innovation-logo.jpeg"
+import { CompanyNames } from "./main";
 
-function PageTemplate({ children, title }: Readonly<{
+function PageTemplate({ children, title, company }: Readonly<{
     children: React.ReactNode,
     title: string,
+    company: CompanyNames,
 }>) {
 
     const styleSheet = StyleSheet.create({
@@ -32,6 +35,7 @@ function PageTemplate({ children, title }: Readonly<{
             style={styleSheet.pageStyle}>
             <PageHeader
                 title={title}
+                company={company}
             />
             <View style={styleSheet.contentWrapper}>
                 {children}
@@ -41,8 +45,9 @@ function PageTemplate({ children, title }: Readonly<{
     )
 }
 
-function PageHeader({ title }: {
-    title: string
+function PageHeader({ title, company }: {
+    title: string,
+    company: CompanyNames,
 }) {
 
     const styleSheet = StyleSheet.create({
@@ -61,9 +66,10 @@ function PageHeader({ title }: {
         <View style={styleSheet.headerContainer}>
             {/* eslint-disable-next-line */}
             <Image
-                src={ProudiLogo.src}
+                // src={ProudiLogo.src}
+                src={company === "home-deluxe" ? HomeDeluxelogo.src : DreamHomeLogo.src}
                 style={{
-                    width: '110px'
+                    width: '130px'
                 }}
             />
             <Text
@@ -93,10 +99,10 @@ function PageFooter() {
     return (
         <View style={styleSheet.footerContainer}>
             <Text style={styleSheet.footerText}>
-{
-    `Proudi Trading FZE | Al Sajaa Industrial, Sharjah – Behind Emirates Road, Office / Warehouse No. 1 Sharjah, United Arab Emirates
+                {
+                    `Proudi Trading FZE | Al Sajaa Industrial, Sharjah – Behind Emirates Road, Office / Warehouse No. 1 Sharjah, United Arab Emirates
 Phone: +971 56 43 05 251 | Ph: Phone: +971 67 15 0164 | Web mail: info@proudi.ae | Email: proudisolarsolution@gmail.com`
-}
+                }
             </Text>
         </View>
     )

@@ -1,15 +1,19 @@
 import { Document, Image, Text, View } from '@react-pdf/renderer'
-import React from 'react'
 import PageTemplate from './page-template'
 import PDFDetailsTable from './details-table'
 import PDFBrandBasedContent from './brand-based-content'
 import RenderDateInPDF from './render-date'
 import { WarrantyPDFPagePDFContentInterface } from '.'
-import StampImage from "./assets/prodi-seal-with-sign.png";
+import HomeDeluxeStampImage from "./assets/home-delux-seal.png";
+import DreamHomeLogo from "./assets/dream-home-innovation-seal.jpeg";
 
-const WarrantyPDFMain = ({ customerData }: {
-    customerData: WarrantyPDFPagePDFContentInterface
+export type CompanyNames = "home-deluxe" | "dream-home";
+
+const WarrantyPDFMain = ({ customerData, company }: {
+    customerData: WarrantyPDFPagePDFContentInterface,
+    company: CompanyNames,
 }) => {
+
     return (
         <Document
             style={{ fontFamily: 'Open Sans' }}
@@ -17,6 +21,7 @@ const WarrantyPDFMain = ({ customerData }: {
         >
             <PageTemplate
                 title="Warranty Certificate"
+                company={company}
             >
                 <View
                     style={{
@@ -51,7 +56,7 @@ const WarrantyPDFMain = ({ customerData }: {
                         <View>
                             {/* eslint-disable-next-line */}
                             <Image
-                                src={StampImage.src}
+                                src={company === "home-deluxe" ? HomeDeluxeStampImage.src : DreamHomeLogo.src}
                                 style={{
                                     width: "160px",
                                 }}

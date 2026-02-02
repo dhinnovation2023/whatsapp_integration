@@ -17,6 +17,7 @@ const ServicePDFMain = (data: {
         >
             <PageTemplate
                 title='Service Certificate'
+                company='home-deluxe'
             >
 
                 <View
@@ -72,6 +73,7 @@ const ServicePDFMain = (data: {
             </PageTemplate>
             <PageTemplate
                 title='Service Certificate'
+                company='home-deluxe'
             >
                 <Text
                     style={{

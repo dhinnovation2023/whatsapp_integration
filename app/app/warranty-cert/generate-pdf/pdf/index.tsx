@@ -3,7 +3,8 @@
 import { Font, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { RiLoaderLine } from "@remixicon/react";
 import { WarrantyCustomersModelInterface } from "@/models/warranty/customers";
-import WarrantyPDFMain from "./main";
+import WarrantyPDFMain, { CompanyNames } from "./main";
+import { useSearchParams } from "next/navigation";
 
 export type WarrantyPDFPagePDFContentInterface = Omit<WarrantyCustomersModelInterface, "brand"> & {
     brandName: string,
@@ -13,6 +14,8 @@ export type WarrantyPDFPagePDFContentInterface = Omit<WarrantyCustomersModelInte
 const PDFViewerSection = ({ customerData }: {
     customerData: WarrantyPDFPagePDFContentInterface,
 }) => {
+
+    const searchParams = useSearchParams();
 
     // const isMobile = useIsMobile();
 
@@ -25,7 +28,7 @@ const PDFViewerSection = ({ customerData }: {
     })
 
 
-    if (!customerData) {
+    if (!customerData || !searchParams?.get) {
         return (
             <div
                 className="py-10 px-5"
@@ -48,6 +51,7 @@ const PDFViewerSection = ({ customerData }: {
             >
                 <WarrantyPDFMain
                     customerData={customerData}
+                    company={searchParams.get("company") as CompanyNames}
                 />
             </PDFViewer>
 
@@ -59,6 +63,7 @@ const PDFViewerSection = ({ customerData }: {
                         document={
                             <WarrantyPDFMain
                                 customerData={customerData}
+                                company={searchParams.get("company") as CompanyNames}
                             />
                         }
                         className="bg-foreground text-background py-3 px-5 rounded-2xl flex items-center gap-2"

@@ -1,6 +1,5 @@
 import PageTemplate from '@/app/app/warranty-cert/generate-pdf/pdf/page-template'
 import { Document, Image, Text, View } from '@react-pdf/renderer'
-import React from 'react'
 import PDFDetailsTable from './pdf-details-table'
 import PDFBrandBasedContent from './brand-based-content'
 import RenderDateInPDF from '@/app/app/warranty-cert/generate-pdf/pdf/render-date'
@@ -17,6 +16,7 @@ const CompletionPDFMain = (data: {
         >
             <PageTemplate
                 title='Completion Certificate'
+                company='home-deluxe'
             >
 
                 <View
@@ -72,6 +72,7 @@ const CompletionPDFMain = (data: {
             </PageTemplate>
             <PageTemplate
                 title='Completion Certificate'
+                company='home-deluxe'
             >
                 <Text
                     style={{

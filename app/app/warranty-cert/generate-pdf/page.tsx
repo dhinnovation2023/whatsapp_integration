@@ -4,10 +4,13 @@ import DashboardLayout from "@/layouts/dashboard";
 import { notFound } from "next/navigation";
 import PDFViewerSection from "./pdf";
 import ErrorTemplate from "@/components/ui-elements/error-template";
+import { CompanyNames } from "./pdf/main";
+import ChangeCompanyButton from "./change-company-button";
 
 type Props = {
   searchParams: Promise<{
     customerId?: string,
+    company?: CompanyNames,
   }>
 }
 
@@ -16,6 +19,7 @@ const GenarteWarrantyPDFPage = async ({
 }: Props) => {
 
   const customerId = (await searchParams).customerId;
+  const company = (await searchParams).company;
 
   if (!customerId) {
     notFound();
@@ -45,6 +49,14 @@ const GenarteWarrantyPDFPage = async ({
       hidePageHeader
       fullwidth
     >
+      <div
+        className="py-3 px-4"
+      >
+        <ChangeCompanyButton
+          company={company}
+          customerId={customerId}
+        />
+      </div>
       <PDFViewerSection
         customerData={{
           _id: `${customerData._id}`,
