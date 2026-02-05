@@ -4,10 +4,11 @@ import PDFDetailsTable from './details-table'
 import PDFBrandBasedContent from './brand-based-content'
 import RenderDateInPDF from './render-date'
 import { WarrantyPDFPagePDFContentInterface } from '.'
+import ProudiLogoSeal from "./assets/prodi-seal-with-sign.png";
 import HomeDeluxeStampImage from "./assets/home-delux-seal.png";
 import DreamHomeLogo from "./assets/dream-home-innovation-seal.jpeg";
 
-export type CompanyNames = "home-deluxe" | "dream-home";
+export type CompanyNames = "home-deluxe" | "dream-home" | "proudi";
 
 const WarrantyPDFMain = ({ customerData, company }: {
     customerData: WarrantyPDFPagePDFContentInterface,
@@ -56,7 +57,7 @@ const WarrantyPDFMain = ({ customerData, company }: {
                         <View>
                             {/* eslint-disable-next-line */}
                             <Image
-                                src={company === "home-deluxe" ? HomeDeluxeStampImage.src : DreamHomeLogo.src}
+                                src={company === "home-deluxe" ? HomeDeluxeStampImage.src : company === "proudi" ? ProudiLogoSeal.src : DreamHomeLogo.src}
                                 style={{
                                     width: "160px",
                                 }}

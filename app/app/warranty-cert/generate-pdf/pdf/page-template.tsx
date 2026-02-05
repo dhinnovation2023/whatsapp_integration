@@ -2,7 +2,8 @@
 
 import { Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import HomeDeluxelogo from "./assets/home-deluxe-logo.png";
-import DreamHomeLogo from "./assets/dream-home-innovation-logo.jpeg"
+import DreamHomeLogo from "./assets/dream-home-innovation-logo.jpeg";
+import ProudiLogo from "./assets/logo.png";
 import { CompanyNames } from "./main";
 
 function PageTemplate({ children, title, company }: Readonly<{
@@ -67,9 +68,9 @@ function PageHeader({ title, company }: {
             {/* eslint-disable-next-line */}
             <Image
                 // src={ProudiLogo.src}
-                src={company === "home-deluxe" ? HomeDeluxelogo.src : DreamHomeLogo.src}
+                src={company === "home-deluxe" ? HomeDeluxelogo.src : company === "proudi" ? ProudiLogo.src : DreamHomeLogo.src}
                 style={{
-                    width: '130px'
+                    width: company === "home-deluxe" ? '130px' : "70px"
                 }}
             />
             <Text

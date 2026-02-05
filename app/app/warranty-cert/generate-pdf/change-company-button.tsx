@@ -1,20 +1,53 @@
 'use client';
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { CompanyNames } from "./pdf/main";
 
-const ChangeCompanyButton = ({ company, customerId }: {
+const ChangeCompanyButton = ({ customerId }: {
     company?: CompanyNames,
     customerId: string,
 }) => {
+
+    const router = useRouter();
+
     return (
-        <a
-            className="bg-theme-primary py-3 px-5 rounded-lg flex max-w-max"
-            type="button"
-            href={`/app/warranty-cert/generate-pdf?customerId=${customerId}&company=${company === "home-deluxe" ? "dream-home" : "home-deluxe"}`}
-        >
-            {company === "home-deluxe" ? "Dream Home" : "Home Delux"}
-        </a>
+        <div>
+            <select
+                onChange={(event) => {
+                    if (!event.target.value) {
+                        return;
+                    }
+                    router.push(`/app/warranty-cert/generate-pdf?customerId=${customerId}&company=${event.target.value}`)
+                }}
+                className="border border-stroke-light rounded-lg py-2 px-4 bg-gray-200"
+            >
+                {
+                    [
+                        {
+                            label: "Select Company",
+                            value: "",
+                        },
+                        {
+                            label: "Proudi",
+                            value: "proudi",
+                        },
+                        {
+                            label: "Home Delux",
+                            value: "home-deluxe",
+                        },
+                        {
+                            label: "Dream Home",
+                            value: "dream-home",
+                        }
+                    ].map((item, index) => (
+                        <option
+                            value={item.value}
+                            key={index}
+                        >{item.label}</option>
+                    ))
+                }
+            </select>
+        </div>
     )
 }
 
